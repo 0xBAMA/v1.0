@@ -21,7 +21,7 @@ SOURCES += imgui.cc imgui_demo.cc imgui_draw.cc imgui_widgets.cc
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 
-CXXFLAGS = -Wall -Wformat
+CXXFLAGS = -Wall
 LIBS =
 
 ##---------------------------------------------------------------------
@@ -38,7 +38,8 @@ CXXFLAGS += -lGLEW -DIMGUI_IMPL_OPENGL_LOADER_GLEW
 
 ifeq ($(UNAME_S), Linux) #LINUX
 	ECHO_MESSAGE = "Linux"
-	LIBS += -lGL -ldl `sdl2-config --libs`
+	# LIBS += -lGL -ldl `sdl2-config --libs`
+	LIBS += -lGL `sdl2-config --libs`
 
 	CXXFLAGS += `sdl2-config --cflags`
 	CFLAGS = $(CXXFLAGS)
@@ -63,7 +64,7 @@ endif
 %.o:../libs/glad/src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-all: $(EXE)
+all: $(EXE) clean
 	@echo Build complete for $(ECHO_MESSAGE)
 
 $(EXE): $(OBJS)
