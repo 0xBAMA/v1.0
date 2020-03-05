@@ -73,11 +73,14 @@ class voraldo
     //╔═╗╦    ╦ ╦┬┌┐┌┌┬┐┌─┐┬ ┬
     //║ ╦║    ║║║││││ │││ ││││
     //╚═╝╩═╝  ╚╩╝┴┘└┘─┴┘└─┘└┴┘
-    SDL_Window * OpenGL_window;
+    SDL_Window * window;
     SDL_GLContext GLcontext;
 
-    void create_window();
+    ImVec4 clear_color;
 
+
+
+    void create_window();
     void draw_menu_and_take_input();
 
     //╔╦╗┌─┐┌┐┌┬ ┬  ╔═╗┌┬┐┌─┐┌┬┐┌─┐
