@@ -15,9 +15,9 @@ CXX = g++
 #CXX = clang++
 
 EXE = example_sdl_opengl3
-SOURCES = main.cpp
-SOURCES += imgui_impl_sdl.cpp imgui_impl_opengl3.cpp
-SOURCES += imgui.cpp imgui_demo.cpp imgui_draw.cpp imgui_widgets.cpp
+SOURCES = main.cc
+SOURCES += imgui_impl_sdl.cc imgui_impl_opengl3.cc
+SOURCES += imgui.cc imgui_demo.cc imgui_draw.cc imgui_widgets.cc
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 
@@ -48,13 +48,13 @@ endif
 ## BUILD RULES
 ##---------------------------------------------------------------------
 
-%.o:%.cpp
+%.o:%.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o:../%.cpp
+%.o:../%.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o:../../%.cpp
+%.o:../../%.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:../libs/gl3w/GL/%.c

@@ -1,5 +1,6 @@
 # VORALDO_FLAGS = $(shell pkg-config sdl2 --cflags --libs) -O3 -std=c++11 -lGLEW -lGL -lSDL2 -lSDL2_ttf
 VORALDO_FLAGS = $(shell pkg-config sdl2 --cflags --libs) -O3 -std=c++11 -lGLEW -lGL -lSDL2
+IMGUI_FLAGS   = 
 
 all: msg main clean
 
@@ -9,8 +10,11 @@ msg:
 		@date
 		@echo
 
-main: lodepng.o perlin.o utils.o voraldo1_0.o
+main: imgui lodepng.o perlin.o utils.o voraldo1_0.o
 		g++ -o main resources/code/main.cc *.o               ${VORALDO_FLAGS}
+
+imgui: resources/imgui/*
+
 
 voraldo1_0.o: resources/code/voraldo1_0.h resources/code/voraldo1_0.cc
 		g++ -c -o voraldo1_0.o resources/code/voraldo1_0.cc  ${VORALDO_FLAGS}
