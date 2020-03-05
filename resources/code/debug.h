@@ -30,9 +30,9 @@ void GLAPIENTRY MessageCallback( GLenum source,
 
 void gl_debug_enable()
 {
-  //DEBUG ENABLE
-  glEnable              ( GL_DEBUG_OUTPUT );
-  glDebugMessageCallback( MessageCallback, 0 );
-
-  cout << "GL debug output enabled." << endl;
+  // //DEBUG ENABLE
+  // glEnable              ( GL_DEBUG_OUTPUT );
+  // glDebugMessageCallback( MessageCallback, 0 );
+  //
+  // cout << "GL debug output enabled." << endl;
 }
