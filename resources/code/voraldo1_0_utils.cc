@@ -162,6 +162,13 @@ void voraldo::quit()
 
   //fullscreen exit splash? maybe if it's a quick one - I really liked that glitchy blinking eye gif
 
+  // Cleanup
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplSDL2_Shutdown();
+  ImGui::DestroyContext();
+
+  SDL_GL_DeleteContext(GLcontext);
+  SDL_DestroyWindow(window);
   SDL_Quit();
 
   cout << "GOODBYE" << endl << endl; //last line of code before main's return statement
