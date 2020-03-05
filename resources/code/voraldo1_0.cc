@@ -11,11 +11,11 @@ voraldo::voraldo()
   while(current_menu_state != EXIT)
   {
     draw_menu_and_take_input();
-    SDL_Delay(10);
+    SDL_Delay(1000);                  //long delay then exit, for early development purposes, before the GUI is working
+
+    current_menu_state = EXIT;
   }
-
   //fall through and exit
-
 }
 
 voraldo::~voraldo()

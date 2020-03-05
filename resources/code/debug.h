@@ -29,10 +29,9 @@ void GLAPIENTRY MessageCallback( GLenum source,
 }
 
 void gl_debug_enable()
-{//getting a seg fault here, I think
+{
   // //DEBUG ENABLE
-  // glEnable              ( GL_DEBUG_OUTPUT );
-  // glDebugMessageCallback( MessageCallback, 0 );
-  //
-  // cout << "GL debug output enabled." << endl;
+  glEnable              ( GL_DEBUG_OUTPUT );
+  // glDebugMessageCallback( MessageCallback, 0 );      //getting a seg fault here, I think
+  cout << "GL debug output enabled." << endl;
 }

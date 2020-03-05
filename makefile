@@ -1,6 +1,6 @@
 # VORALDO_FLAGS = $(shell pkg-config sdl2 --cflags --libs) -O3 -std=c++11 -lGLEW -lGL -lSDL2 -lSDL2_ttf
-VORALDO_FLAGS = $(shell pkg-config sdl2 --cflags --libs) -O3 -std=c++11 -lGLEW -lGL -lSDL2
-IMGUI_FLAGS   = 
+VORALDO_FLAGS =  -O3 -std=c++11 -lGLEW -lGL $(shell pkg-config sdl2 --cflags --libs)
+IMGUI_FLAGS   =
 
 all: msg main clean
 
