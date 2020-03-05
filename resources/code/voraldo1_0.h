@@ -78,6 +78,8 @@ class voraldo
 
     void create_window();
 
+    void draw_menu_and_take_input();
+
     //╔╦╗┌─┐┌┐┌┬ ┬  ╔═╗┌┬┐┌─┐┌┬┐┌─┐
     //║║║├┤ ││││ │  ╚═╗ │ ├─┤ │ ├┤
     //╩ ╩└─┘┘└┘└─┘  ╚═╝ ┴ ┴ ┴ ┴ └─┘

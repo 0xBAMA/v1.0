@@ -10,6 +10,11 @@ void voraldo::create_window()
 
   cout << endl << "Creating OpenGL window ...";
 
+  if(SDL_Init( SDL_INIT_EVERYTHING ) != 0)
+  {
+      printf("Error: %s\n", SDL_GetError());
+  }
+
   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
   SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
   SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
@@ -20,16 +25,16 @@ void voraldo::create_window()
   SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);
   SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);
 
+  SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
   SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
   SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 5 );
-  SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
 
   //this is how you query the screen resolution
   SDL_DisplayMode dm;
   SDL_GetDesktopDisplayMode(0, &dm);
 
   //pulling these out because I'm going to try to span the whole screen with
-  //the windows, without overlaps if possible, in a way that's flexible on different resolution screens
+  //the window, in a way that's flexible on different resolution screens
   int total_screen_width = dm.w;
   int total_screen_height = dm.h;
 
@@ -43,6 +48,11 @@ void voraldo::create_window()
   SDL_GL_SwapWindow( OpenGL_window );
 
   cout << " done." << endl;
+
+}
+
+void voraldo::draw_menu_and_take_input()
+{
 
 }
 
