@@ -11,7 +11,7 @@ voraldo::voraldo()
   while(current_menu_state != EXIT)
   {
     draw_menu_and_take_input();
-    SDL_Delay(10); 
+    // SDL_Delay(10); 
   }
   //fall through and exit
 }

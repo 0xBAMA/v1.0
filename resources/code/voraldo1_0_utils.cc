@@ -48,8 +48,8 @@ void voraldo::create_window()
   GLcontext = SDL_GL_CreateContext( window );
 
   SDL_GL_MakeCurrent(window, GLcontext);
-  // SDL_GL_SetSwapInterval(1); // Enable vsync -- questionable utility
-  SDL_GL_SetSwapInterval(0); // explicitly disable vsync
+  SDL_GL_SetSwapInterval(1); // Enable vsync -- questionable utility
+  // SDL_GL_SetSwapInterval(0); // explicitly disable vsync
 
 
 
@@ -62,6 +62,7 @@ void voraldo::create_window()
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO(); (void)io; //void cast prevents unused variable warning
+
 
   ImGui::StyleColorsDark();
 
@@ -93,14 +94,13 @@ void voraldo::draw_menu_and_take_input()
   SDL_Event event;
   while (SDL_PollEvent(&event))
   {
-      ImGui_ImplSDL2_ProcessEvent(&event);
-      if (event.type == SDL_QUIT)
-          current_menu_state = EXIT;
-      if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
-          current_menu_state = EXIT;
-      if (event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_ESCAPE)
-          current_menu_state = EXIT;
-
+    ImGui_ImplSDL2_ProcessEvent(&event);
+    if (event.type == SDL_QUIT)
+        current_menu_state = EXIT;
+    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
+        current_menu_state = EXIT;
+    if (event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_ESCAPE)
+        current_menu_state = EXIT;
   }
 
   ImGuiIO& io = ImGui::GetIO();
@@ -110,36 +110,83 @@ void voraldo::draw_menu_and_take_input()
   ImGui_ImplSDL2_NewFrame(window);
   ImGui::NewFrame();
 
-  static bool show_demo_window = true;
-  static bool show_another_window = true;
+  // static bool show_another_window = true;
+  // static bool show_demo_window = true;
+  static bool show_my_window = true;
 
-  // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-  if (show_demo_window)
-      ImGui::ShowDemoWindow(&show_demo_window);
+  // // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+  // if (show_demo_window)
+  //     ImGui::ShowDemoWindow(&show_demo_window);
 
 
-  // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+  // // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+  // {
+  //     static float f = 0.0f;
+  //     static int counter = 0;
+  //
+  //     ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+  //
+  //     ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+  //     ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+  //     ImGui::Checkbox("Another Window", &show_another_window);
+  //     ImGui::Checkbox("My Window", &show_my_window);
+  //
+  //     ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+  //     ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+  //
+  //     if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+  //         counter++;
+  //
+  //     ImGui::SameLine();
+  //     ImGui::Text("counter = %d", counter);
+  //
+  //     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+  //     ImGui::End();
+  // }
+
+
+  // // 3. Show another simple window.
+  // if (show_another_window)
+  // {
+  //     ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+  //     ImGui::Text("Hello from another window!");
+  //     if (ImGui::Button("Close Me"))
+  //         show_another_window = false;
+  //     ImGui::End();
+  // }
+
+  if(show_my_window)
   {
-      static float f = 0.0f;
-      static int counter = 0;
+    ImGui::SetNextWindowSize(ImVec2(220,190));
+    ImGui::Begin("My Window", &show_my_window, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 
-      ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-      ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-      ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-      ImGui::Checkbox("Another Window", &show_another_window);
+    ImGui::SetCursorPosX(50);
+    if (ImGui::Button("Draw Menu", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
+      current_menu_state = DRAW_MENU;
 
-      ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-      ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+    ImGui::SetCursorPosX(50);
+    if (ImGui::Button("Mask Menu", ImVec2(120, 22)))
+      current_menu_state = MASK_MENU;
 
-      if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-          counter++;
+    ImGui::SetCursorPosX(50);
+    if (ImGui::Button("Light Menu", ImVec2(120, 22)))
+      current_menu_state = LIGHT_MENU;
 
-      ImGui::SameLine();
-      ImGui::Text("counter = %d", counter);
+    ImGui::SetCursorPosX(50);
+    if (ImGui::Button("CA Menu", ImVec2(120, 22)))
+      current_menu_state = CA_MENU;
 
-      ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-      ImGui::End();
+    ImGui::SetCursorPosX(50);
+    if (ImGui::Button("Utility Menu", ImVec2(120, 22)))
+      current_menu_state = UTIL_MENU;
+
+    ImGui::SetCursorPosX(50);
+    if (ImGui::Button("EXIT", ImVec2(120, 22)))
+      current_menu_state = EXIT;
+
+    ImGui::Text(" %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    ImGui::End();
   }
 
 
@@ -162,7 +209,7 @@ void voraldo::quit()
 
   //fullscreen exit splash? maybe if it's a quick one - I really liked that glitchy blinking eye gif
 
-  // Cleanup
+  //shutdown everything
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplSDL2_Shutdown();
   ImGui::DestroyContext();
