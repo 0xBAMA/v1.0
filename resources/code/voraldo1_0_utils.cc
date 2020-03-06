@@ -476,17 +476,17 @@ void voraldo::draw_menu_and_take_input()
 
 
   load_save_config_labels:
-
+    //lets you enter filenames and load/save from/to file
     goto done;
 
 
   reinitialization_config_labels:
-
+    //like clear all, but ignores mask values
     goto done;
 
 
   undo_last_action_config_labels:
-
+    //use multiple textures to support an undo operation
     goto done;
 
 
@@ -500,7 +500,7 @@ void voraldo::draw_menu_and_take_input()
 
 
   done:
-
+    //finished the labels for the current window, so do the end() thing and render it
 
 
 
@@ -511,10 +511,13 @@ void voraldo::draw_menu_and_take_input()
   // Rendering
   ImGui::Render();
   glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-  glClear(GL_COLOR_BUFFER_BIT);
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-  SDL_GL_SwapWindow(window);
+  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //from hsv picker
+  glClear(GL_COLOR_BUFFER_BIT);                     //clear the background
+
+  //do my OpenGL raycasting here
+
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());   //put imgui data into the framebuffer
+  SDL_GL_SwapWindow(window);                      //swap the double buffers to display
 
   // Poll and handle events (inputs, window resize, etc.)
   // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
