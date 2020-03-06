@@ -73,6 +73,9 @@ class voraldo
     //╔═╗╦    ╦ ╦┬┌┐┌┌┬┐┌─┐┬ ┬
     //║ ╦║    ║║║││││ │││ ││││
     //╚═╝╩═╝  ╚╩╝┴┘└┘─┴┘└─┘└┴┘
+    int total_screen_height;
+    int total_screen_width;
+
     SDL_Window * window;
     SDL_GLContext GLcontext;
 
