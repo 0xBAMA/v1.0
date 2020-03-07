@@ -539,6 +539,11 @@ void voraldo::draw_menu_and_take_input()
 
 }
 
+void voraldo::gl_data_setup()
+{
+
+}
+
 void voraldo::quit()
 {
   //blow away all the OpenGL data
@@ -557,9 +562,4 @@ void voraldo::quit()
   SDL_Quit();
 
   cout << "GOODBYE" << endl << endl; //last line of code before main's return statement
-}
-
-void gl_data_setup()
-{
-  
 }

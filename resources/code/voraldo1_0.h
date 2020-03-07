@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+//stl includes
 #include <vector>
 #include <cmath>
 #include <numeric>
@@ -14,6 +15,7 @@
 #include <sstream>
 #include <vector>
 
+//iostream aliases
 using std::cin;
 using std::cout;
 using std::cerr;
@@ -21,6 +23,7 @@ using std::cerr;
 using std::flush;
 using std::endl;
 
+//vector math library GLM
 #define GLM_FORCE_SWIZZLE
 #define GLM_SWIZZLE_XYZW
 #include "../glm/glm.hpp" //general vector types
@@ -28,22 +31,24 @@ using std::endl;
 #include "../glm/gtc/type_ptr.hpp" //to send matricies gpu-side
 #include "../glm/gtx/transform.hpp"
 
+//not sure as to the utility of this
 #define GL_GLEXT_PROTOTYPES
 
 
-
+//GUI library (dear ImGUI)
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_sdl.h"
 #include "../imgui/imgui_impl_opengl3.h"
 
 
+// Initialize glew loader with glewInit()
+#include <GL/glew.h>
 
-#include <GL/glew.h>    // Initialize with glewInit()
-
-
+//SDL includes - windowing, gl context, system info
 #include <SDL.h>
-#include <SDL_opengl.h>     //allows you to run OpenGL inside of SDL2
-// #include <SDL2/SDL_ttf.h>   //allows rendering of text using .ttf font files (SDL 2d renderer only)
+//allows you to run OpenGL inside of SDL2
+#include <SDL_opengl.h>
+
 
 //png loading library - very powerful
 #include "lodepng.h"
@@ -79,13 +84,12 @@ class voraldo
     SDL_Window * window;
     SDL_GLContext GLcontext;
 
+
+    //  ╔═╗╦    ╔╦╗┌─┐┌┬┐┌─┐
+    //  ║ ╦║     ║║├─┤ │ ├─┤
+    //  ╚═╝╩═╝  ═╩╝┴ ┴ ┴ ┴ ┴
     ImVec4 clear_color;
 
-
-
-    void create_window();
-    void gl_data_setup();
-    void draw_menu_and_take_input();
 
     //╔╦╗┌─┐┌┐┌┬ ┬  ╔═╗┌┬┐┌─┐┌┬┐┌─┐
     //║║║├┤ ││││ │  ╚═╗ │ ├─┤ │ ├┤
@@ -93,13 +97,18 @@ class voraldo
     menu_state current_menu_state;
 
 
+    //  ╦┌┐┌┬┌┬┐  ╔═╗┬ ┬┌┐┌┌─┐┌┬┐┬┌─┐┌┐┌┌─┐
+    //  ║││││ │   ╠╣ │ │││││   │ ││ ││││└─┐
+    //  ╩┘└┘┴ ┴   ╚  └─┘┘└┘└─┘ ┴ ┴└─┘┘└┘└─┘
+    void create_window();
+    void gl_data_setup();
+
+
     //╔╦╗┌─┐┬┌┐┌  ╦  ┌─┐┌─┐┌─┐  ╔═╗┬ ┬┌┐┌┌─┐┌┬┐┬┌─┐┌┐┌┌─┐
     //║║║├─┤││││  ║  │ ││ │├─┘  ╠╣ │ │││││   │ ││ ││││└─┐
     //╩ ╩┴ ┴┴┘└┘  ╩═╝└─┘└─┘┴    ╚  └─┘┘└┘└─┘ ┴ ┴└─┘┘└┘└─┘
-    void handle_input();
-    // void draw_menu();
+    void draw_menu_and_take_input();
 
-    // void update_windows();
 
     void quit();  //this destroys the windows, creates a
     // fullscreen exit splash and then exits the program
