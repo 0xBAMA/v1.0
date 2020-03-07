@@ -5,13 +5,13 @@ voraldo::voraldo()
 {
   current_menu_state = MAIN_MENU;     //initial state of the menu
   create_window();                    //create the window that plays host to our OpenGL context
-
+  gl_data_setup();                    //compile shaders, load textures
   gl_debug_enable();                  //enable OpenGL debug output
 
   while(current_menu_state != EXIT)
   {
     draw_menu_and_take_input();
-    // SDL_Delay(10); 
+    // SDL_Delay(10);
   }
   //fall through and exit
 }

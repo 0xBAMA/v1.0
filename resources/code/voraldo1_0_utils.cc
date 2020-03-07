@@ -558,3 +558,8 @@ void voraldo::quit()
 
   cout << "GOODBYE" << endl << endl; //last line of code before main's return statement
 }
+
+void gl_data_setup()
+{
+  
+}

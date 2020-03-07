@@ -84,6 +84,7 @@ class voraldo
 
 
     void create_window();
+    void gl_data_setup();
     void draw_menu_and_take_input();
 
     //╔╦╗┌─┐┌┐┌┬ ┬  ╔═╗┌┬┐┌─┐┌┬┐┌─┐
