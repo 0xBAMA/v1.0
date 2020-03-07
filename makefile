@@ -38,8 +38,6 @@ perlin.o: resources/code/voraldo1_0.h resources/code/perlin.cc
 lodepng.o: resources/code/lodepng.h resources/code/lodepng.cc
 		g++ -c -o lodepng.o resources/code/lodepng.cc                    ${VORALDO_FLAGS}
 
-run: msg
-		time ./main
 
 clean:
 		@echo
