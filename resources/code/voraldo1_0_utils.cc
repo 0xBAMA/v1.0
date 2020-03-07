@@ -206,11 +206,11 @@ void voraldo::draw_menu_and_take_input()
       current_menu_state = EXIT;
 
 
-    ImGui::SetCursorPosX(35);
+    ImGui::SetCursorPosX(37);
     ImGui::Text(" %.2f ms (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-    ImGui::SetCursorPosX(30);
-    ImGui::ColorEdit3("bg", (float*)&clear_color); // Edit 3 floats representing a color
+    ImGui::SetCursorPosX(40);
+    ImGui::ColorEdit3("", (float*)&clear_color); // Edit 3 floats representing a color
     goto done;
 
 

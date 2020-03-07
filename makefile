@@ -1,4 +1,3 @@
-# VORALDO_FLAGS = $(shell pkg-config sdl2 --cflags --libs) -O3 -std=c++11 -lGLEW -lGL -lSDL2 -lSDL2_ttf
 VORALDO_FLAGS =  -Wall -O3 -std=c++11 -lGLEW -lGL $(shell pkg-config sdl2 --cflags --libs)
 IMGUI_FLAGS   =  -Wall -lGLEW -DIMGUI_IMPL_OPENGL_LOADER_GLEW `sdl2-config --cflags`
 
