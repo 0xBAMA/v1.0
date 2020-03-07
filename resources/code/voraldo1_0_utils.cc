@@ -75,7 +75,8 @@ void voraldo::create_window()
 
   clear_color = ImVec4(0.26f, 0.16f, 0.0f, 0.5f);
 
-  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //really excited by the fact imgui has hsv selectors that let you change this easily from inside the program
+  //really excited by the fact imgui has an hsv picker to set this
+  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
   glClear( GL_COLOR_BUFFER_BIT );
   SDL_GL_SwapWindow( window );
 
