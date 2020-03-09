@@ -91,8 +91,6 @@ void voraldo::create_window()
 void voraldo::draw_menu_and_take_input()
 {
 
-
-
   ImGuiIO& io = ImGui::GetIO();
 
   // Start the Dear ImGui frame
