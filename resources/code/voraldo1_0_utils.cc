@@ -52,7 +52,6 @@ void voraldo::create_window()
   // SDL_GL_SetSwapInterval(0); // explicitly disable vsync
 
 
-
   if (glewInit() != GLEW_OK)
   {
       fprintf(stderr, "Failed to initialize OpenGL loader!\n");
@@ -391,21 +390,37 @@ void voraldo::draw_menu_and_take_input()
 
 
   sphere_config_labels:
-    //radius, position, color, bool draw, bool mask
+  //required: radius, location, color, bool draw, bool mask
+    static bool sphere_draw = true, sphere_mask = false;
+    static float sphere_radius = 0.0;
+    static ImVec4 sphere_draw_color;
+    static glm::vec3 location;
+
+
+
     goto done;
 
 
   perlin_noise_config_labels:
-    //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
+  //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
+    // static float scale;
+    // something to generate a new perlin texture?
+    // color
+    // static bool draw, mask;
     goto done;
 
 
   triangle_config_labels:
-    // three point positions, thickness, color, bool draw, bool mask
+  // three point positions, thickness, color, bool draw, bool mask
+    // static glm::vec3 point1, point2, point3;
+    // static float thickness;
+    // color
+    //static bool draw, mask
     goto done;
 
   ellipsoid_config_labels:
-    //radii, (rotation?), position, color, bool draw, bool mask
+  //radii, (rotation?), position, color, bool draw, bool mask
+    // static glm::vec3 radii, position
     goto done;
 
 
