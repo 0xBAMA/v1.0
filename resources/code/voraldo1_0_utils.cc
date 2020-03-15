@@ -397,11 +397,22 @@ void voraldo::draw_menu_and_take_input()
     static glm::vec3 sphere_location;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(220,235));
     ImGui::Begin("Sphere Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    ImGui::SliderFloat("  radius", &sphere_radius, 0.0f, 500.0f, "%.3f");
+    ImGui::SetCursorPosY(50);
+    ImGui::SliderFloat("  x pos", &sphere_location.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  y pos", &sphere_location.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  z pos", &sphere_location.z, 0.0f, 256.0f, "%.3f");
 
+    ImGui::Checkbox(" Draw", &sphere_draw);
+    ImGui::Checkbox(" Mask", &sphere_mask);
+
+    ImGui::ColorEdit3("  Color", (float*)&sphere_draw_color); // Edit 3 floats representing a color
+
+    ImGui::SetCursorPosY(200);
+    ImGui::SetCursorPosX(50);
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
       current_menu_state = DRAW_MENU;
@@ -411,16 +422,24 @@ void voraldo::draw_menu_and_take_input()
 
   perlin_noise_config_labels:
   //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
-    // static float scale;
-    // something to generate a new perlin texture?
-    // color
-    // static bool draw, mask;
+  // need something to generate a new perlin texture, put it on the gpu?
+    static float perlin_scale;
+    static float perlin_threshold;
+    static ImVec4 perlin_draw_color;
+    static bool perlin_draw = true;
+    static bool perlin_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(220,180));
     ImGui::Begin("Perlin Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     // ImGui::SetCursorPosX(50);
+
+    ImGui::SliderFloat("  scale", &sphere_location.x, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("  threshold", &sphere_location.y, 0.0f, 1.0f, "%.3f");
+
+    ImGui::Checkbox(" Draw", &sphere_draw);
+    ImGui::Checkbox(" Mask", &sphere_mask);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -642,9 +661,6 @@ void voraldo::draw_menu_and_take_input()
     //finished the labels for the current window, so do the end() thing and render it
 
 
-
-
-
   ImGui::End();
 
   // Rendering
@@ -672,14 +688,72 @@ void voraldo::draw_menu_and_take_input()
     if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
         current_menu_state = EXIT;
     if (event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_ESCAPE)
-        current_menu_state = EXIT;
-  }
+    {
+      switch (current_menu_state)
+      {
+        case MAIN_MENU:
+          current_menu_state = EXIT;
+          break;
 
+        case DRAW_MENU:               //one level deep
+        case MASK_MENU:
+        case LIGHT_MENU:
+        case CA_MENU:
+        case UTIL_MENU:
+          current_menu_state = MAIN_MENU;
+          break;
+
+        case SPHERE_CONFIG:           //two levels deep
+        case PERLIN_NOISE_CONFIG:
+        case TRIANGLE_CONFIG:
+        case ELLIPSOID_CONFIG:
+        case CYLINDER_CONFIG:
+        case TUBE_CONFIG:
+        case CUBOID_CONFIG:
+        case AABB_CONFIG:
+        case HEIGHTMAP_CONFIG:
+        case BLUR_CONFIG:
+        case CLEAR_ALL_CONFIG:
+          current_menu_state = DRAW_MENU;
+          break;
+
+          //mask config submenus
+        case UNMASK_ALL_CONFIG:
+        case TOGGLE_MASK_CONFIG:
+        case MASK_BY_COLOR_CONFIG:     //this is going to be a powerful tool
+          current_menu_state = MASK_MENU;
+          break;
+
+          //lighting config submenus
+        case COMPUTE_STATIC_LIGHTING_CONFIG:
+        case PER_FRAME_LIGHTING_CONFIG:
+          current_menu_state = LIGHT_MENU;
+          break;
+
+          //cellular automata submenus
+        case GAME_OF_LIFE_CONFIG:
+        case WIREWORLD_CONFIG:
+        case CA_TERRAIN_CONFIG:
+          current_menu_state = CA_MENU;
+          break;
+
+          //utility submenus
+        case LOAD_SAVE_CONFIG:
+        case REINITIALIZATION_CONFIG:
+          current_menu_state = UTIL_MENU;
+          break;
+
+        default:
+          current_menu_state = EXIT;
+          break;
+      }
+    }
+  }
 }
 
 void voraldo::gl_data_setup()
 {
-
+  //set up the textures
 }
 
 void voraldo::quit()
