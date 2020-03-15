@@ -175,8 +175,8 @@ void voraldo::draw_menu_and_take_input()
         goto load_save_config_labels;
       case REINITIALIZATION_CONFIG:
         goto reinitialization_config_labels;
-      case UNDO_LAST_ACTION_CONFIG:
-        goto undo_last_action_config_labels;
+      // case UNDO_LAST_ACTION_CONFIG:
+      //   goto undo_last_action_config_labels;
 
       default:                      //shouldn't ever see this
         goto done;
@@ -376,9 +376,9 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Reinitialize", ImVec2(120, 22)))
       current_menu_state = REINITIALIZATION_CONFIG;
 
-    ImGui::SetCursorPosX(50);
-    if (ImGui::Button("Undo", ImVec2(120, 22)))
-      current_menu_state = UNDO_LAST_ACTION_CONFIG;
+    // ImGui::SetCursorPosX(50);
+    // if (ImGui::Button("Undo", ImVec2(120, 22)))
+    //   current_menu_state = UNDO_LAST_ACTION_CONFIG;
 
 
     ImGui::SetCursorPosX(50);
@@ -394,9 +394,17 @@ void voraldo::draw_menu_and_take_input()
     static bool sphere_draw = true, sphere_mask = false;
     static float sphere_radius = 0.0;
     static ImVec4 sphere_draw_color;
-    static glm::vec3 location;
+    static glm::vec3 sphere_location;
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Sphere Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
 
 
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
 
     goto done;
 
@@ -407,6 +415,17 @@ void voraldo::draw_menu_and_take_input()
     // something to generate a new perlin texture?
     // color
     // static bool draw, mask;
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Perlin Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
+
     goto done;
 
 
@@ -416,46 +435,141 @@ void voraldo::draw_menu_and_take_input()
     // static float thickness;
     // color
     //static bool draw, mask
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Triangle Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
+
     goto done;
 
   ellipsoid_config_labels:
   //radii, (rotation?), position, color, bool draw, bool mask
     // static glm::vec3 radii, position
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Ellipsoid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
+
     goto done;
 
 
   cylinder_config_labels:
     //radius, bvec, tvec positions, color, bool draw, bool mask
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Cylinder Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
+
     goto done;
 
 
   tube_config_labels:
     //inner radius, outer radius, bvec, tvec positions, color, bool draw, bool mask
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Tube Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
+
     goto done;
 
 
   cuboid_config_labels:
     //8 points defining corners, color, bool draw, bool mask
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Cuboid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
+
     goto done;
 
 
   aabb_config_labels:
     //min/max on x/y/z, color, bool draw, bool mask
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("AABB Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
     goto done;
 
 
   heightmap_config_labels:
     //option to generate new (different algorithms), coloration, draw, mask
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Heightmap Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
     goto done;
 
 
   blur_config_labels:
     //blur radius, bool touch alpha (zero alpha cells will stay invisible)
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Blur Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
     goto done;
 
 
   clear_all_config_labels:
     //clear, like reinit but respects the mask values of all cells
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::Begin("Clear All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    // ImGui::SetCursorPosX(50);
+
+
+    if (ImGui::Button("Back", ImVec2(120, 22)))
+      current_menu_state = DRAW_MENU;
     goto done;
 
   unmask_all_config_labels:
@@ -510,9 +624,9 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  undo_last_action_config_labels:
-    //use multiple textures to support an undo operation
-    goto done;
+  // undo_last_action_config_labels:
+  //   //use multiple textures to support an undo operation
+  //   goto done;
 
 
 

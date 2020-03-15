@@ -45,6 +45,6 @@ typedef enum menu_state_t
   //utility submenus
   LOAD_SAVE_CONFIG,
   REINITIALIZATION_CONFIG,
-  UNDO_LAST_ACTION_CONFIG
+  // UNDO_LAST_ACTION_CONFIG
 
 } menu_state;
