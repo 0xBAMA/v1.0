@@ -2,6 +2,10 @@
 //  ╚═╗├─┤├─┤ ││├┤ ├┬┘
 //  ╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─
 
+#ifndef SHADER_H
+#define SHADER_H
+
+#include "includes.h"
 
 #include <vector>
 #include <cmath>
@@ -119,3 +123,5 @@ class Shader
         glUseProgram( this->Program );
     }
 };
+
+#endif
