@@ -71,6 +71,7 @@ void voraldo::create_window()
 
 //if you want to change colors - open the demo window and dump this, replace all lines because that's the easiest way to do it
   ImVec4* colors = ImGui::GetStyle().Colors;
+  {
 
   colors[ImGuiCol_Text]                   = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
   colors[ImGuiCol_TextDisabled]           = ImVec4(0.28f, 0.28f, 0.28f, 1.00f);
@@ -121,6 +122,7 @@ void voraldo::create_window()
   colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
   colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
+  }
 
   // clear_color = ImVec4(0.26f, 0.16f, 0.0f, 0.5f); //initial value for clear color
   clear_color = ImVec4(75.0f/255.0f, 75.0f/255.0f, 75.0f/255.0f, 0.5f); //initial value for clear color
@@ -156,7 +158,8 @@ void voraldo::draw_menu_and_take_input()
 
   //this switch is simplified with the use of gotos, the labels below are where all the labeling happens,
     switch (current_menu_state)     //using the ttf_string function to write everything out
-    {                               //note that simplified here just means reduced line count
+                                  //note that simplified here just means reduced line count
+    {
       case MAIN_MENU:               //top menu
         goto main_menu_label;
 
@@ -226,12 +229,13 @@ void voraldo::draw_menu_and_take_input()
 
       default:                      //shouldn't ever see this
         goto done;
+        break;
     }
 
 
   main_menu_label:
-
-    ImGui::SetNextWindowPos(ImVec2(10,10));
+  {
+      ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,230));
     ImGui::Begin("Voraldo 1.0", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
@@ -266,10 +270,10 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetCursorPosX(40);
     ImGui::ColorEdit3("", (float*)&clear_color); // Edit 3 floats representing a color
     goto done;
-
+  }
 
   draw_menu_label:
-
+  {
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,360));
     ImGui::Begin("Draw Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
@@ -327,11 +331,10 @@ void voraldo::draw_menu_and_take_input()
 
 
     goto done;
-
+  }
 
   mask_menu_label:
-
-
+  {
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Mask Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
@@ -356,9 +359,10 @@ void voraldo::draw_menu_and_take_input()
 
 
     goto done;
-
+  }
 
   light_menu_label:
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,160));
@@ -379,9 +383,11 @@ void voraldo::draw_menu_and_take_input()
       current_menu_state = MAIN_MENU;
 
     goto done;
-
+  }
 
   ca_menu_label:
+  {
+
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -407,8 +413,10 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   util_menu_label:
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -434,9 +442,12 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   sphere_config_label:
-  //required: radius, location, color, bool draw, bool mask
+    //required: radius, location, color, bool draw, bool mask
+  {
+
     static bool sphere_draw = true, sphere_mask = false;
     static float sphere_radius = 0.0;
     static ImVec4 sphere_draw_color;
@@ -466,10 +477,13 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   perlin_noise_config_label:
-  //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
-  // need something to generate a new perlin texture, put it on the gpu?
+    //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
+    // need something to generate a new perlin texture, put it on the gpu?
+  {
+
     static float perlin_scale;
     static float perlin_threshold;
     static ImVec4 perlin_draw_color;
@@ -499,13 +513,16 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   triangle_config_label:
-  // three point positions, thickness, color, bool draw, bool mask
+    // three point positions, thickness, color, bool draw, bool mask
     // static glm::vec3 point1, point2, point3;
     // static float thickness;
     // color
     //static bool draw, mask
+  {
+
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -519,9 +536,12 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
+
   ellipsoid_config_label:
-  //radii, (rotation?), position, color, bool draw, bool mask
+    //radii, (rotation?), position, color, bool draw, bool mask
     // static glm::vec3 radii, position
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -535,9 +555,11 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   cylinder_config_label:
     //radius, bvec, tvec positions, color, bool draw, bool mask
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -551,9 +573,11 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   tube_config_label:
     //inner radius, outer radius, bvec, tvec positions, color, bool draw, bool mask
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -567,9 +591,11 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   cuboid_config_label:
     //8 points defining corners, color, bool draw, bool mask
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -583,9 +609,11 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
+  }
 
   aabb_config_label:
     //min/max on x/y/z, color, bool draw, bool mask
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -598,9 +626,11 @@ void voraldo::draw_menu_and_take_input()
       current_menu_state = DRAW_MENU;
     goto done;
 
+  }
 
   heightmap_config_label:
     //option to generate new (different algorithms), coloration, draw, mask
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -613,9 +643,11 @@ void voraldo::draw_menu_and_take_input()
       current_menu_state = DRAW_MENU;
     goto done;
 
+  }
 
   blur_config_label:
     //blur radius, bool touch alpha (zero alpha cells will stay invisible)
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -628,9 +660,11 @@ void voraldo::draw_menu_and_take_input()
       current_menu_state = DRAW_MENU;
     goto done;
 
+  }
 
   clear_all_config_label:
     //clear, like reinit but respects the mask values of all cells
+  {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -643,75 +677,86 @@ void voraldo::draw_menu_and_take_input()
       current_menu_state = DRAW_MENU;
     goto done;
 
+  }
+
   unmask_all_config_label:
     //sets mask value for all cells to zero
-    goto done;
+  {
 
+    goto done;
+  }
 
   toggle_mask_config_label:
     //toggles the value of mask for all cells
-    goto done;
+  {
 
+    goto done;
+  }
 
   mask_by_color_config_label:
     //base value and range for r/g/b/a - powerful tool
-    goto done;
+  {
 
+    goto done;
+  }
 
   compute_static_lighting_config_label:
     //single pass, static lighting
-    goto done;
+  {
 
+      goto done;
+    }
 
   per_frame_lighting_config_label:
     //toggle a bool to make the lighting happen every frame
-    goto done;
+  {
 
+      goto done;
+  }
 
   game_of_life_config_label:
     //single step or toggle bool to make it happen per frame
-    goto done;
+  {
 
+    goto done;
+  }
 
   wireworld_config_label:
     //single step or toggle bool to make it happen per frame
-    goto done;
+  {
 
+    goto done;
+  }
 
   ca_terrain_config_label:
     //need to look into how this is implemented -
     // https://softologyblog.wordpress.com/2017/05/27/voxel-automata-terrain/
     // https://bitbucket.org/BWerness/voxel-automata-terrain/src/master/
-    goto done;
+  {
 
+      goto done;
+  }
 
   load_save_config_label:
     //lets you enter filenames and load/save from/to file
-    goto done;
+  {
 
+    goto done;
+  }
 
   reinitialization_config_label:
     //like clear all, but ignores mask values
-    goto done;
+  {
 
+    goto done;
+  }
 
   // undo_last_action_config_label:
   //   //use multiple textures to support an undo operation
   //   goto done;
 
-
-
-
-
-
-
-
-
-
-
   done:
     //finished the label for the current window, so do the end() thing and render it
-
 
   ImGui::End();
 
@@ -805,7 +850,7 @@ void voraldo::draw_menu_and_take_input()
 
 void voraldo::gl_data_setup()
 {
-  //set up the textures
+  //set up the textures and stuff
 }
 
 void voraldo::quit()
