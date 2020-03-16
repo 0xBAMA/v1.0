@@ -43,9 +43,9 @@ using std::endl;
 #include <GL/glew.h>
 
 //SDL includes - windowing, gl context, system info
-#include <SDL.h>
+#include <SDL2/SDL.h>
 //allows you to run OpenGL inside of SDL2
-#include <SDL_opengl.h>
+#include <SDL2/SDL_opengl.h>
 
 
 //png loading library - very powerful
