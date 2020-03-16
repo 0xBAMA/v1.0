@@ -235,9 +235,11 @@ void voraldo::draw_menu_and_take_input()
 
   main_menu_label:
   {
-      ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,230));
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,265));
     ImGui::Begin("Voraldo 1.0", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Draw Menu", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
@@ -259,15 +261,16 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Utility Menu", ImVec2(120, 22)))
       current_menu_state = UTIL_MENU;
 
+    ImGui::Text(" ");
+
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("EXIT", ImVec2(120, 22)))
       current_menu_state = EXIT;
 
-
-    ImGui::SetCursorPosX(37);
+    ImGui::SetCursorPosX(60);
     ImGui::Text(" %.2f ms (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-    ImGui::SetCursorPosX(40);
+    ImGui::SetCursorPosX(45);
     ImGui::ColorEdit3("", (float*)&clear_color); // Edit 3 floats representing a color
     goto done;
   }
@@ -275,8 +278,10 @@ void voraldo::draw_menu_and_take_input()
   draw_menu_label:
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,360));
+    ImGui::SetNextWindowSize(ImVec2(256,395));
     ImGui::Begin("Draw Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+
+    ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Sphere", ImVec2(120, 22)))
@@ -322,13 +327,13 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Clear all config", ImVec2(120, 22)))
       current_menu_state = CLEAR_ALL_CONFIG;
 
-
-
+    ImGui::Text(" ");
     ImGui::SetCursorPosX(70);
-    ImGui::SetCursorPosY(325);
+
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
 
+    ImGui::Text(" ");
 
     goto done;
   }
@@ -447,21 +452,24 @@ void voraldo::draw_menu_and_take_input()
   sphere_config_label:
     //required: radius, location, color, bool draw, bool mask
   {
-
     static bool sphere_draw = true, sphere_mask = false;
     static float sphere_radius = 0.0;
     static ImVec4 sphere_draw_color;
     static glm::vec3 sphere_location;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,235));
+    ImGui::SetNextWindowSize(ImVec2(256,225));
     ImGui::Begin("Sphere Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::SliderFloat("  radius", &sphere_radius, 0.0f, 500.0f, "%.3f");
-    ImGui::SetCursorPosY(50);
+
+    ImGui::Separator();
+
     ImGui::SliderFloat("  x pos", &sphere_location.x, 0.0f, 256.0f, "%.3f");
     ImGui::SliderFloat("  y pos", &sphere_location.y, 0.0f, 256.0f, "%.3f");
     ImGui::SliderFloat("  z pos", &sphere_location.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
 
     ImGui::Checkbox("  Draw ", &sphere_draw);
     ImGui::SameLine();
@@ -469,23 +477,28 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::ColorEdit4("  Color", (float*)&sphere_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
-    ImGui::SetCursorPosY(200);
-    ImGui::SetCursorPosX(70);
+    // ImGui::SetCursorPosY(200);
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the sphere with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
 
     goto done;
-
   }
 
   perlin_noise_config_label:
     //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
     // need something to generate a new perlin texture, put it on the gpu?
   {
-
     static float perlin_scale;
-    static float perlin_threshold;
+    static float perlin_threshold = 0.0f;
     static ImVec4 perlin_draw_color;
     static bool perlin_draw = true;
     static bool perlin_mask = false;
@@ -497,7 +510,9 @@ void voraldo::draw_menu_and_take_input()
     // ImGui::SetCursorPosX(70);
 
     ImGui::SliderFloat("  scale", &perlin_scale, 0.0f, 1.0f, "%.3f");
-    ImGui::SliderFloat("  thresh", &perlin_threshold, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("  thresh", &perlin_threshold, -1.0f, 1.0f, "%.3f");
+
+    ImGui::Separator();
 
     ImGui::Checkbox("  Draw ", &perlin_draw);
     ImGui::SameLine();
@@ -505,14 +520,21 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::ColorEdit4("  Color", (float*)&perlin_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
+    ImGui::Text(" ");
+    ImGui::Text("[PUT BUTTON TO GENERATE HERE]");
+    ImGui::Text(" ");
 
-    ImGui::SetCursorPosX(70);
-    ImGui::SetCursorPosY(190);
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::SetCursorPosX(16);
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the sphere with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
 
     goto done;
-
   }
 
   triangle_config_label:
@@ -522,20 +544,58 @@ void voraldo::draw_menu_and_take_input()
     // color
     //static bool draw, mask
   {
-
+    static float thickness;
+    static glm::vec3 point1, point2, point3;
+    static ImVec4 triangle_draw_color;
+    static bool triangle_draw = true;
+    static bool triangle_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,370));
     ImGui::Begin("Triangle Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::SliderFloat(" thickness", &thickness, 0.0f, 300.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("  x1 ", &point1.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  y1 ", &point1.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  z1 ", &point1.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("  x2 ", &point2.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  y2 ", &point2.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  z2 ", &point2.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("  x3 ", &point3.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  y3 ", &point3.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  z3 ", &point3.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::Checkbox("  Draw ", &triangle_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &triangle_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&triangle_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the sphere with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
 
     goto done;
-
   }
 
   ellipsoid_config_label:
