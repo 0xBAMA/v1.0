@@ -122,7 +122,8 @@ void voraldo::create_window()
   colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
 
-  clear_color = ImVec4(0.26f, 0.16f, 0.0f, 0.5f); //initial value for clear color
+  // clear_color = ImVec4(0.26f, 0.16f, 0.0f, 0.5f); //initial value for clear color
+  clear_color = ImVec4(75.0f/255.0f, 75.0f/255.0f, 75.0f/255.0f, 0.5f); //initial value for clear color
 
   // if(SDL_SetWindowOpacity(window, 1.0) == -1)   //0 is transparent 1 is opaque
   //   cout << "transparency not supported" << endl;
@@ -455,7 +456,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SameLine();
     ImGui::Checkbox("  Mask ", &sphere_mask);
 
-    ImGui::ColorEdit4("  Color", (float*)&sphere_draw_color);
+    ImGui::ColorEdit4("  Color", (float*)&sphere_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
     ImGui::SetCursorPosY(200);
     ImGui::SetCursorPosX(70);
@@ -488,7 +489,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SameLine();
     ImGui::Checkbox("  Mask ", &perlin_mask);
 
-    ImGui::ColorEdit4("  Color", (float*)&perlin_draw_color);
+    ImGui::ColorEdit4("  Color", (float*)&perlin_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
 
     ImGui::SetCursorPosX(70);

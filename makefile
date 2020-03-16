@@ -1,7 +1,7 @@
 VORALDO_FLAGS =  -Wall -O3 -std=c++11 -lGLEW -lGL $(shell pkg-config sdl2 --cflags --libs)
 IMGUI_FLAGS   =  -Wall -lGLEW -DIMGUI_IMPL_OPENGL_LOADER_GLEW `sdl2-config --cflags`
 
-all: msg main clean
+all: msg main clean run
 
 msg:
 		@echo
@@ -47,3 +47,6 @@ clean:
 		@echo 'executable size:'
 		@stat --printf "%s bytes\n" main
 		@echo
+
+run:
+		@./main
