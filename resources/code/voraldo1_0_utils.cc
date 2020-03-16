@@ -602,107 +602,346 @@ void voraldo::draw_menu_and_take_input()
     //radii, (rotation?), position, color, bool draw, bool mask
     // static glm::vec3 radii, position
   {
+    static glm::vec3 radius, center, rotation;
+    static bool ellipsoid_draw = true, ellipsoid_mask = false;
+    static ImVec4 ellipsoid_draw_color;
+
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,345));
     ImGui::Begin("Ellipsoid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+
+    ImGui::SliderFloat("x location", &center.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("y location", &center.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("z location", &center.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("x radius", &radius.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("y radius", &radius.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("z radius", &radius.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("x rotation", &rotation.x, 0.0f, 360.0f, "%.3f");
+    ImGui::SliderFloat("y rotation", &rotation.y, 0.0f, 360.0f, "%.3f");
+    ImGui::SliderFloat("z rotation", &rotation.z, 0.0f, 360.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::Checkbox("  Draw ", &ellipsoid_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &ellipsoid_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&ellipsoid_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the ellipsoid with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
 
     goto done;
-
   }
 
   cylinder_config_label:
     //radius, bvec, tvec positions, color, bool draw, bool mask
   {
+    static glm::vec3 cylinder_bvec, cylinder_tvec;
+    static bool cylinder_draw = true, cylinder_mask = false;
+    static ImVec4 cylinder_draw_color;
+    static float cylinder_radius;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,300));
     ImGui::Begin("Cylinder Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::SliderFloat(" radius", &cylinder_radius, 0.0f, 300.0f, "%.3f");
 
+    ImGui::Separator();
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::SliderFloat("bvec x", &cylinder_bvec.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("bvec y", &cylinder_bvec.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("bvec z", &cylinder_bvec.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("tvec x", &cylinder_tvec.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("tvec y", &cylinder_tvec.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("tvec z", &cylinder_tvec.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::Checkbox("  Draw ", &cylinder_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &cylinder_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&cylinder_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the cylinder with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
 
     goto done;
-
   }
 
   tube_config_label:
     //inner radius, outer radius, bvec, tvec positions, color, bool draw, bool mask
   {
+    static glm::vec3 tube_bvec, tube_tvec;
+    static bool tube_draw = true, tube_mask = false;
+    static ImVec4 tube_draw_color;
+    static float tube_inner_radius, tube_outer_radius;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,340));
     ImGui::Begin("Tube Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::Text("Radii");
 
+    ImGui::SliderFloat("inner", &tube_inner_radius, 0.0f, 300.0f, "%.3f");
+    ImGui::SliderFloat("outer", &tube_outer_radius, 0.0f, 300.0f, "%.3f");
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::Separator();
+
+    ImGui::SliderFloat("bvec x", &tube_bvec.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("bvec y", &tube_bvec.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("bvec z", &tube_bvec.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("tvec x", &tube_tvec.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("tvec y", &tube_tvec.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("tvec z", &tube_tvec.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::Checkbox("  Draw ", &tube_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &tube_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&tube_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the cylinder with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
 
     goto done;
-
   }
 
   cuboid_config_label:
     //8 points defining corners, color, bool draw, bool mask
   {
+    //kind of start with some defaults because this is not super easy to use
+    static glm::vec3 a = glm::vec3( 20,230,230);   // 	a : -x, +y, +z
+    static glm::vec3 b = glm::vec3( 20, 20,230);   // 	b : -x, -y, +z
+    static glm::vec3 c = glm::vec3(230,230,230);   // 	c : +x, +y, +z
+    static glm::vec3 d = glm::vec3(230, 20,230);   // 	d : +x, -y, +z
+    static glm::vec3 e = glm::vec3( 20,230, 20);   // 	e : -x, +y, -z
+    static glm::vec3 f = glm::vec3( 20, 20, 20);   // 	f : -x, -y, -z
+    static glm::vec3 g = glm::vec3(230,230, 20);   // 	g : +x, +y, -z
+    static glm::vec3 h = glm::vec3(230, 20, 20);   // 	h : +x, -y, -z
+
+    static bool cuboid_draw = true, cuboid_mask = false;
+    static ImVec4 cuboid_draw_color;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,850));
     ImGui::Begin("Cuboid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
 
+    ImGui::Text("     e-------g    +y     ");
+    ImGui::Text("    /|      /|     |     ");
+    ImGui::Text("   / |     / |     |___+x");
+    ImGui::Text("  a-------c  |    /      ");
+    ImGui::Text("  |  f----|--h   +z      ");
+    ImGui::Text("  | /     | /            ");
+    ImGui::Text("  |/      |/             ");
+    ImGui::Text("  b-------d              ");
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::Separator();
+
+    ImGui::SliderFloat("a x", &a.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("a y", &a.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("a z", &a.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("b x", &b.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("b y", &b.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("b z", &b.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("c x", &c.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("c y", &c.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("c z", &c.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("d x", &d.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("d y", &d.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("d z", &d.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("e x", &e.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("e y", &e.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("e z", &e.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("f x", &f.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("f y", &f.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("f z", &f.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("g x", &g.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("g y", &g.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("g z", &g.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat("h x", &h.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("h y", &h.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("h z", &h.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::Checkbox("  Draw ", &cuboid_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &cuboid_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&cuboid_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the cylinder with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
 
     goto done;
-
   }
 
   aabb_config_label:
     //min/max on x/y/z, color, bool draw, bool mask
   {
+    static glm::vec3 max, min;
+    static ImVec4 aabb_draw_color;
+    static bool aabb_draw = true, aabb_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,275));
     ImGui::Begin("AABB Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::SliderFloat(" x max", &max.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat(" x min", &min.x, 0.0f, 256.0f, "%.3f");
 
+    ImGui::Separator();
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::SliderFloat(" y max", &max.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat(" y min", &min.y, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::SliderFloat(" z max", &max.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat(" z min", &min.z, 0.0f, 256.0f, "%.3f");
+
+    ImGui::Separator();
+
+    ImGui::Checkbox("  Draw ", &aabb_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &aabb_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&aabb_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
+    // ImGui::SetCursorPosY(200);
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the sphere with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
-    goto done;
 
+    goto done;
   }
 
   heightmap_config_label:
     //option to generate new (different algorithms), coloration, draw, mask
   {
+    static float heightmap_vertical_scale = 1.0;
+    static bool heightmap_draw = true, heightmap_mask = false;
+    static ImVec4 heightmap_draw_color;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,250));
     ImGui::Begin("Heightmap Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+    ImGui::Text(" TO BE DETERMINED ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
 
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::Separator();
+
+    ImGui::Checkbox("  Draw ", &heightmap_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &heightmap_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&heightmap_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw the sphere with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
-    goto done;
 
+    goto done;
   }
 
   blur_config_label:
@@ -739,6 +978,8 @@ void voraldo::draw_menu_and_take_input()
 
   }
 
+
+
   unmask_all_config_label:
     //sets mask value for all cells to zero
   {
@@ -758,7 +999,9 @@ void voraldo::draw_menu_and_take_input()
   {
 
     goto done;
-  }
+}
+
+
 
   compute_static_lighting_config_label:
     //single pass, static lighting
@@ -773,6 +1016,8 @@ void voraldo::draw_menu_and_take_input()
 
       goto done;
   }
+
+
 
   game_of_life_config_label:
     //single step or toggle bool to make it happen per frame
@@ -796,6 +1041,8 @@ void voraldo::draw_menu_and_take_input()
 
       goto done;
   }
+
+  
 
   load_save_config_label:
     //lets you enter filenames and load/save from/to file
