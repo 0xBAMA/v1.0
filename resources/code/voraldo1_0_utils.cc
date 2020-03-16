@@ -507,7 +507,10 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetNextWindowSize(ImVec2(256,225));
     ImGui::Begin("Perlin Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::Text(" ");
+    ImGui::Text("[PUT BUTTONS TO GENERATE HERE]");
+    ImGui::Text(" ");
+    ImGui::Separator();
 
     ImGui::SliderFloat("  scale", &perlin_scale, 0.0f, 1.0f, "%.3f");
     ImGui::SliderFloat("  thresh", &perlin_threshold, -1.0f, 1.0f, "%.3f");
@@ -520,8 +523,6 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::ColorEdit4("  Color", (float*)&perlin_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
-    ImGui::Text(" ");
-    ImGui::Text("[PUT BUTTON TO GENERATE HERE]");
     ImGui::Text(" ");
 
     ImGui::SetCursorPosX(16);
@@ -887,7 +888,6 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::ColorEdit4("  Color", (float*)&aabb_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
-    // ImGui::SetCursorPosY(200);
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
 
@@ -911,16 +911,19 @@ void voraldo::draw_menu_and_take_input()
     static ImVec4 heightmap_draw_color;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,250));
+    ImGui::SetNextWindowSize(ImVec2(256,240));
     ImGui::Begin("Heightmap Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text(" ");
-    ImGui::Text(" ");
     ImGui::Text(" TO BE DETERMINED ");
-    ImGui::Text(" ");
+    ImGui::Text("   (show the current");   //option to enter string and load a file of a heightmap, too - look at line 816 in the demo code for how to display images
+    ImGui::Text("      heightmap here)");               //since the image function expects an OpenGL texture handle, we can use the actual texture, residing on the GPU
     ImGui::Text(" ");
 
 
+
+    ImGui::Separator();
+    ImGui::SliderFloat(" Scale", &heightmap_vertical_scale, 0.0f, 5.0f, "%.3f");
     ImGui::Separator();
 
     ImGui::Checkbox("  Draw ", &heightmap_draw);
@@ -934,7 +937,7 @@ void voraldo::draw_menu_and_take_input()
 
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
-        //draw the sphere with the selected values
+        //draw the heightmap with the selected values
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
@@ -947,18 +950,32 @@ void voraldo::draw_menu_and_take_input()
   blur_config_label:
     //blur radius, bool touch alpha (zero alpha cells will stay invisible)
   {
+    static int blur_radius = 0;
+    static bool touch_alpha = true;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,130));
     ImGui::Begin("Blur Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::SliderInt(" Radius", &blur_radius, 0, 5);
 
+    ImGui::Separator();
 
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    ImGui::Checkbox("  Touch alpha ", &touch_alpha);
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //do the blur operation with the selected values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
-    goto done;
 
+    goto done;
   }
 
   clear_all_config_label:
@@ -966,14 +983,21 @@ void voraldo::draw_menu_and_take_input()
   {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
     ImGui::Begin("Clear All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(70);
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
 
-
-    if (ImGui::Button("Back", ImVec2(120, 22)))
+    if (ImGui::Button("Clear", ImVec2(100, 22)))
+    {
+        //do the clear all operation - note that this respects the mask values
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
       current_menu_state = DRAW_MENU;
+
     goto done;
 
   }
@@ -983,6 +1007,21 @@ void voraldo::draw_menu_and_take_input()
   unmask_all_config_label:
     //sets mask value for all cells to zero
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("Unmask All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Unmask All", ImVec2(100, 22)))
+    {
+        //unmask all cells
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = MASK_MENU;
 
     goto done;
   }
@@ -990,6 +1029,21 @@ void voraldo::draw_menu_and_take_input()
   toggle_mask_config_label:
     //toggles the value of mask for all cells
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("Toggle Mask Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Toggle", ImVec2(100, 22)))
+    {
+        //do the toggle operation
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = MASK_MENU;
 
     goto done;
   }
@@ -997,9 +1051,10 @@ void voraldo::draw_menu_and_take_input()
   mask_by_color_config_label:
     //base value and range for r/g/b/a - powerful tool
   {
-
+    //display the color somehow
+    //sliders
     goto done;
-}
+  }
 
 
 
@@ -1042,7 +1097,7 @@ void voraldo::draw_menu_and_take_input()
       goto done;
   }
 
-  
+
 
   load_save_config_label:
     //lets you enter filenames and load/save from/to file
