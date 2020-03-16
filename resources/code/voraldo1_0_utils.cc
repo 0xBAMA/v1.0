@@ -122,11 +122,10 @@ void voraldo::create_window()
   colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
 
-  clear_color = ImVec4(0.26f, 0.16f, 0.0f, 0.5f);
+  clear_color = ImVec4(0.26f, 0.16f, 0.0f, 0.5f); //initial value for clear color
 
-  if(SDL_SetWindowOpacity(window, 1.0) == -1)   //0 is transparent 1 is opaque
-    cout << "transparency not supported" << endl;
-
+  // if(SDL_SetWindowOpacity(window, 1.0) == -1)   //0 is transparent 1 is opaque
+  //   cout << "transparency not supported" << endl;
 
   //really excited by the fact imgui has an hsv picker to set this
   glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
@@ -148,92 +147,88 @@ void voraldo::draw_menu_and_take_input()
   ImGui::NewFrame();
 
 
-
   static bool show_demo_window = true;
 
   if (show_demo_window)
     ImGui::ShowDemoWindow(&show_demo_window);
 
 
-
-
-
   //this switch is simplified with the use of gotos, the labels below are where all the labeling happens,
     switch (current_menu_state)     //using the ttf_string function to write everything out
     {                               //note that simplified here just means reduced line count
       case MAIN_MENU:               //top menu
-        goto main_menu_labels;
+        goto main_menu_label;
 
       case DRAW_MENU:               //one level deep
-        goto draw_menu_labels;
+        goto draw_menu_label;
       case MASK_MENU:
-        goto mask_menu_labels;
+        goto mask_menu_label;
       case LIGHT_MENU:
-        goto light_menu_labels;
+        goto light_menu_label;
       case CA_MENU:
-        goto ca_menu_labels;
+        goto ca_menu_label;
       case UTIL_MENU:
-        goto util_menu_labels;
+        goto util_menu_label;
 
       case SPHERE_CONFIG:           //two levels deep
-        goto sphere_config_labels;
+        goto sphere_config_label;
       case PERLIN_NOISE_CONFIG:
-        goto perlin_noise_config_labels;
+        goto perlin_noise_config_label;
       case TRIANGLE_CONFIG:
-        goto triangle_config_labels;
+        goto triangle_config_label;
       case ELLIPSOID_CONFIG:
-        goto ellipsoid_config_labels;
+        goto ellipsoid_config_label;
       case CYLINDER_CONFIG:
-        goto cylinder_config_labels;
+        goto cylinder_config_label;
       case TUBE_CONFIG:
-        goto tube_config_labels;
+        goto tube_config_label;
       case CUBOID_CONFIG:
-        goto cuboid_config_labels;
+        goto cuboid_config_label;
       case AABB_CONFIG:
-        goto aabb_config_labels;
+        goto aabb_config_label;
       case HEIGHTMAP_CONFIG:
-        goto heightmap_config_labels;
+        goto heightmap_config_label;
       case BLUR_CONFIG:
-        goto blur_config_labels;
+        goto blur_config_label;
       case CLEAR_ALL_CONFIG:
-        goto clear_all_config_labels;
+        goto clear_all_config_label;
 
         //mask config submenus
       case UNMASK_ALL_CONFIG:
-        goto unmask_all_config_labels;
+        goto unmask_all_config_label;
       case TOGGLE_MASK_CONFIG:
-        goto toggle_mask_config_labels;
+        goto toggle_mask_config_label;
       case MASK_BY_COLOR_CONFIG:     //this is going to be a powerful tool
-        goto mask_by_color_config_labels;
+        goto mask_by_color_config_label;
 
         //lighting config submenus
       case COMPUTE_STATIC_LIGHTING_CONFIG:
-        goto compute_static_lighting_config_labels;
+        goto compute_static_lighting_config_label;
       case PER_FRAME_LIGHTING_CONFIG:
-        goto per_frame_lighting_config_labels;
+        goto per_frame_lighting_config_label;
 
         //cellular automata submenus
       case GAME_OF_LIFE_CONFIG:
-        goto game_of_life_config_labels;
+        goto game_of_life_config_label;
       case WIREWORLD_CONFIG:
-        goto wireworld_config_labels;
+        goto wireworld_config_label;
       case CA_TERRAIN_CONFIG:
-        goto ca_terrain_config_labels;
+        goto ca_terrain_config_label;
 
         //utility submenus
       case LOAD_SAVE_CONFIG:
-        goto load_save_config_labels;
+        goto load_save_config_label;
       case REINITIALIZATION_CONFIG:
-        goto reinitialization_config_labels;
+        goto reinitialization_config_label;
       // case UNDO_LAST_ACTION_CONFIG:
-      //   goto undo_last_action_config_labels;
+      //   goto undo_last_action_config_label;
 
       default:                      //shouldn't ever see this
         goto done;
     }
 
 
-  main_menu_labels:
+  main_menu_label:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,230));
@@ -272,7 +267,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  draw_menu_labels:
+  draw_menu_label:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,360));
@@ -333,7 +328,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  mask_menu_labels:
+  mask_menu_label:
 
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -362,7 +357,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  light_menu_labels:
+  light_menu_label:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,160));
@@ -385,7 +380,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  ca_menu_labels:
+  ca_menu_label:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -412,7 +407,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  util_menu_labels:
+  util_menu_label:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,180));
@@ -439,7 +434,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  sphere_config_labels:
+  sphere_config_label:
   //required: radius, location, color, bool draw, bool mask
     static bool sphere_draw = true, sphere_mask = false;
     static float sphere_radius = 0.0;
@@ -471,7 +466,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  perlin_noise_config_labels:
+  perlin_noise_config_label:
   //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
   // need something to generate a new perlin texture, put it on the gpu?
     static float perlin_scale;
@@ -504,7 +499,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  triangle_config_labels:
+  triangle_config_label:
   // three point positions, thickness, color, bool draw, bool mask
     // static glm::vec3 point1, point2, point3;
     // static float thickness;
@@ -523,7 +518,7 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
 
-  ellipsoid_config_labels:
+  ellipsoid_config_label:
   //radii, (rotation?), position, color, bool draw, bool mask
     // static glm::vec3 radii, position
 
@@ -540,7 +535,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  cylinder_config_labels:
+  cylinder_config_label:
     //radius, bvec, tvec positions, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -556,7 +551,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  tube_config_labels:
+  tube_config_label:
     //inner radius, outer radius, bvec, tvec positions, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -572,7 +567,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  cuboid_config_labels:
+  cuboid_config_label:
     //8 points defining corners, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -588,7 +583,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  aabb_config_labels:
+  aabb_config_label:
     //min/max on x/y/z, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -603,7 +598,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  heightmap_config_labels:
+  heightmap_config_label:
     //option to generate new (different algorithms), coloration, draw, mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -618,7 +613,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  blur_config_labels:
+  blur_config_label:
     //blur radius, bool touch alpha (zero alpha cells will stay invisible)
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -633,7 +628,7 @@ void voraldo::draw_menu_and_take_input()
     goto done;
 
 
-  clear_all_config_labels:
+  clear_all_config_label:
     //clear, like reinit but respects the mask values of all cells
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
@@ -647,59 +642,59 @@ void voraldo::draw_menu_and_take_input()
       current_menu_state = DRAW_MENU;
     goto done;
 
-  unmask_all_config_labels:
+  unmask_all_config_label:
     //sets mask value for all cells to zero
     goto done;
 
 
-  toggle_mask_config_labels:
+  toggle_mask_config_label:
     //toggles the value of mask for all cells
     goto done;
 
 
-  mask_by_color_config_labels:
+  mask_by_color_config_label:
     //base value and range for r/g/b/a - powerful tool
     goto done;
 
 
-  compute_static_lighting_config_labels:
+  compute_static_lighting_config_label:
     //single pass, static lighting
     goto done;
 
 
-  per_frame_lighting_config_labels:
+  per_frame_lighting_config_label:
     //toggle a bool to make the lighting happen every frame
     goto done;
 
 
-  game_of_life_config_labels:
+  game_of_life_config_label:
     //single step or toggle bool to make it happen per frame
     goto done;
 
 
-  wireworld_config_labels:
+  wireworld_config_label:
     //single step or toggle bool to make it happen per frame
     goto done;
 
 
-  ca_terrain_config_labels:
+  ca_terrain_config_label:
     //need to look into how this is implemented -
     // https://softologyblog.wordpress.com/2017/05/27/voxel-automata-terrain/
     // https://bitbucket.org/BWerness/voxel-automata-terrain/src/master/
     goto done;
 
 
-  load_save_config_labels:
+  load_save_config_label:
     //lets you enter filenames and load/save from/to file
     goto done;
 
 
-  reinitialization_config_labels:
+  reinitialization_config_label:
     //like clear all, but ignores mask values
     goto done;
 
 
-  // undo_last_action_config_labels:
+  // undo_last_action_config_label:
   //   //use multiple textures to support an undo operation
   //   goto done;
 
@@ -714,7 +709,7 @@ void voraldo::draw_menu_and_take_input()
 
 
   done:
-    //finished the labels for the current window, so do the end() thing and render it
+    //finished the label for the current window, so do the end() thing and render it
 
 
   ImGui::End();
