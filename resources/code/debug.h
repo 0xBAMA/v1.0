@@ -1,3 +1,5 @@
+#include "includes.h"
+
 //gl debug dump
 void GLAPIENTRY MessageCallback( GLenum source,
                  GLenum type,

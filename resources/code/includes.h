@@ -1,3 +1,5 @@
+#ifndef INCLUDES
+#define INCLUDES
 
 #include <stdio.h>
 
@@ -59,3 +61,5 @@ using std::endl;
 
 //contains an enum for the menu states
 #include "menu_states.h"
+
+#endif

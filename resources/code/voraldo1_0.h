@@ -1,7 +1,8 @@
+#include "includes.h"
+
 #ifndef VORALDO
 #define VORALDO
 
-#include "includes.h"
 
 //╦  ╦┌─┐┬─┐┌─┐┬  ┌┬┐┌─┐
 //╚╗╔╝│ │├┬┘├─┤│   │││ │
