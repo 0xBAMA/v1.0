@@ -62,14 +62,64 @@ void voraldo::create_window()
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO(); (void)io; //void cast prevents unused variable warning
 
-
   ImGui::StyleColorsDark();
-
 
   // Setup Platform/Renderer bindings
   ImGui_ImplSDL2_InitForOpenGL(window, GLcontext);
   ImGui_ImplOpenGL3_Init(glsl_version);
 
+
+//if you want to change colors - open the demo window and dump this, replace all lines because that's the easiest way to do it
+  ImVec4* colors = ImGui::GetStyle().Colors;
+
+  colors[ImGuiCol_Text]                   = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
+  colors[ImGuiCol_TextDisabled]           = ImVec4(0.28f, 0.28f, 0.28f, 1.00f);
+  colors[ImGuiCol_WindowBg]               = ImVec4(0.12f, 0.07f, 0.07f, 0.94f);
+  colors[ImGuiCol_ChildBg]                = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+  colors[ImGuiCol_PopupBg]                = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
+  colors[ImGuiCol_Border]                 = ImVec4(0.09f, 0.09f, 0.09f, 0.45f);
+  colors[ImGuiCol_BorderShadow]           = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+  colors[ImGuiCol_FrameBg]                = ImVec4(0.00f, 0.00f, 0.00f, 0.54f);
+  colors[ImGuiCol_FrameBgHovered]         = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
+  colors[ImGuiCol_FrameBgActive]          = ImVec4(0.32f, 0.35f, 0.39f, 0.67f);
+  colors[ImGuiCol_TitleBg]                = ImVec4(0.44f, 0.07f, 0.07f, 1.00f);
+  colors[ImGuiCol_TitleBgActive]          = ImVec4(0.50f, 0.11f, 0.11f, 1.00f);
+  colors[ImGuiCol_TitleBgCollapsed]       = ImVec4(0.33f, 0.07f, 0.07f, 1.00f);
+  colors[ImGuiCol_MenuBarBg]              = ImVec4(0.17f, 0.08f, 0.08f, 1.00f);
+  colors[ImGuiCol_ScrollbarBg]            = ImVec4(0.12f, 0.11f, 0.11f, 0.53f);
+  colors[ImGuiCol_ScrollbarGrab]          = ImVec4(0.27f, 0.27f, 0.27f, 1.00f);
+  colors[ImGuiCol_ScrollbarGrabHovered]   = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
+  colors[ImGuiCol_ScrollbarGrabActive]    = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
+  colors[ImGuiCol_CheckMark]              = ImVec4(0.49f, 0.05f, 0.05f, 1.00f);
+  colors[ImGuiCol_SliderGrab]             = ImVec4(0.49f, 0.05f, 0.05f, 1.00f);
+  colors[ImGuiCol_SliderGrabActive]       = ImVec4(0.62f, 0.00f, 0.00f, 1.00f);
+  colors[ImGuiCol_Button]                 = ImVec4(0.49f, 0.05f, 0.05f, 1.00f);
+  colors[ImGuiCol_ButtonHovered]          = ImVec4(0.62f, 0.00f, 0.00f, 1.00f);
+  colors[ImGuiCol_ButtonActive]           = ImVec4(0.71f, 0.04f, 0.04f, 1.00f);
+  colors[ImGuiCol_Header]                 = ImVec4(0.44f, 0.00f, 0.00f, 0.31f);
+  colors[ImGuiCol_HeaderHovered]          = ImVec4(0.62f, 0.00f, 0.00f, 1.00f);
+  colors[ImGuiCol_HeaderActive]           = ImVec4(0.71f, 0.04f, 0.04f, 1.00f);
+  colors[ImGuiCol_Separator]              = ImVec4(0.24f, 0.24f, 0.24f, 0.50f);
+  colors[ImGuiCol_SeparatorHovered]       = ImVec4(0.10f, 0.40f, 0.75f, 0.78f);
+  colors[ImGuiCol_SeparatorActive]        = ImVec4(0.10f, 0.40f, 0.75f, 1.00f);
+  colors[ImGuiCol_ResizeGrip]             = ImVec4(0.44f, 0.00f, 0.00f, 0.31f);
+  colors[ImGuiCol_ResizeGripHovered]      = ImVec4(0.62f, 0.00f, 0.00f, 1.00f);
+  colors[ImGuiCol_ResizeGripActive]       = ImVec4(0.71f, 0.04f, 0.04f, 1.00f);
+  colors[ImGuiCol_Tab]                    = ImVec4(0.44f, 0.00f, 0.00f, 0.31f);
+  colors[ImGuiCol_TabHovered]             = ImVec4(0.71f, 0.04f, 0.04f, 1.00f);
+  colors[ImGuiCol_TabActive]              = ImVec4(0.62f, 0.00f, 0.00f, 1.00f);
+  colors[ImGuiCol_TabUnfocused]           = ImVec4(0.07f, 0.10f, 0.15f, 0.97f);
+  colors[ImGuiCol_TabUnfocusedActive]     = ImVec4(0.14f, 0.26f, 0.42f, 1.00f);
+  colors[ImGuiCol_PlotLines]              = ImVec4(0.61f, 0.61f, 0.61f, 1.00f);
+  colors[ImGuiCol_PlotLinesHovered]       = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+  colors[ImGuiCol_PlotHistogram]          = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+  colors[ImGuiCol_PlotHistogramHovered]   = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+  colors[ImGuiCol_TextSelectedBg]         = ImVec4(0.35f, 0.00f, 0.00f, 0.35f);
+  colors[ImGuiCol_DragDropTarget]         = ImVec4(1.00f, 1.00f, 0.00f, 0.90f);
+  colors[ImGuiCol_NavHighlight]           = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+  colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
+  colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
+  colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
 
   clear_color = ImVec4(0.26f, 0.16f, 0.0f, 0.5f);
@@ -186,30 +236,30 @@ void voraldo::draw_menu_and_take_input()
   main_menu_labels:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,230));
+    ImGui::SetNextWindowSize(ImVec2(256,230));
     ImGui::Begin("Voraldo 1.0", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Draw Menu", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       current_menu_state = DRAW_MENU;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Mask Menu", ImVec2(120, 22)))
       current_menu_state = MASK_MENU;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Light Menu", ImVec2(120, 22)))
       current_menu_state = LIGHT_MENU;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("CA Menu", ImVec2(120, 22)))
       current_menu_state = CA_MENU;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Utility Menu", ImVec2(120, 22)))
       current_menu_state = UTIL_MENU;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("EXIT", ImVec2(120, 22)))
       current_menu_state = EXIT;
 
@@ -225,56 +275,56 @@ void voraldo::draw_menu_and_take_input()
   draw_menu_labels:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,360));
+    ImGui::SetNextWindowSize(ImVec2(256,360));
     ImGui::Begin("Draw Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Sphere", ImVec2(120, 22)))
       current_menu_state = SPHERE_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Perlin Noise", ImVec2(120, 22)))
       current_menu_state = PERLIN_NOISE_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Triangle", ImVec2(120, 22)))
       current_menu_state = TRIANGLE_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Ellipsoid", ImVec2(120, 22)))
       current_menu_state = ELLIPSOID_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Cylinder", ImVec2(120, 22)))
       current_menu_state = CYLINDER_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Tube", ImVec2(120, 22)))
       current_menu_state = TUBE_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Cuboid", ImVec2(120, 22)))
       current_menu_state = CUBOID_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("AABB", ImVec2(120, 22)))
       current_menu_state = AABB_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Heightmap", ImVec2(120, 22)))
       current_menu_state = HEIGHTMAP_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Blur config", ImVec2(120, 22)))
       current_menu_state = BLUR_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Clear all config", ImVec2(120, 22)))
       current_menu_state = CLEAR_ALL_CONFIG;
 
 
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     ImGui::SetCursorPosY(325);
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
@@ -287,23 +337,23 @@ void voraldo::draw_menu_and_take_input()
 
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Mask Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Unmask All", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       current_menu_state = UNMASK_ALL_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Toggle Mask", ImVec2(120, 22)))
       current_menu_state = TOGGLE_MASK_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Mask by Color", ImVec2(120, 22)))
       current_menu_state = MASK_BY_COLOR_CONFIG;
 
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     ImGui::SetCursorPosY(145);
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
@@ -315,19 +365,19 @@ void voraldo::draw_menu_and_take_input()
   light_menu_labels:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,160));
+    ImGui::SetNextWindowSize(ImVec2(256,160));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Static", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       current_menu_state = COMPUTE_STATIC_LIGHTING_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Per Frame", ImVec2(120, 22)))
       current_menu_state = PER_FRAME_LIGHTING_CONFIG;
 
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     ImGui::SetCursorPosY(125);
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
@@ -338,23 +388,23 @@ void voraldo::draw_menu_and_take_input()
   ca_menu_labels:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Cellular Automata Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Game of Life", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       current_menu_state = GAME_OF_LIFE_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("WireWorld", ImVec2(120, 22)))
       current_menu_state = WIREWORLD_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("CA Terrain", ImVec2(120, 22)))
       current_menu_state = CA_TERRAIN_CONFIG;
 
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     ImGui::SetCursorPosY(145);
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
@@ -365,23 +415,23 @@ void voraldo::draw_menu_and_take_input()
   util_menu_labels:
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Utility Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Load/Save", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       current_menu_state = LOAD_SAVE_CONFIG;
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Reinitialize", ImVec2(120, 22)))
       current_menu_state = REINITIALIZATION_CONFIG;
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
     // if (ImGui::Button("Undo", ImVec2(120, 22)))
     //   current_menu_state = UNDO_LAST_ACTION_CONFIG;
 
 
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
     ImGui::SetCursorPosY(145);
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
@@ -397,7 +447,7 @@ void voraldo::draw_menu_and_take_input()
     static glm::vec3 sphere_location;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,235));
+    ImGui::SetNextWindowSize(ImVec2(256,235));
     ImGui::Begin("Sphere Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::SliderFloat("  radius", &sphere_radius, 0.0f, 500.0f, "%.3f");
@@ -406,13 +456,14 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SliderFloat("  y pos", &sphere_location.y, 0.0f, 256.0f, "%.3f");
     ImGui::SliderFloat("  z pos", &sphere_location.z, 0.0f, 256.0f, "%.3f");
 
-    ImGui::Checkbox(" Draw", &sphere_draw);
-    ImGui::Checkbox(" Mask", &sphere_mask);
+    ImGui::Checkbox("  Draw ", &sphere_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &sphere_mask);
 
-    ImGui::ColorEdit3("  Color", (float*)&sphere_draw_color); // Edit 3 floats representing a color
+    ImGui::ColorEdit4("  Color", (float*)&sphere_draw_color);
 
     ImGui::SetCursorPosY(200);
-    ImGui::SetCursorPosX(50);
+    ImGui::SetCursorPosX(70);
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
       current_menu_state = DRAW_MENU;
@@ -430,18 +481,23 @@ void voraldo::draw_menu_and_take_input()
     static bool perlin_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,225));
     ImGui::Begin("Perlin Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
-    ImGui::SliderFloat("  scale", &sphere_location.x, 0.0f, 1.0f, "%.3f");
-    ImGui::SliderFloat("  threshold", &sphere_location.y, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("  scale", &perlin_scale, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("  thresh", &perlin_threshold, 0.0f, 1.0f, "%.3f");
 
-    ImGui::Checkbox(" Draw", &sphere_draw);
-    ImGui::Checkbox(" Mask", &sphere_mask);
+    ImGui::Checkbox("  Draw ", &perlin_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &perlin_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&perlin_draw_color);
 
 
+    ImGui::SetCursorPosX(70);
+    ImGui::SetCursorPosY(190);
     if (ImGui::Button("Back", ImVec2(120, 22)))
       current_menu_state = DRAW_MENU;
 
@@ -456,10 +512,10 @@ void voraldo::draw_menu_and_take_input()
     //static bool draw, mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Triangle Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -472,10 +528,10 @@ void voraldo::draw_menu_and_take_input()
     // static glm::vec3 radii, position
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Ellipsoid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -488,10 +544,10 @@ void voraldo::draw_menu_and_take_input()
     //radius, bvec, tvec positions, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Cylinder Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -504,10 +560,10 @@ void voraldo::draw_menu_and_take_input()
     //inner radius, outer radius, bvec, tvec positions, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Tube Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -520,10 +576,10 @@ void voraldo::draw_menu_and_take_input()
     //8 points defining corners, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Cuboid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -536,10 +592,10 @@ void voraldo::draw_menu_and_take_input()
     //min/max on x/y/z, color, bool draw, bool mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("AABB Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -551,10 +607,10 @@ void voraldo::draw_menu_and_take_input()
     //option to generate new (different algorithms), coloration, draw, mask
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Heightmap Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -566,10 +622,10 @@ void voraldo::draw_menu_and_take_input()
     //blur radius, bool touch alpha (zero alpha cells will stay invisible)
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Blur Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
@@ -581,10 +637,10 @@ void voraldo::draw_menu_and_take_input()
     //clear, like reinit but respects the mask values of all cells
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(220,180));
+    ImGui::SetNextWindowSize(ImVec2(256,180));
     ImGui::Begin("Clear All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    // ImGui::SetCursorPosX(50);
+    // ImGui::SetCursorPosX(70);
 
 
     if (ImGui::Button("Back", ImVec2(120, 22)))
