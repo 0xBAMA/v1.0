@@ -1,3 +1,4 @@
+#include "includes.h"
 #include "voraldo1_0.h"
 
 //this is where stuff like the init functions will all be defined
@@ -1063,7 +1064,7 @@ void voraldo::draw_menu_and_take_input()
   {
 
       goto done;
-    }
+  }
 
   per_frame_lighting_config_label:
     //toggle a bool to make the lighting happen every frame
@@ -1078,14 +1079,14 @@ void voraldo::draw_menu_and_take_input()
     //single step or toggle bool to make it happen per frame
   {
 
-    goto done;
+      goto done;
   }
 
   wireworld_config_label:
     //single step or toggle bool to make it happen per frame
   {
 
-    goto done;
+      goto done;
   }
 
   ca_terrain_config_label:
@@ -1103,14 +1104,14 @@ void voraldo::draw_menu_and_take_input()
     //lets you enter filenames and load/save from/to file
   {
 
-    goto done;
+      goto done;
   }
 
   reinitialization_config_label:
     //like clear all, but ignores mask values
   {
 
-    goto done;
+      goto done;
   }
 
   // undo_last_action_config_label:

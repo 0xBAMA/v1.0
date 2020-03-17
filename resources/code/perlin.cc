@@ -1,4 +1,5 @@
-#include "voraldo1_0.h"
+// #include "voraldo1_0.h"
+#include "includes.h"
 
 // Initialize with the reference values for the permutation vector
 PerlinNoise::PerlinNoise() {

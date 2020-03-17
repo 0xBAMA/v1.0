@@ -1,3 +1,6 @@
+#ifndef DEBUG
+#define DEBUG
+
 #include "includes.h"
 
 //gl debug dump
@@ -37,3 +40,5 @@ void gl_debug_enable()
   glDebugMessageCallback( MessageCallback, 0 );      //getting a seg fault here, I think
   cout << "GL debug output enabled." << endl;
 }
+
+#endif
