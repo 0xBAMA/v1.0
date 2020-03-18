@@ -25,15 +25,14 @@ class voraldo
     //  ╔═╗╦    ╔╦╗┌─┐┌┬┐┌─┐
     //  ║ ╦║     ║║├─┤ │ ├─┤
     //  ╚═╝╩═╝  ═╩╝┴ ┴ ┴ ┴ ┴
+    ImVec4 clear_color; //this is really just the clear color - everything else is going to be in the OpenGL_container
 
-    //texture handles, details tbd
-    ImVec4 clear_color;
 
     //  ╦  ╦┌─┐─┐ ┬┌─┐┬    ╔╗ ┬  ┌─┐┌─┐┬┌─
     //  ╚╗╔╝│ │┌┴┬┘├┤ │    ╠╩╗│  │ ││  ├┴┐
     //   ╚╝ └─┘┴ └─└─┘┴─┘  ╚═╝┴─┘└─┘└─┘┴ ┴//x's in this font look suspect
+    OpenGL_container GPU_Data;
 
-      //TBD
 
     //  ╔╦╗┌─┐┌┐┌┬ ┬  ╔═╗┌┬┐┌─┐┌┬┐┌─┐
     //  ║║║├┤ ││││ │  ╚═╗ │ ├─┤ │ ├┤

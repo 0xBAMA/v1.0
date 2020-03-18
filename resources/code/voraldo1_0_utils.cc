@@ -140,6 +140,19 @@ void voraldo::create_window()
 
 }
 
+static void HelpMarker(const char* desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
+
 void voraldo::draw_menu_and_take_input()
 {
 
@@ -342,8 +355,10 @@ void voraldo::draw_menu_and_take_input()
   mask_menu_label:
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,195));
     ImGui::Begin("Mask Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Unmask All", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
@@ -371,8 +386,10 @@ void voraldo::draw_menu_and_take_input()
   {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,160));
+    ImGui::SetNextWindowSize(ImVec2(256,175));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Static", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
@@ -393,11 +410,11 @@ void voraldo::draw_menu_and_take_input()
 
   ca_menu_label:
   {
-
-
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,195));
     ImGui::Begin("Cellular Automata Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Game of Life", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
@@ -423,10 +440,11 @@ void voraldo::draw_menu_and_take_input()
 
   util_menu_label:
   {
-
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,180));
+    ImGui::SetNextWindowSize(ImVec2(256,195));
     ImGui::Begin("Utility Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Load/Save", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
@@ -1062,15 +1080,49 @@ void voraldo::draw_menu_and_take_input()
   compute_static_lighting_config_label:
     //single pass, static lighting
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("Static Lighting Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-      goto done;
+    //would it be valuable to have a directional slider?
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Compute", ImVec2(100, 22)))
+    {
+        //do the lighting computation operation
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = LIGHT_MENU;
+
+    goto done;
   }
 
   per_frame_lighting_config_label:
     //toggle a bool to make the lighting happen every frame
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("Per Frame Lighting Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-      goto done;
+    //would it be valuable to have a directional slider? some kind of rotation to emphasize it's dynamic nature?
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Toggle", ImVec2(100, 22)))
+    {
+        //toggle the per-frame lighting as a boolean
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = LIGHT_MENU;
+
+    goto done;
   }
 
 
@@ -1078,15 +1130,47 @@ void voraldo::draw_menu_and_take_input()
   game_of_life_config_label:
     //single step or toggle bool to make it happen per frame
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("Game of Life Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-      goto done;
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Advance", ImVec2(100, 22)))
+    {
+        //compute one update
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = CA_MENU;
+
+    goto done;
   }
 
   wireworld_config_label:
     //single step or toggle bool to make it happen per frame
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("WireWorld Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-      goto done;
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Advance", ImVec2(100, 22)))
+    {
+        //compute one update
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = CA_MENU;
+
+    //toggle per frame updates, too?
+
+    goto done;
   }
 
   ca_terrain_config_label:
@@ -1094,8 +1178,25 @@ void voraldo::draw_menu_and_take_input()
     // https://softologyblog.wordpress.com/2017/05/27/voxel-automata-terrain/
     // https://bitbucket.org/BWerness/voxel-automata-terrain/src/master/
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("Game of Life Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-      goto done;
+    //config options for this operation
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Compute", ImVec2(100, 22)))
+    {
+        //compute one update
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = CA_MENU;
+
+    goto done;
   }
 
 
@@ -1103,15 +1204,62 @@ void voraldo::draw_menu_and_take_input()
   load_save_config_label:
     //lets you enter filenames and load/save from/to file
   {
+    static char str0[256] = "";
 
-      goto done;
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,100));
+    ImGui::Begin("Load/Save Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+
+    ImGui::InputTextWithHint("file", "enter filename here", str0, IM_ARRAYSIZE(str0));
+    ImGui::SameLine();
+    HelpMarker("USER:\nHold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.");
+
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Load", ImVec2(60, 22)))
+    {
+        //compute one update
+    }
+    ImGui::SameLine();
+
+    if (ImGui::Button("Save", ImVec2(60, 22)))
+    {
+        //compute one update
+    }
+    ImGui::SameLine();
+
+    // ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(90, 22)))
+      current_menu_state = UTIL_MENU;
+
+    goto done;
   }
 
   reinitialization_config_label:
     //like clear all, but ignores mask values
   {
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::Begin("Game of Life Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-      goto done;
+    //config options for this operation
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Reinitialize", ImVec2(100, 22)))
+    {
+        //reset all cells to a zero, unmasked state - ignore the current state of mask
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = UTIL_MENU;
+
+    goto done;
   }
 
   // undo_last_action_config_label:
@@ -1214,6 +1362,7 @@ void voraldo::draw_menu_and_take_input()
 void voraldo::gl_data_setup()
 {
   //set up the textures and stuff
+  GPU_Data.init();
 }
 
 void voraldo::quit()

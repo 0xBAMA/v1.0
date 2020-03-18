@@ -62,4 +62,6 @@ using std::endl;
 //contains an enum for the menu states
 #include "menu_states.h"
 
+#include "gpu_data.h"
+
 #endif
