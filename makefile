@@ -9,7 +9,7 @@ msg:
 		@date
 		@echo
 
-main: imgui lodepng.o perlin.o utils.o voraldo1_0.o
+main: imgui lodepng.o perlin.o utils.o gpu_data.o voraldo1_0.o
 		g++ -o main resources/code/main.cc *.o                           ${VORALDO_FLAGS}
 
 imgui: resources/imgui/*
@@ -24,6 +24,9 @@ imgui: resources/imgui/*
 
 voraldo1_0.o: resources/code/voraldo1_0.h resources/code/voraldo1_0.cc
 		g++ -c -o voraldo1_0.o resources/code/voraldo1_0.cc              ${VORALDO_FLAGS}
+
+gpu_data.o: resources/code/gpu_data.h resources/code/gpu_data.cc
+		g++ -c -o gpu_data.o resources/code/gpu_data.cc                  ${VORALDO_FLAGS}
 
 utils.o: resources/code/voraldo1_0.h resources/code/voraldo1_0_utils.cc
 		g++ -c -o utils.o resources/code/voraldo1_0_utils.cc             ${VORALDO_FLAGS}

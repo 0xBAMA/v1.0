@@ -17,8 +17,6 @@ typedef enum shader_index_t
   //what shaders do we need?
 } shader_index;
 
-std::vector<GLuint> shaders;
-
 
 //  ╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐
 //   ║ ├┤ ┌┴┬┘ │ │ │├┬┘├┤ └─┐
@@ -28,7 +26,7 @@ typedef enum texture_index_t
   //what textures do we need?
 } texture_index;
 
-std::vector<GLuint> textures;
+
 
 
 
@@ -39,6 +37,9 @@ class OpenGL_container
 {
 public:
   void init();
+
+  std::vector<GLuint> shader_handles;
+  std::vector<GLuint> texture_handles;
 
 private:
 
