@@ -161,7 +161,7 @@ static void HelpMarker(const char* desc)
 void voraldo::draw_menu_and_take_input()
 {
 
-  // ImGuiIO& io = ImGui::GetIO();
+  ImGuiIO& io = ImGui::GetIO();
 
   // Start the Dear ImGui frame
   ImGui_ImplOpenGL3_NewFrame();
@@ -1277,14 +1277,17 @@ void voraldo::draw_menu_and_take_input()
 
 
 
+  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //from hsv picker
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                     //clear the background
 
   GPU_Data.display();
 
   ImGui::End();
   ImGui::Render();
-  // glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //from hsv picker
+
+  glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+  cout << "viewport established with width: " << (int)io.DisplaySize.x << " and height: " << (int)io.DisplaySize.y << endl;
+
 
   //do my OpenGL raycasting here, over the cleared background
 

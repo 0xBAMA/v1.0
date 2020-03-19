@@ -21,6 +21,8 @@ class OpenGL_container
   //╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
     GLuint main_display_shader;
 
+    GLuint points_attrib;
+
   //╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐
   // ║ ├┤ ┌┴┬┘ │ │ │├┬┘├┤ └─┐
   // ╩ └─┘┴ └─ ┴ └─┘┴└─└─┘└─┘
