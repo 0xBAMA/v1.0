@@ -58,6 +58,11 @@ void voraldo::create_window()
       fprintf(stderr, "Failed to initialize OpenGL loader!\n");
   }
 
+  glEnable(GL_DEPTH_TEST);
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
@@ -156,7 +161,7 @@ static void HelpMarker(const char* desc)
 void voraldo::draw_menu_and_take_input()
 {
 
-  ImGuiIO& io = ImGui::GetIO();
+  // ImGuiIO& io = ImGui::GetIO();
 
   // Start the Dear ImGui frame
   ImGui_ImplOpenGL3_NewFrame();
@@ -1269,13 +1274,17 @@ void voraldo::draw_menu_and_take_input()
   done:
     //finished the label for the current window, so do the end() thing and render it
 
-  ImGui::End();
 
-  // Rendering
+
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                     //clear the background
+
+  GPU_Data.display();
+
+  ImGui::End();
   ImGui::Render();
-  glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+  // glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
   glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //from hsv picker
-  glClear(GL_COLOR_BUFFER_BIT);                     //clear the background
 
   //do my OpenGL raycasting here, over the cleared background
 

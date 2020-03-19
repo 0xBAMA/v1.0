@@ -13,10 +13,13 @@ class OpenGL_container
     void display();
 
   private:
+    GLuint vao; //vertex array object
+    GLuint vbo; //vertex buffer object
+
   //╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
   //╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
-
+    GLuint main_display_shader;
 
   //╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐
   // ║ ├┤ ┌┴┬┘ │ │ │├┬┘├┤ └─┐
@@ -24,4 +27,5 @@ class OpenGL_container
 
 
 };
+
 #endif
