@@ -8,12 +8,6 @@ uniform int y_resolution;
 
 void main()
 {
-  // fragment_output = v_color;
-
-  // float grey = max(gl_FragCoord.x/x_resolution, gl_FragCoord.y/y_resolution);
-
-  // fragment_output = vec4(vec3(grey),1.0);
-
   float grey = distance(vec2(x_resolution/2, y_resolution/2), vec2(gl_FragCoord.x, gl_FragCoord.y))/600;
 
   if(int(gl_FragCoord.x)%5==0||int(gl_FragCoord.y)%5==0)
