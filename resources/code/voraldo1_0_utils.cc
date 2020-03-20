@@ -169,10 +169,10 @@ void voraldo::draw_menu_and_take_input()
   ImGui::NewFrame();
 
 
-  static bool show_demo_window = true;
+  // static bool show_demo_window = true;
 
-  if (show_demo_window)
-    ImGui::ShowDemoWindow(&show_demo_window);
+  // if (show_demo_window)
+    // ImGui::ShowDemoWindow(&show_demo_window);
 
 
   //this switch is simplified with the use of gotos, the labels below are where all the labeling happens,

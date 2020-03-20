@@ -58,14 +58,6 @@ void OpenGL_container::init()
 
 void OpenGL_container::display()
 {
-  glBindVertexArray( vao );
-  glBindBuffer( GL_ARRAY_BUFFER, vbo );
-
   glUseProgram(main_display_shader);
-  
-  // GLint viewport[4];
-  // glGetIntegerv( GL_VIEWPORT, viewport );
-  // cout << "viewport is: " << viewport[0] << " " << viewport[1] << " " << viewport[2] << " " << viewport[3] << endl;
-
   glDrawArrays( GL_TRIANGLES, 0, 6 );
 }
