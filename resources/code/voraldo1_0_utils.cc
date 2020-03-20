@@ -163,6 +163,11 @@ void voraldo::draw_menu_and_take_input()
 
   ImGuiIO& io = ImGui::GetIO();
 
+  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //from hsv picker
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                     //clear the background
+
+  GPU_Data.display();
+
   // Start the Dear ImGui frame
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplSDL2_NewFrame(window);
@@ -1277,14 +1282,9 @@ void voraldo::draw_menu_and_take_input()
 
 
 
-  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //from hsv picker
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                     //clear the background
-
-
   ImGui::End();
   ImGui::Render();
 
-  GPU_Data.display();
 
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());   //put imgui data into the framebuffer
 
