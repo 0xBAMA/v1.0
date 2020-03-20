@@ -59,17 +59,10 @@ void OpenGL_container::init()
 void OpenGL_container::display()
 {
   glBindVertexArray( vao );
-
-  // cout << "binding my vao with id: " << vao << endl;
   glBindBuffer( GL_ARRAY_BUFFER, vbo );
-  // glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * points.size(), NULL, GL_DYNAMIC_DRAW);
-  // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * points.size(), &points[0]);
-
-  // glEnableVertexAttribArray(points_attrib);
-  // glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
 
   glUseProgram(main_display_shader);
-
+  
   // GLint viewport[4];
   // glGetIntegerv( GL_VIEWPORT, viewport );
   // cout << "viewport is: " << viewport[0] << " " << viewport[1] << " " << viewport[2] << " " << viewport[3] << endl;
