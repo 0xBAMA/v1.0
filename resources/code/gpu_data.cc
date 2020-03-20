@@ -2,6 +2,14 @@
 
 void OpenGL_container::init()
 {
+  GLint val;
+  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
+  cout << "max texture size reports: " << val << endl << endl;
+
+  glGetIntegerv(GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS, &val);
+  cout << "max compute texture image units reports: " << val << endl << endl;
+
+
   cout << "starting init" << endl;
   cout << "  compiling shader...";
   Shader s("resources/code/shaders/main.vs.glsl", "resources/code/shaders/main.fs.glsl");
@@ -48,10 +56,11 @@ void OpenGL_container::init()
 
   //set up attributes
   cout << "  setting up attributes...";
-  points_attrib = glGetAttribLocation(main_display_shader, "vPosition");
+  GLuint points_attrib = glGetAttribLocation(main_display_shader, "vPosition");
   glEnableVertexAttribArray(points_attrib);
   glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
   cout << "done." << endl << endl;
+
 }
 
 void OpenGL_container::load_textures()
@@ -62,5 +71,14 @@ void OpenGL_container::load_textures()
 void OpenGL_container::display()
 {
   glUseProgram(main_display_shader);
+
+  ImGuiIO& io = ImGui::GetIO();
+
+  GLint xres = (int)io.DisplaySize.x;
+  glUniform1iv(glGetUniformLocation(main_display_shader, "x_resolution"), 1, &xres);
+
+  GLint yres = (int)io.DisplaySize.y;
+  glUniform1iv(glGetUniformLocation(main_display_shader, "y_resolution"), 1, &yres);
+
   glDrawArrays( GL_TRIANGLES, 0, 6 );
 }

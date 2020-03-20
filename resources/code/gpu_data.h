@@ -11,7 +11,7 @@ class OpenGL_container
   public:
     void init();
     void load_textures();
-    
+
     void display();
 
   private:
@@ -25,7 +25,6 @@ class OpenGL_container
   //╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
     GLuint main_display_shader;
 
-    GLuint points_attrib;
 
   //╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐
   // ║ ├┤ ┌┴┬┘ │ │ │├┬┘├┤ └─┐
