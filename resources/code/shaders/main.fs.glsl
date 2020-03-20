@@ -12,6 +12,8 @@ void main()
 
   if(int(gl_FragCoord.x)%5==0||int(gl_FragCoord.y)%5==0)
     fragment_output = vec4(0,0,0,1);
-  else
+  else if(int(gl_FragCoord.x)%2==0||int(gl_FragCoord.y)%2==0)
     fragment_output = vec4(vec3(grey),1.0);
+  else
+    discard;
 }
