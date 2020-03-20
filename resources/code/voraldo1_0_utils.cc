@@ -1379,6 +1379,7 @@ void voraldo::gl_data_setup()
 {
   //set up the textures and stuff
   GPU_Data.init();
+  GPU_Data.load_textures();
 }
 
 void voraldo::quit()

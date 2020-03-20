@@ -10,6 +10,8 @@ class OpenGL_container
 {
   public:
     void init();
+    void load_textures();
+    
     void display();
 
   private:
@@ -17,7 +19,7 @@ class OpenGL_container
     GLuint vbo; //vertex buffer object
 
     std::vector<glm::vec3> points;
-    
+
   //╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
   //╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
