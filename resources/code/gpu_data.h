@@ -16,6 +16,8 @@ class OpenGL_container
     GLuint vao; //vertex array object
     GLuint vbo; //vertex buffer object
 
+    std::vector<glm::vec3> points;
+    
   //╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
   //╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘

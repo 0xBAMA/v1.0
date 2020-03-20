@@ -1280,18 +1280,22 @@ void voraldo::draw_menu_and_take_input()
   glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);   //from hsv picker
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                     //clear the background
 
-  GPU_Data.display();
 
   ImGui::End();
   ImGui::Render();
 
+  GPU_Data.display();
+
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());   //put imgui data into the framebuffer
+
   glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-  cout << "viewport established with width: " << (int)io.DisplaySize.x << " and height: " << (int)io.DisplaySize.y << endl;
+  // cout << "viewport established with width: " << (int)io.DisplaySize.x << " and height: " << (int)io.DisplaySize.y << endl;
 
 
   //do my OpenGL raycasting here, over the cleared background
 
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());   //put imgui data into the framebuffer
+
+
   SDL_GL_SwapWindow(window);                      //swap the double buffers to display
 
   // Poll and handle events (inputs, window resize, etc.)

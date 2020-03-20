@@ -20,17 +20,12 @@ void OpenGL_container::init()
   //diagonal runs from C to B
 
   //we are at 0 in z
-  //A is     0, height
-  //B is width, height
-  //C is     0, 0
-  //D is width, 0
+  //A is -1, 1
+  //B is  1, 1
+  //C is -1,-1
+  //D is  1,-1
 
-  // ImGuiIO& io = ImGui::GetIO();
-
-  // int width = (int)io.DisplaySize.x;
-  // int height= (int)io.DisplaySize.y;
-
-  std::vector<glm::vec3>    points;
+  points.clear();
 
   points.push_back(glm::vec3(-1, 1, 0));  //A
   points.push_back(glm::vec3(-1,-1, 0));  //C
@@ -39,14 +34,6 @@ void OpenGL_container::init()
   points.push_back(glm::vec3( 1, 1, 0));  //B
   points.push_back(glm::vec3(-1,-1, 0));  //C
   points.push_back(glm::vec3( 1,-1, 0));  //D
-
-  // points.push_back(glm::vec3( 0, height, 0));  //A
-  // points.push_back(glm::vec3( 0, 0, 0));  //C
-  // points.push_back(glm::vec3( width, height, 0));  //B
-  //
-  // points.push_back(glm::vec3( width, height, 0));  //B
-  // points.push_back(glm::vec3( 0, 0, 0));  //C
-  // points.push_back(glm::vec3( width, 0, 0));  //D
 
   glGenVertexArrays( 1, &vao );
   glBindVertexArray( vao );
@@ -57,6 +44,7 @@ void OpenGL_container::init()
   const GLuint num_bytes_points = sizeof(glm::vec3) * points.size();
   GLint num_bytes = num_bytes_points;
 
+  // glBufferData(GL_ARRAY_BUFFER, num_bytes, NULL, GL_STATIC_DRAW);
   glBufferData(GL_ARRAY_BUFFER, num_bytes, NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, num_bytes_points, &points[0]);
 
@@ -71,8 +59,14 @@ void OpenGL_container::init()
 void OpenGL_container::display()
 {
   glBindVertexArray( vao );
+
+  // cout << "binding my vao with id: " << vao << endl;
   glBindBuffer( GL_ARRAY_BUFFER, vbo );
-  glEnableVertexAttribArray(points_attrib);
+  // glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * points.size(), NULL, GL_DYNAMIC_DRAW);
+  // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * points.size(), &points[0]);
+
+  // glEnableVertexAttribArray(points_attrib);
+  // glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
 
   glUseProgram(main_display_shader);
 
