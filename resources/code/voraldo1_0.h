@@ -21,6 +21,8 @@ class voraldo
     SDL_Window * window;
     SDL_GLContext GLcontext;
 
+    std::deque<float> fps_history;
+
 
     //  ╔═╗╦    ╔╦╗┌─┐┌┬┐┌─┐
     //  ║ ╦║     ║║├─┤ │ ├─┤

@@ -49,8 +49,8 @@ void voraldo::create_window()
   GLcontext = SDL_GL_CreateContext( window );
 
   SDL_GL_MakeCurrent(window, GLcontext);
-  SDL_GL_SetSwapInterval(1); // Enable vsync -- questionable utility
-  // SDL_GL_SetSwapInterval(0); // explicitly disable vsync
+  // SDL_GL_SetSwapInterval(1); // Enable vsync -- questionable utility
+  SDL_GL_SetSwapInterval(0); // explicitly disable vsync
 
 
   if (glewInit() != GLEW_OK)
@@ -62,6 +62,10 @@ void voraldo::create_window()
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+  fps_history.resize(64);   //initialize the array of fps values
+
 
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
@@ -174,8 +178,26 @@ void voraldo::draw_menu_and_take_input()
   ImGui::NewFrame();
 
 
-  // static bool show_demo_window = true;
+  //maintaining history of fps values
 
+  //push back - put in the new value
+  fps_history.push_back(io.Framerate);
+  
+  //pop front - take out the oldest value
+  fps_history.pop_front();
+
+  // for(float n : fps_history)
+  // {
+  //   cout << (int)n << " ";
+  // }
+  //
+  // cout << endl;
+
+
+
+
+
+  // static bool show_demo_window = true;
   // if (show_demo_window)
     // ImGui::ShowDemoWindow(&show_demo_window);
 

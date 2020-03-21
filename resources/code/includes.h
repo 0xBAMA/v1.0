@@ -14,6 +14,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <deque>
 
 //iostream aliases
 using std::cin;
