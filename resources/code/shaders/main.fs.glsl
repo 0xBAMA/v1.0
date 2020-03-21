@@ -3,17 +3,26 @@
 in vec4 v_color;
 out vec4 fragment_output;
 
-uniform int x_resolution;
-uniform int y_resolution;
+uniform int x_resolution;    //width, in pixels
+uniform int y_resolution;   //height, in pixels
+
+uniform float theta;      //rotation about the y axis
+uniform float phi;       //rotation up from the xz plane
 
 void main()
 {
-  float grey = distance(vec2(x_resolution/2, y_resolution/2), vec2(gl_FragCoord.x, gl_FragCoord.y))/600;
+  //start with a unit vector pointing down the z axis
+  vec3 org = vec3(0,0,2); //will have to compute the offsets
 
-  if(int(gl_FragCoord.x)%5==0||int(gl_FragCoord.y)%5==0)
-    fragment_output = vec4(0,0,0,1);
-  else if(int(gl_FragCoord.x)%2==0||int(gl_FragCoord.y)%2==0)
-    fragment_output = vec4(vec3(grey),1.0);
-  else
-    discard;
+  //rotate that vector 'up' by phi
+
+  //rotate about the y axis by theta
+
+  //does a ray with that origin and that direction hit the cube?
+
+  //if yes, trace the ray
+
+  //if no, discard the fragment
+
+  fragment_output = v_color;
 }

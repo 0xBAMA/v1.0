@@ -2,7 +2,7 @@
 layout (location = 0) in vec3 vPosition;
 
 // out vec4 gl_Position;
-out vec4 v_color;
+out vec4 v_color; //may drop this in the very near future
 
 void main()
 {
