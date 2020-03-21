@@ -63,8 +63,8 @@ void voraldo::create_window()
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
-  fps_history.resize(32);   //initialize the array of fps values
+  #define FPS_HISTORY_SIZE 45
+  fps_history.resize(FPS_HISTORY_SIZE);   //initialize the array of fps values
 
 
   // Setup Dear ImGui context
@@ -322,7 +322,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Separator();
 
     // fps graph
-    static float values[32] = {};
+    static float values[FPS_HISTORY_SIZE] = {};
     float average = 0;
 
     for(int n = 0; n < IM_ARRAYSIZE(values); n++)

@@ -20,6 +20,10 @@ class OpenGL_container
 
     std::vector<glm::vec3> points;
 
+    float scale;
+    float phi;
+    float theta;
+
   //╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
   //╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘

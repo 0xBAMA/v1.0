@@ -64,6 +64,9 @@ void OpenGL_container::init()
   glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
   cout << "done." << endl << endl;
 
+  scale = 5.0f;
+  phi   = 0.0f;
+  theta = 0.0f;
 }
 
 void OpenGL_container::load_textures()
@@ -76,12 +79,19 @@ void OpenGL_container::display()
   glUseProgram(main_display_shader);
 
   ImGuiIO& io = ImGui::GetIO();
-
   GLint xres = (int)io.DisplaySize.x;
-  glUniform1iv(glGetUniformLocation(main_display_shader, "x_resolution"), 1, &xres);
-
   GLint yres = (int)io.DisplaySize.y;
+
+  float f = SDL_GetTicks();
+
+  phi = 0.2*sin(0.0005*f);
+  theta = 0.5*cos(0.003*f);
+
+  glUniform1iv(glGetUniformLocation(main_display_shader, "x_resolution"), 1, &xres);
   glUniform1iv(glGetUniformLocation(main_display_shader, "y_resolution"), 1, &yres);
+  glUniform1fv(glGetUniformLocation(main_display_shader, "scale"),        1, &scale);
+  glUniform1fv(glGetUniformLocation(main_display_shader, "uphi"),         1, &phi);
+  glUniform1fv(glGetUniformLocation(main_display_shader, "utheta"),       1, &theta);
 
   glDrawArrays( GL_TRIANGLES, 0, 6 );
 }
