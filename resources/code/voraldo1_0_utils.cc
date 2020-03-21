@@ -64,7 +64,7 @@ void voraldo::create_window()
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-  fps_history.resize(64);   //initialize the array of fps values
+  fps_history.resize(32);   //initialize the array of fps values
 
 
   // Setup Dear ImGui context
@@ -121,8 +121,8 @@ void voraldo::create_window()
   colors[ImGuiCol_TabActive]              = ImVec4(0.62f, 0.00f, 0.00f, 1.00f);
   colors[ImGuiCol_TabUnfocused]           = ImVec4(0.07f, 0.10f, 0.15f, 0.97f);
   colors[ImGuiCol_TabUnfocusedActive]     = ImVec4(0.14f, 0.26f, 0.42f, 1.00f);
-  colors[ImGuiCol_PlotLines]              = ImVec4(0.61f, 0.61f, 0.61f, 1.00f);
-  colors[ImGuiCol_PlotLinesHovered]       = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+  colors[ImGuiCol_PlotLines]              = ImVec4(0.71f, 0.04f, 0.04f, 1.00f);
+  colors[ImGuiCol_PlotLinesHovered]       = ImVec4(0.71f, 0.04f, 0.04f, 1.00f);
   colors[ImGuiCol_PlotHistogram]          = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
   colors[ImGuiCol_PlotHistogramHovered]   = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
   colors[ImGuiCol_TextSelectedBg]         = ImVec4(0.35f, 0.00f, 0.00f, 0.35f);
@@ -182,7 +182,7 @@ void voraldo::draw_menu_and_take_input()
 
   //push back - put in the new value
   fps_history.push_back(io.Framerate);
-  
+
   //pop front - take out the oldest value
   fps_history.pop_front();
 
@@ -199,7 +199,7 @@ void voraldo::draw_menu_and_take_input()
 
   // static bool show_demo_window = true;
   // if (show_demo_window)
-    // ImGui::ShowDemoWindow(&show_demo_window);
+  //   ImGui::ShowDemoWindow(&show_demo_window);
 
 
   //this switch is simplified with the use of gotos, the labels below are where all the labeling happens,
@@ -282,7 +282,7 @@ void voraldo::draw_menu_and_take_input()
   main_menu_label:
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,265));
+    ImGui::SetNextWindowSize(ImVec2(256,315));
     ImGui::Begin("Voraldo 1.0", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text(" ");
@@ -313,11 +313,31 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("EXIT", ImVec2(120, 22)))
       current_menu_state = EXIT;
 
-    ImGui::SetCursorPosX(60);
-    ImGui::Text(" %.2f ms (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
     ImGui::SetCursorPosX(45);
     ImGui::ColorEdit3("", (float*)&clear_color); // Edit 3 floats representing a color
+
+    // ImGui::SetCursorPosX(60);
+    // ImGui::Text(" %.2f ms (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+    ImGui::Separator();
+
+    // fps graph
+    static float values[32] = {};
+    float average = 0;
+
+    for(int n = 0; n < IM_ARRAYSIZE(values); n++)
+    {
+      values[n] = fps_history[n];
+      average += fps_history[n];
+    }
+
+    average /= 32;
+    char overlay[32];
+    sprintf(overlay, "avg %.2f fps (%.2f ms)", average, 1000.0f/average);
+    ImGui::PlotLines("", values, IM_ARRAYSIZE(values), 0, overlay, 0.0f, 100.0f, ImVec2(240,60));
+
+
+
     goto done;
   }
 

@@ -49,5 +49,5 @@ void main()
   //if no, discard the fragment
 
   // fragment_output = v_color;
-  fragment_output = vec4(xoff,yoff,0,1);
+  fragment_output = vec4(abs(xoff),abs(yoff),0,1);
 }
