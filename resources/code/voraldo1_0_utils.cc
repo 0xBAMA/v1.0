@@ -1415,35 +1415,17 @@ void voraldo::draw_menu_and_take_input()
       }
     }
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_UP)
-    {
-      //increment phi
-      GPU_Data.phi += 0.03f;
-    }
+      GPU_Data.phi  += 0.03f;     //increment phi
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_DOWN)
-    {
-      //decrement phi
-      GPU_Data.phi -= 0.03f;
-    }
+      GPU_Data.phi  -= 0.03f;     //decrement phi
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_LEFT)
-    {
-      //check this - not sure which is increment, which is decrement
-      GPU_Data.theta += 0.03f;
-    }
+      GPU_Data.theta += 0.03f;    //increment theta
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_RIGHT)
-    {
-      //check this - not sure which is increment, which is decrement
-      GPU_Data.theta -= 0.03f;
-    }
+      GPU_Data.theta -= 0.03f;    //decrement theta
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_MINUS)
-    {
-      //make scale smaller
-      GPU_Data.scale += 0.1f;
-    }
+      GPU_Data.scale += 0.1f;     //make scale smaller
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_EQUALS) //SDLK_PLUS requires that you hit the shift
-    {
-      //make scale larger
-      GPU_Data.scale -= 0.1f;
-    }
+      GPU_Data.scale -= 0.1f;     //make scale larger
   }
 }
 
