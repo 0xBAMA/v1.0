@@ -105,7 +105,7 @@ void main()
   //does a ray with that origin and that direction hit the cube?
   if(hit(org.xyz,dir.xyz))
   { //if yes, trace the ray
-    fragment_output = vec4(abs(xoff),abs(yoff),0,1);
+    fragment_output = vec4(abs(xoff),abs(yoff),0,1) * float(1.75f-distance((org+tmin*dir),org));
   }
   else
   { //if no, discard the fragment

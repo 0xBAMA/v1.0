@@ -1386,7 +1386,7 @@ void voraldo::draw_menu_and_take_input()
           //mask config submenus
         case UNMASK_ALL_CONFIG:
         case TOGGLE_MASK_CONFIG:
-        case MASK_BY_COLOR_CONFIG:     //this is going to be a powerful tool
+        case MASK_BY_COLOR_CONFIG:
           current_menu_state = MASK_MENU;
           break;
 
@@ -1413,6 +1413,34 @@ void voraldo::draw_menu_and_take_input()
           current_menu_state = EXIT;
           break;
       }
+    }
+    if(event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_UP)
+    {
+      //increment phi
+      GPU_Data.phi += 0.1f;
+    }
+    if(event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_DOWN)
+    {
+      //decrement phi
+      GPU_Data.phi -= 0.1f;
+    }
+    if(event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_LEFT)
+    {
+      //check this - not sure which is increment, which is decrement
+    }
+    if(event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_RIGHT)
+    {
+      //check this - not sure which is increment, which is decrement
+    }
+    if(event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_MINUS)
+    {
+      //make scale smaller
+      GPU_Data.scale += 0.1f;
+    }
+    if(event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_EQUALS) //SDLK_PLUS requires that you hit the shift
+    {
+      //make scale larger
+      GPU_Data.scale -= 0.1f;
     }
   }
 }
