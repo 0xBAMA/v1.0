@@ -1423,9 +1423,9 @@ void voraldo::draw_menu_and_take_input()
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_RIGHT)
       GPU_Data.theta -= 0.03f;    //decrement theta
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_MINUS)
-      GPU_Data.scale += 0.1f;     //make scale smaller
+      GPU_Data.scale += 0.1f;     //make scale smaller (offsets are larger)
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_EQUALS) //SDLK_PLUS requires that you hit the shift
-      GPU_Data.scale -= 0.1f;     //make scale larger
+      GPU_Data.scale -= 0.1f;     //make scale larger  (offsets are smaller)
   }
 }
 
