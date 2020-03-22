@@ -82,10 +82,7 @@ void OpenGL_container::display()
   GLint xres = (int)io.DisplaySize.x;
   GLint yres = (int)io.DisplaySize.y;
 
-  float f = SDL_GetTicks();
-
-  phi = 0.2*sin(0.0005*f);
-  theta = 0.5*cos(0.003*f);
+  // float f = SDL_GetTicks(); // this is how you get the time elapsed, in ms
 
   glUniform1iv(glGetUniformLocation(main_display_shader, "x_resolution"), 1, &xres);
   glUniform1iv(glGetUniformLocation(main_display_shader, "y_resolution"), 1, &yres);
