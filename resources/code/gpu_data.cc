@@ -71,7 +71,28 @@ void OpenGL_container::init()
 
 void OpenGL_container::load_textures()
 {
+  PerlinNoise p;
+  // std::vector<unsigned char> data;
+  //
+  // data.resize(256*256*256);
 
+  // for(int x = 0; x < 256; x++)
+  //   for(int y = 0; y < 256; y++)
+  //     for(int z = 0; z < 256; z++)
+  //     {
+  //       data.push_back((unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255));
+  //     }
+
+
+  // GLuint tex;
+  //
+  // glGenTextures(1, &tex);
+  // glBindTexture(GL_TEXTURE_3D, tex); // use the specified ID
+  // glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, 256, 256, 256, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+  // glActiveTexture(GL_TEXTURE0 + 0); // What texture unit?
+  // glBindImageTexture(0, tex, 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
+
+  cout << "finished load_textures()" << endl;
 }
 
 void OpenGL_container::display()

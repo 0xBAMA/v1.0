@@ -25,7 +25,6 @@ mat4 rotationMatrix(vec3 axis, float angle)
                 0.0,                                0.0,                                0.0,                                1.0);
 }
 
-
 double tmin, tmax; //global scope, set in hit() to tell min and max parameters
 
 // #define NUM_STEPS 2000
@@ -82,6 +81,9 @@ bool hit(vec3 org, vec3 dir)
 
   return true;
 }
+
+// vec4 get_color_for_pixel()
+
 
 void main()
 {
