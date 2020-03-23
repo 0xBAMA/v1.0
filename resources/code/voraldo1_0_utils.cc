@@ -49,8 +49,8 @@ void voraldo::create_window()
   GLcontext = SDL_GL_CreateContext( window );
 
   SDL_GL_MakeCurrent(window, GLcontext);
-  // SDL_GL_SetSwapInterval(1); // Enable vsync -- questionable utility
-  SDL_GL_SetSwapInterval(0); // explicitly disable vsync
+  SDL_GL_SetSwapInterval(1); // Enable vsync -- questionable utility
+  // SDL_GL_SetSwapInterval(0); // explicitly disable vsync
 
 
   if (glewInit() != GLEW_OK)
@@ -185,16 +185,6 @@ void voraldo::draw_menu_and_take_input()
 
   //pop front - take out the oldest value
   fps_history.pop_front();
-
-  // for(float n : fps_history)
-  // {
-  //   cout << (int)n << " ";
-  // }
-  //
-  // cout << endl;
-
-
-
 
 
   // static bool show_demo_window = true;

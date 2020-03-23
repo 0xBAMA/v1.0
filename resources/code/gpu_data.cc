@@ -73,17 +73,18 @@ void OpenGL_container::load_textures()
 {
   PerlinNoise p;
   std::vector<unsigned char> data;
-
-  // data.resize(256*256*256);
+  unsigned char val;
 
   for(int x = 0; x < 256; x++)
     for(int y = 0; y < 256; y++)
       for(int z = 0; z < 256; z++)
       {
-        data.push_back((unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255));   //red
-        data.push_back((unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255));   //green
-        data.push_back((unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255));   //blue
-        data.push_back((unsigned char)255);                                     //alpha
+        val = (unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255);
+
+        data.push_back(val);                     //red
+        data.push_back(val);                    //green
+        data.push_back(val);                   //blue
+        data.push_back((unsigned char)255);   //alpha
       }
 
 
