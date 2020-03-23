@@ -26,7 +26,7 @@ void voraldo::create_window()
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-  // SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //might have to look into this later, it only multisamples OpenGL geometry
+  // SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //might have to look into this later, it only multisamples OpenGL geometry, doesn't effect gl_FragCoord
   // SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);
 
   // GL 4.5 + GLSL 450
@@ -1429,16 +1429,17 @@ void voraldo::gl_data_setup()
 void voraldo::quit()
 {
   //blow away all the OpenGL data
+    //todo
 
-  //destroy window
-
-  //fullscreen exit splash? maybe if it's a quick one - I really liked that glitchy blinking eye gif
 
   //shutdown everything
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplSDL2_Shutdown();
   ImGui::DestroyContext();
 
+  //fullscreen exit splash? maybe if it's a quick one - I really liked that glitchy blinking eye gif
+
+  //destroy window
   SDL_GL_DeleteContext(GLcontext);
   SDL_DestroyWindow(window);
   SDL_Quit();

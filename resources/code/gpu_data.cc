@@ -73,11 +73,15 @@ void OpenGL_container::load_textures()
 {
   PerlinNoise p;
   std::vector<unsigned char> data;
+  std::vector<unsigned char> data2;
   unsigned char val;
 
-  for(int x = 0; x < 256; x++)
-    for(int y = 0; y < 256; y++)
-      for(int z = 0; z < 256; z++)
+  #define DIM 256
+
+
+  for(int x = 0; x < DIM; x++)
+    for(int y = 0; y < DIM; y++)
+      for(int z = 0; z < DIM; z++)
       {
         val = (unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255);
 
@@ -85,18 +89,37 @@ void OpenGL_container::load_textures()
         data.push_back(val);                    //green
         data.push_back(val);                   //blue
         data.push_back((unsigned char)255);   //alpha
+
+        data2.push_back(val);               //populate the mask texture with some values
       }
 
 
-  GLuint tex;
+  GLuint block_textures[2];
+  GLuint mask_textures[2];
 
-  glGenTextures(1, &tex);
-  glBindTexture(GL_TEXTURE_3D, tex); // use the specified ID
-  glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, 256, 256, 256, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
-  glActiveTexture(GL_TEXTURE0 + 0); // What texture unit?
-  glBindImageTexture(0, tex, 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
+  glGenTextures(2, &block_textures[0]);
 
-  cout << "finished load_textures()" << endl;
+  glBindTexture(GL_TEXTURE_3D, block_textures[0]); // use the specified ID
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+  glBindImageTexture(0, block_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
+
+  glBindTexture(GL_TEXTURE_3D, block_textures[1]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+  glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
+
+
+  glGenTextures(2, &mask_textures[0]);
+
+  glBindTexture(GL_TEXTURE_3D, mask_textures[0]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data2[0]);
+  glBindImageTexture(2, mask_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
+
+  glBindTexture(GL_TEXTURE_3D, mask_textures[1]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data2[0]);
+  glBindImageTexture(3, mask_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
+
+
+  cout << "finished load_textures()" << endl << endl;
 }
 
 void OpenGL_container::display()
