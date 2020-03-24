@@ -110,7 +110,7 @@ void main()
   { //if yes, trace the ray
     // fragment_output = vec4(abs(xoff),abs(yoff),0,1) * float(1.75f-distance((org+tmin*dir),org));
 
-    ivec3 sample_location = ivec3((org+tmin*dir)*256);
+    ivec3 sample_location = ivec3(floor((org+tmin*dir)*255));
     fragment_output = imageLoad(current,sample_location)* float(1.75f-distance((org+tmin*dir),org));
   }
   else
