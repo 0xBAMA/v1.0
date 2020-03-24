@@ -91,7 +91,11 @@ void OpenGL_container::load_textures()
         data.push_back(val);                     //red
         data.push_back(val);                    //green
         data.push_back(val);                   //blue
-        data.push_back((unsigned char)255);   //alpha
+        if(val > 100)
+          data.push_back(1);                  //alpha
+        else
+          data.push_back(255);
+        // data.push_back((unsigned char)255);   //alpha, opaque
 
         data2.push_back(val);               //populate the mask texture with some values
       }
@@ -146,6 +150,9 @@ void OpenGL_container::display()
   glUniform1fv(glGetUniformLocation(main_display_shader, "scale"),        1, &scale);
   glUniform1fv(glGetUniformLocation(main_display_shader, "uphi"),         1, &phi);
   glUniform1fv(glGetUniformLocation(main_display_shader, "utheta"),       1, &theta);
+
+  glUniform4fv(glGetUniformLocation(main_display_shader, "clear_color"), 1, glm::value_ptr(clear_color));
+
 
   // this is to swap between the two block textures
   // we read from one, write to the other, then swap - but do it by the number of the texture unit, so no actual data moves - just one uniform integer changes

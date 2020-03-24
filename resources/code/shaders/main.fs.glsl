@@ -5,6 +5,8 @@ out vec4 fragment_output;
 
 uniform layout(rgba8) image3D current;
 
+
+uniform vec4 clear_color;     //bg color
 uniform int x_resolution;    //width, in pixels
 uniform int y_resolution;   //height, in pixels
 
@@ -29,10 +31,11 @@ mat3 rotationMatrix(vec3 axis, float angle)
 double tmin, tmax; //global scope, set in hit() to tell min and max parameters
 
 // #define NUM_STEPS 2000
-#define NUM_STEPS 600
+// #define NUM_STEPS 600
+#define NUM_STEPS 100
 
 #define MIN_DISTANCE 0.0
-#define MAX_DISTANCE 1000.0
+#define MAX_DISTANCE 10.0
 
 bool hit(vec3 org, vec3 dir)
 {
@@ -83,7 +86,41 @@ bool hit(vec3 org, vec3 dir)
   return true;
 }
 
-// vec4 get_color_for_pixel()
+vec4 get_color_for_pixel(vec3 org, vec3 dir)
+{
+  float current_t = float(tmax);
+  // vec4 t_color = vec4(0);
+  vec4 t_color = clear_color;
+
+  float step = float((tmax-tmin))/NUM_STEPS;
+  if(step < 0.001f)
+    step = 0.001f;
+
+  ivec3 samp = ivec3((vec3(imageSize(current))/2.0f)*(org+current_t*dir+vec3(1)));
+
+  vec4 new_read = imageLoad(current,samp);
+
+  for(int i = 0; i < NUM_STEPS; i++)
+  {
+    if(current_t>=tmin)
+    {
+      current_t -= step;
+      samp = ivec3((vec3(imageSize(current))/2.0f)*(org+current_t*dir+vec3(1)));
+
+      new_read = imageLoad(current,samp);
+
+      // it's a over b, where a is the new sample and b is the current color, t_color
+      t_color.rgb = new_read.rgb * new_read.a + t_color.rgb * t_color.a * ( 1 - new_read.a );
+      t_color.a = new_read.a + t_color.a * ( 1 - new_read.a );
+    }
+    else
+    {
+
+    }
+  }
+
+  return t_color;
+}
 
 
 void main()
@@ -109,10 +146,16 @@ void main()
   if(hit(org,dir))
   { //if yes, trace the ray
 
+    //this colors based on screen position
     // fragment_output = vec4(abs(xoff),abs(yoff),0,1) * float(1.75f-distance((org+tmin*dir),org));
 
-    ivec3 sample_location = ivec3((org+tmin*dir+vec3(1))*127.5);
-    fragment_output = imageLoad(current,sample_location) * float(1.75f-distance((org+tmin*dir),org));
+    //this colors based on a texture read at tmin
+    // ivec3 sample_location = ivec3((org+tmin*dir+vec3(1))*127.5);
+    // fragment_output = imageLoad(current,sample_location) * float(1.75f-distance((org+tmin*dir),org));
+
+    //this does the full raycasting operation
+    fragment_output = get_color_for_pixel(org, dir);
+
   }
   else
   { //if no, discard the fragment

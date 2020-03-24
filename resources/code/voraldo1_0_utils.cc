@@ -26,8 +26,8 @@ void voraldo::create_window()
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-  SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //gl_SamplePosition has to be used in my shader in order for this to
-  SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);   //have any effect on the way my shader works (i.e. add to gl_FragCoord)
+  // SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //gl_SamplePosition has to be used in my shader in order for this to
+  // SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);   //have any effect on the way my shader works (i.e. add to gl_FragCoord)
 
   // GL 4.5 + GLSL 450
   const char* glsl_version = "#version 450";
@@ -305,6 +305,10 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::SetCursorPosX(45);
     ImGui::ColorEdit3("", (float*)&clear_color); // Edit 3 floats representing a color
+
+    // cout << clear_color.x << " " << clear_color.y << " " << clear_color.z << endl;
+    GPU_Data.clear_color = glm::vec4(clear_color.x, clear_color.y, clear_color.z, 1.0);
+
 
     // ImGui::SetCursorPosX(60);
     // ImGui::Text(" %.2f ms (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
