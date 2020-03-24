@@ -106,7 +106,10 @@ void OpenGL_container::load_textures()
 
   glBindTexture(GL_TEXTURE_3D, block_textures[1]);
   glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
-  glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
+  glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);\
+
+
+  location_of_current = 0;
 
 
   glGenTextures(2, &mask_textures[0]);
@@ -143,6 +146,13 @@ void OpenGL_container::display()
   glUniform1fv(glGetUniformLocation(main_display_shader, "scale"),        1, &scale);
   glUniform1fv(glGetUniformLocation(main_display_shader, "uphi"),         1, &phi);
   glUniform1fv(glGetUniformLocation(main_display_shader, "utheta"),       1, &theta);
+
+  if(location_of_current == 1)
+    location_of_current = 0;
+  else
+    location_of_current = 1;
+
+  glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current);
 
   glDrawArrays( GL_TRIANGLES, 0, 6 );
 }

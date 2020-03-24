@@ -3,6 +3,8 @@
 in vec4 v_color;
 out vec4 fragment_output;
 
+uniform layout(rgba8) image3D current;
+
 uniform int x_resolution;    //width, in pixels
 uniform int y_resolution;   //height, in pixels
 
@@ -12,17 +14,16 @@ uniform float uphi;      //rotation up from the xz plane
 uniform float scale;   //scales the xy offsets
 
 //thanks to Neil Mendoza via http://www.neilmendoza.com/glsl-rotation-about-an-arbitrary-axis/
-mat4 rotationMatrix(vec3 axis, float angle)
+mat3 rotationMatrix(vec3 axis, float angle)
 {
     axis = normalize(axis);
     float s = sin(angle);
     float c = cos(angle);
     float oc = 1.0 - c;
 
-    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-                0.0,                                0.0,                                0.0,                                1.0);
+    return mat3(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
 }
 
 double tmin, tmax; //global scope, set in hit() to tell min and max parameters
@@ -91,23 +92,26 @@ void main()
   float yoff = scale*(((gl_FragCoord.y + gl_SamplePosition.y)/float(y_resolution)) - 0.5f)*(float(y_resolution)/float(x_resolution));
 
   //start with a vector pointing down the z axis (greater than half the corner to corner distance, i.e. > ~1.75)
-  vec4 org = vec4(xoff, yoff,  2,  0); //add the offsets in x and y
-  vec4 dir = vec4(   0,    0, -2,  0); //simply a vector pointing in the opposite direction, no xy offsets
+  vec3 org = vec3(xoff, yoff,  2); //add the offsets in x and y
+  vec3 dir = vec3(   0,    0, -2); //simply a vector pointing in the opposite direction, no xy offsets
 
   //rotate both vectors 'up' by phi, e.g. about the x axis
-  mat4 rotphi = rotationMatrix(vec3(1,0,0), uphi);
+  mat3 rotphi = rotationMatrix(vec3(1,0,0), uphi);
   org *= rotphi;
   dir *= rotphi;
 
   //rotate both about the y axis by theta
-  mat4 rottheta = rotationMatrix(vec3(0,1,0), utheta);
+  mat3 rottheta = rotationMatrix(vec3(0,1,0), utheta);
   org *= rottheta;
   dir *= rottheta;
 
   //does a ray with that origin and that direction hit the cube?
-  if(hit(org.xyz,dir.xyz))
+  if(hit(org,dir))
   { //if yes, trace the ray
-    fragment_output = vec4(abs(xoff),abs(yoff),0,1) * float(1.75f-distance((org+tmin*dir),org));
+    // fragment_output = vec4(abs(xoff),abs(yoff),0,1) * float(1.75f-distance((org+tmin*dir),org));
+
+    ivec3 sample_location = ivec3((org+tmin*dir)*256);
+    fragment_output = imageLoad(current,sample_location)* float(1.75f-distance((org+tmin*dir),org));
   }
   else
   { //if no, discard the fragment

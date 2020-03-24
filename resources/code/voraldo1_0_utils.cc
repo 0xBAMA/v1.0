@@ -26,8 +26,8 @@ void voraldo::create_window()
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-  SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //might have to look into this later, it only multisamples OpenGL geometry, doesn't effect gl_FragCoord
-  SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);
+  SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //gl_SamplePosition has to be used in my shader in order for this to
+  SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);   //have any effect on the way my shader works (i.e. add to gl_FragCoord)
 
   // GL 4.5 + GLSL 450
   const char* glsl_version = "#version 450";
