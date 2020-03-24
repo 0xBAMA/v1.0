@@ -147,6 +147,8 @@ void OpenGL_container::display()
   glUniform1fv(glGetUniformLocation(main_display_shader, "uphi"),         1, &phi);
   glUniform1fv(glGetUniformLocation(main_display_shader, "utheta"),       1, &theta);
 
+  // this is to swap between the two block textures
+  // we read from one, write to the other, then swap - but do it by the number of the texture unit, so no actual data moves - just one uniform integer changes
   if(location_of_current == 1)
     location_of_current = 0;
   else
