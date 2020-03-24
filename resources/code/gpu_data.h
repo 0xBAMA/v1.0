@@ -38,6 +38,11 @@ class OpenGL_container
   // ║ ├┤ ┌┴┬┘ │ │ │├┬┘├┤ └─┐
   // ╩ └─┘┴ └─ ┴ └─┘┴└─└─┘└─┘
 
+    GLuint block_textures[2];
+    GLuint mask_textures[2];
+    GLuint perlin_texture;
+    GLuint heightmap_texture;
+
 
 };
 

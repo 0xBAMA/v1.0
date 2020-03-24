@@ -87,8 +87,8 @@ bool hit(vec3 org, vec3 dir)
 
 void main()
 {
-  float xoff = scale*((gl_FragCoord.x/float(x_resolution)) - 0.5f);
-  float yoff = scale*((gl_FragCoord.y/float(y_resolution)) - 0.5f)*(float(y_resolution)/float(x_resolution));
+  float xoff = scale*(((gl_FragCoord.x + gl_SamplePosition.x)/float(x_resolution)) - 0.5f);
+  float yoff = scale*(((gl_FragCoord.y + gl_SamplePosition.y)/float(y_resolution)) - 0.5f)*(float(y_resolution)/float(x_resolution));
 
   //start with a vector pointing down the z axis (greater than half the corner to corner distance, i.e. > ~1.75)
   vec4 org = vec4(xoff, yoff,  2,  0); //add the offsets in x and y

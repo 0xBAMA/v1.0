@@ -80,11 +80,14 @@ void OpenGL_container::load_textures()
 
 
   for(int x = 0; x < DIM; x++)
+  {
     for(int y = 0; y < DIM; y++)
+    {
       for(int z = 0; z < DIM; z++)
       {
         val = (unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255);
 
+        //populate the 4 component texture with some values
         data.push_back(val);                     //red
         data.push_back(val);                    //green
         data.push_back(val);                   //blue
@@ -92,10 +95,8 @@ void OpenGL_container::load_textures()
 
         data2.push_back(val);               //populate the mask texture with some values
       }
-
-
-  GLuint block_textures[2];
-  GLuint mask_textures[2];
+    }
+  }
 
   glGenTextures(2, &block_textures[0]);
 
@@ -119,6 +120,11 @@ void OpenGL_container::load_textures()
   glBindImageTexture(3, mask_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
 
+  //these are going to be standard textures, read only, with mipmaps and filtering
+  glGenTextures(1, &perlin_texture);
+  glGenTextures(1, &heightmap_texture);
+
+
   cout << "finished load_textures()" << endl << endl;
 }
 
@@ -130,7 +136,7 @@ void OpenGL_container::display()
   GLint xres = (int)io.DisplaySize.x;
   GLint yres = (int)io.DisplaySize.y;
 
-  // float f = SDL_GetTicks(); // this is how you get the time elapsed, in ms
+  // float f = SDL_GetTicks(); // this is how you get the time elapsed, in ms, if you want to do animated stuff
 
   glUniform1iv(glGetUniformLocation(main_display_shader, "x_resolution"), 1, &xres);
   glUniform1iv(glGetUniformLocation(main_display_shader, "y_resolution"), 1, &yres);
