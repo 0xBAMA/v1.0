@@ -86,7 +86,7 @@ void OpenGL_container::load_textures()
     {
       for(int z = 0; z < DIM; z++)
       {
-        val = (unsigned char)(p.noise(x*0.014,y*0.014,z*0.014) * 255);
+        val = (unsigned char)(p.noise(x*0.014,y*0.04,z*0.014) * 255);
 
         //populate the 4 component texture with some values
         data.push_back(val);                     //red
