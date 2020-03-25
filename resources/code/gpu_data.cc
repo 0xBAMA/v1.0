@@ -77,6 +77,7 @@ void OpenGL_container::load_textures()
   unsigned char val;
 
   #define DIM 256
+  // #define DIM 512
 
 
   for(int x = 0; x < DIM; x++)
@@ -85,19 +86,24 @@ void OpenGL_container::load_textures()
     {
       for(int z = 0; z < DIM; z++)
       {
-        val = (unsigned char)(p.noise(x*0.01,y*0.01,z*0.01) * 255);
+        val = (unsigned char)(p.noise(x*0.014,y*0.014,z*0.014) * 255);
 
         //populate the 4 component texture with some values
         data.push_back(val);                     //red
         data.push_back(val);                    //green
         data.push_back(val);                   //blue
+
         if(val > 100)
-          data.push_back(1);                  //alpha
+          data.push_back(0);                  //alpha
+        else if(val > 75)
+          data.push_back(10);
+        else if(val > 50)
+          data.push_back(30);
         else
           data.push_back(255);
-        // data.push_back((unsigned char)255);   //alpha, opaque
 
-        data2.push_back(val);               //populate the mask texture with some values
+
+        data2.push_back(0);               //populate the mask texture with some zero values
       }
     }
   }

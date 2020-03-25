@@ -31,8 +31,7 @@ mat3 rotationMatrix(vec3 axis, float angle)
 double tmin, tmax; //global scope, set in hit() to tell min and max parameters
 
 // #define NUM_STEPS 2000
-// #define NUM_STEPS 600
-#define NUM_STEPS 100
+#define NUM_STEPS 165
 
 #define MIN_DISTANCE 0.0
 #define MAX_DISTANCE 10.0
@@ -153,7 +152,7 @@ void main()
     // ivec3 sample_location = ivec3((org+tmin*dir+vec3(1))*127.5);
     // fragment_output = imageLoad(current,sample_location) * float(1.75f-distance((org+tmin*dir),org));
 
-    //this does the full raycasting operation
+    //this does the full raycasting operation, with alpha blending
     fragment_output = get_color_for_pixel(org, dir);
 
   }
