@@ -163,10 +163,7 @@ void OpenGL_container::load_textures()
   cout << "finished load_textures()" << endl << endl;
 
   draw_sphere();
-  swap_blocks();
 
-  draw_sphere();
-  swap_blocks();
 }
 
 void OpenGL_container::swap_blocks()
@@ -194,6 +191,9 @@ void OpenGL_container::swap_blocks()
 
 void OpenGL_container::draw_sphere()
 {
+  //current values become previous values, previous values will become current values, potentially overwritten with new data
+  swap_blocks();
+
   //testing compute shader
   glUseProgram(sphere_compute);
 
@@ -208,6 +208,8 @@ void OpenGL_container::draw_sphere()
   glDispatchCompute( DIM/8, DIM/8, DIM/8 );
 
   glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 
 }
 
