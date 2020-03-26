@@ -17,7 +17,7 @@ class OpenGL_container
 
     void draw_sphere(); //invokes the sphere compute shader
 
-    
+
 
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
     float phi;
@@ -48,6 +48,11 @@ class OpenGL_container
 
     GLint location_of_current;
     GLint location_of_current_mask;
+
+    GLint location_of_previous;
+    GLint location_of_previous_mask;
+
+
 
     GLuint block_textures[2];
     GLuint mask_textures[2];

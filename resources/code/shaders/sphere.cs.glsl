@@ -8,6 +8,10 @@ uniform layout(r8) image3D previous_mask;  //now-current value of the mask
 uniform layout(rgba8) image3D current;        //value of the block after the update
 uniform layout(r8) image3D current_mask;   //value of the mask after the update
 
+uniform vec3 location;
+uniform float radius;
+uniform vec4 color;
+
 void main()
 {
   float dist = distance(gl_GlobalInvocationID.xyz, vec3(127));

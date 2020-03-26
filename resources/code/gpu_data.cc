@@ -87,6 +87,7 @@ void OpenGL_container::load_textures()
   std::vector<unsigned char> data;
   std::vector<unsigned char> data2;
   std::vector<unsigned char> data3;
+  std::vector<unsigned char> data4;
   unsigned char val;
 
 
@@ -101,43 +102,26 @@ void OpenGL_container::load_textures()
         val = (unsigned char)(p.noise(x*0.014,y*0.04,z*0.014) * 255);
 
         //populate the 4 component texture with some values
-        data.push_back(val);                     //red
-        data.push_back(val);                    //green
-        data.push_back(val);                   //blue
-
-        if(val > 100)
-          data.push_back(0);                  //alpha
-        else if(val > 75)
-          data.push_back(10);
-        else if(val > 50)
-          data.push_back(30);
-        else
-          data.push_back(255);
+        data.push_back(0);                     //red
+        data.push_back(val);                  //green
+        data.push_back(0);                   //blue
+        data.push_back(1);                  //alpha
 
 
+        data2.push_back(val);                   //red
+        data2.push_back(0);                    //green
+        data2.push_back(0);                   //blue
+        data2.push_back(1);                  //alpha
 
-        if((x*y*z)%5==0)
-        {
-          data2.push_back( 0);                     //red
-          data2.push_back( 0);                    //green
-          data2.push_back( 0);                    //blue
-          data2.push_back( 1);
-        }
-        else
-        {
-          data2.push_back(255);                     //red
-          data2.push_back( 0);                    //green
-          data2.push_back( 0);                    //blue
-          data2.push_back( 0);
-        }
-
-        if(val < 50)
+        if(val < 127)
         {
           data3.push_back(255);               //populate the mask texture with some zero values, or 255 values
+          data4.push_back(0);
         }
         else
         {
           data3.push_back(0);
+          data4.push_back(255);
         }
       }
     }
@@ -154,10 +138,6 @@ void OpenGL_container::load_textures()
   glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
 
 
-  location_of_current = 0;
-  location_of_current_mask = 2;
-
-
 
   glGenTextures(2, &mask_textures[0]);
 
@@ -166,7 +146,7 @@ void OpenGL_container::load_textures()
   glBindImageTexture(2, mask_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
   glBindTexture(GL_TEXTURE_3D, mask_textures[1]);
-  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data3[0]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data4[0]);
   glBindImageTexture(3, mask_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
 
@@ -174,14 +154,19 @@ void OpenGL_container::load_textures()
   glGenTextures(1, &perlin_texture);
   glGenTextures(1, &heightmap_texture);
 
+  location_of_previous = 0;
+  location_of_current = 1;
+
+  location_of_previous_mask = 2;
+  location_of_current_mask = 3;
 
   cout << "finished load_textures()" << endl << endl;
 
   draw_sphere();
   swap_blocks();
+
   draw_sphere();
   swap_blocks();
-
 }
 
 void OpenGL_container::swap_blocks()
@@ -192,11 +177,17 @@ void OpenGL_container::swap_blocks()
   if(location_of_current == 1)
   {
     location_of_current = 0;
+    location_of_previous = 1;
+
     location_of_current_mask = 2;
+    location_of_previous_mask = 3;
   }
   else
   {
+    location_of_previous = 0;
     location_of_current = 1;
+
+    location_of_previous_mask = 2;
     location_of_current_mask = 3;
   }
 }
@@ -207,8 +198,8 @@ void OpenGL_container::draw_sphere()
   glUseProgram(sphere_compute);
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
   glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
@@ -217,6 +208,7 @@ void OpenGL_container::draw_sphere()
   glDispatchCompute( DIM/8, DIM/8, DIM/8 );
 
   glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
 }
 
 void OpenGL_container::display()
