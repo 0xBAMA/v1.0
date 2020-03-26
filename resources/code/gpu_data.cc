@@ -14,10 +14,21 @@ void OpenGL_container::init()
 
 
   cout << "starting init" << endl;
-  cout << "  compiling shader...";
+  cout << "  compiling main display shaders...";
   Shader s("resources/code/shaders/main.vs.glsl", "resources/code/shaders/main.fs.glsl");
 
   main_display_shader = s.Program;
+  cout << "done." << endl;
+
+
+  //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
+  //║  │ ││││├─┘│ │ │ ├┤   ╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
+  //╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
+
+  cout << "  compiling sphere compute shader...";
+  CShader cssphere("resources/code/shaders/sphere.cs.glsl");
+
+  sphere_compute = cssphere.Program;
   cout << "done." << endl;
 
   // A---------------B
@@ -105,11 +116,20 @@ void OpenGL_container::load_textures()
 
 
 
-
-        data2.push_back(val);                     //red
-        data2.push_back(val);                    //green
-        data2.push_back( 0);                    //blue
-        data2.push_back( 10);
+        if((x*y*z)%5==0)
+        {
+          data2.push_back(val);                     //red
+          data2.push_back(val);                    //green
+          data2.push_back( 0);                    //blue
+          data2.push_back( 10);
+        }
+        else
+        {
+          data2.push_back(255);                     //red
+          data2.push_back(val);                    //green
+          data2.push_back( 0);                    //blue
+          data2.push_back( 1);
+        }
 
 
         data3.push_back(0);               //populate the mask texture with some zero values
@@ -170,7 +190,8 @@ void OpenGL_container::display()
 
 
   // this is to swap between the two block textures
-  // we read from one, write to the other, then swap - but do it by the number of the texture unit, so no actual data moves - just one uniform integer changes
+  // we read from one, write to the other, then swap - but do it by the number of the texture unit, so no data actually moves
+  //  just one uniform integer changes, and it gets sent anyways
   if(location_of_current == 1)
     location_of_current = 0;
   else
