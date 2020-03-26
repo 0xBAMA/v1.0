@@ -137,7 +137,7 @@ class CShader //very similar to above, but for compute shader instead of vertex/
     CShader( const GLchar *Path, bool verbose=false)
     {
 
-        // 1. Retrieve the compute shader source code from filePath
+        // 1. Retrieve the compute shader source code from Path
         std::string Code;
         std::ifstream File;
         // ensures ifstream objects can throw exceptions:

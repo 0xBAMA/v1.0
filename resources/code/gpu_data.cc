@@ -74,6 +74,7 @@ void OpenGL_container::load_textures()
   PerlinNoise p;
   std::vector<unsigned char> data;
   std::vector<unsigned char> data2;
+  std::vector<unsigned char> data3;
   unsigned char val;
 
   #define DIM 256
@@ -103,7 +104,15 @@ void OpenGL_container::load_textures()
           data.push_back(255);
 
 
-        data2.push_back(0);               //populate the mask texture with some zero values
+
+
+        data2.push_back(val);                     //red
+        data2.push_back(val);                    //green
+        data2.push_back( 0);                    //blue
+        data2.push_back( 10);
+
+
+        data3.push_back(0);               //populate the mask texture with some zero values
       }
     }
   }
@@ -115,7 +124,7 @@ void OpenGL_container::load_textures()
   glBindImageTexture(0, block_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
 
   glBindTexture(GL_TEXTURE_3D, block_textures[1]);
-  glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data2[0]);
   glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
 
 
@@ -125,11 +134,11 @@ void OpenGL_container::load_textures()
   glGenTextures(2, &mask_textures[0]);
 
   glBindTexture(GL_TEXTURE_3D, mask_textures[0]);
-  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data2[0]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data3[0]);
   glBindImageTexture(2, mask_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
   glBindTexture(GL_TEXTURE_3D, mask_textures[1]);
-  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data2[0]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data3[0]);
   glBindImageTexture(3, mask_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
 
