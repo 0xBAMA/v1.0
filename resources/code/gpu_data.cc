@@ -149,6 +149,8 @@ void OpenGL_container::load_textures()
 
 
   location_of_current = 0;
+  location_of_current_mask = 2;
+  
 
 
   glGenTextures(2, &mask_textures[0]);
@@ -181,6 +183,23 @@ void OpenGL_container::load_textures()
 
 }
 
+void OpenGL_container::swap_blocks()
+{
+  // this is to swap between the two block textures
+  // we read from one, write to the other, then swap - but do it by the number of the texture unit, so no data actually moves
+  //  just one uniform integer changes, and it gets sent anyways
+  if(location_of_current == 1)
+  {
+    location_of_current = 0;
+    location_of_current_mask = 2;
+  }
+  else
+  {
+    location_of_current = 1;
+    location_of_current_mask = 3;
+  }
+}
+
 void OpenGL_container::display()
 {
   glUseProgram(main_display_shader);
@@ -200,13 +219,7 @@ void OpenGL_container::display()
   glUniform4fv(glGetUniformLocation(main_display_shader, "clear_color"), 1, glm::value_ptr(clear_color));
 
 
-  // this is to swap between the two block textures
-  // we read from one, write to the other, then swap - but do it by the number of the texture unit, so no data actually moves
-  //  just one uniform integer changes, and it gets sent anyways
-  if(location_of_current == 1)
-    location_of_current = 0;
-  else
-    location_of_current = 1;
+
 
   glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current);
 

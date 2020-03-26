@@ -11,6 +11,7 @@ class OpenGL_container
   public:
     void init();
     void load_textures();
+    void swap_blocks();
 
     void display();
 
