@@ -116,7 +116,7 @@ void OpenGL_container::load_textures()
 
   glBindTexture(GL_TEXTURE_3D, block_textures[1]);
   glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
-  glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);\
+  glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
 
 
   location_of_current = 0;
