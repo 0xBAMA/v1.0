@@ -5,7 +5,8 @@ uniform layout(rgba8) image3D current;
 
 void main()
 {
-  if(distance(gl_GlobalInvocationID.xyz, vec3(0)) < 100)
+  float dist = distance(gl_GlobalInvocationID.xyz, vec3(0));
+  if((dist < 100 && dist > 90) || (dist < 80 && dist > 70))
   {
     imageStore(current, ivec3(gl_GlobalInvocationID.xyz), vec4(1));
   }
