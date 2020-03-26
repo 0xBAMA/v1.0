@@ -15,6 +15,10 @@ class OpenGL_container
 
     void display();
 
+    void draw_sphere(); //invokes the sphere compute shader
+
+    
+
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
     float phi;
     float theta;
@@ -43,6 +47,7 @@ class OpenGL_container
   // ╩ └─┘┴ └─ ┴ └─┘┴└─└─┘└─┘
 
     GLint location_of_current;
+    GLint location_of_current_mask;
 
     GLuint block_textures[2];
     GLuint mask_textures[2];

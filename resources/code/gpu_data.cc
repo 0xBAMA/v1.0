@@ -1,4 +1,5 @@
 #include "gpu_data.h"
+#include "includes.h"
 
 void OpenGL_container::init()
 {
@@ -88,8 +89,7 @@ void OpenGL_container::load_textures()
   std::vector<unsigned char> data3;
   unsigned char val;
 
-  #define DIM 256
-  // #define DIM 512
+
 
 
   for(int x = 0; x < DIM; x++)
@@ -118,21 +118,27 @@ void OpenGL_container::load_textures()
 
         if((x*y*z)%5==0)
         {
-          data2.push_back(val);                     //red
-          data2.push_back(val);                    //green
+          data2.push_back( 0);                     //red
+          data2.push_back( 0);                    //green
           data2.push_back( 0);                    //blue
-          data2.push_back( 10);
+          data2.push_back( 1);
         }
         else
         {
           data2.push_back(255);                     //red
-          data2.push_back(val);                    //green
+          data2.push_back( 0);                    //green
           data2.push_back( 0);                    //blue
-          data2.push_back( 1);
+          data2.push_back( 0);
         }
 
-
-        data3.push_back(0);               //populate the mask texture with some zero values
+        if(val < 50)
+        {
+          data3.push_back(255);               //populate the mask texture with some zero values, or 255 values
+        }
+        else
+        {
+          data3.push_back(0);
+        }
       }
     }
   }
@@ -150,7 +156,7 @@ void OpenGL_container::load_textures()
 
   location_of_current = 0;
   location_of_current_mask = 2;
-  
+
 
 
   glGenTextures(2, &mask_textures[0]);
@@ -171,15 +177,10 @@ void OpenGL_container::load_textures()
 
   cout << "finished load_textures()" << endl << endl;
 
-  //testing compute shader
-
-  glUseProgram(sphere_compute);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-
-
-  glDispatchCompute( DIM/8, DIM/8, DIM/8 );
-
-  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+  draw_sphere();
+  swap_blocks();
+  draw_sphere();
+  swap_blocks();
 
 }
 
@@ -200,6 +201,24 @@ void OpenGL_container::swap_blocks()
   }
 }
 
+void OpenGL_container::draw_sphere()
+{
+  //testing compute shader
+  glUseProgram(sphere_compute);
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 );
+
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+}
+
 void OpenGL_container::display()
 {
   glUseProgram(main_display_shader);
@@ -217,9 +236,6 @@ void OpenGL_container::display()
   glUniform1fv(glGetUniformLocation(main_display_shader, "utheta"),       1, &theta);
 
   glUniform4fv(glGetUniformLocation(main_display_shader, "clear_color"), 1, glm::value_ptr(clear_color));
-
-
-
 
   glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current);
 

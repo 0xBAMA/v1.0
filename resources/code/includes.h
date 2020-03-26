@@ -65,4 +65,9 @@ using std::endl;
 
 #include "gpu_data.h"
 
+
+//this sets how many texels are on an edge. Trying not to hardcode this anywhere, so that I can easily switch from 256, 512, 1024, etc
+#define DIM 256
+
+
 #endif

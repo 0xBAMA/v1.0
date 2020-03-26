@@ -530,9 +530,9 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("  x pos", &sphere_location.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  y pos", &sphere_location.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  z pos", &sphere_location.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  x pos", &sphere_location.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  y pos", &sphere_location.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  z pos", &sphere_location.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
@@ -624,21 +624,21 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("  x1 ", &point1.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  y1 ", &point1.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  z1 ", &point1.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  x1 ", &point1.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  y1 ", &point1.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  z1 ", &point1.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("  x2 ", &point2.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  y2 ", &point2.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  z2 ", &point2.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  x2 ", &point2.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  y2 ", &point2.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  z2 ", &point2.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("  x3 ", &point3.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  y3 ", &point3.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("  z3 ", &point3.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("  x3 ", &point3.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  y3 ", &point3.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("  z3 ", &point3.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
@@ -678,15 +678,15 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Begin("Ellipsoid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
 
-    ImGui::SliderFloat("x location", &center.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("y location", &center.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("z location", &center.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("x location", &center.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("y location", &center.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("z location", &center.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("x radius", &radius.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("y radius", &radius.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("z radius", &radius.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("x radius", &radius.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("y radius", &radius.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("z radius", &radius.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
@@ -735,15 +735,15 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("bvec x", &cylinder_bvec.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("bvec y", &cylinder_bvec.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("bvec z", &cylinder_bvec.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("bvec x", &cylinder_bvec.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("bvec y", &cylinder_bvec.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("bvec z", &cylinder_bvec.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("tvec x", &cylinder_tvec.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("tvec y", &cylinder_tvec.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("tvec z", &cylinder_tvec.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("tvec x", &cylinder_tvec.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("tvec y", &cylinder_tvec.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("tvec z", &cylinder_tvec.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
@@ -787,15 +787,15 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("bvec x", &tube_bvec.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("bvec y", &tube_bvec.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("bvec z", &tube_bvec.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("bvec x", &tube_bvec.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("bvec y", &tube_bvec.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("bvec z", &tube_bvec.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("tvec x", &tube_tvec.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("tvec y", &tube_tvec.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("tvec z", &tube_tvec.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("tvec x", &tube_tvec.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("tvec y", &tube_tvec.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("tvec z", &tube_tvec.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
@@ -852,51 +852,51 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("a x", &a.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("a y", &a.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("a z", &a.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("a x", &a.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("a y", &a.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("a z", &a.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("b x", &b.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("b y", &b.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("b z", &b.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("b x", &b.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("b y", &b.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("b z", &b.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("c x", &c.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("c y", &c.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("c z", &c.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("c x", &c.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("c y", &c.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("c z", &c.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("d x", &d.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("d y", &d.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("d z", &d.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("d x", &d.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("d y", &d.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("d z", &d.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("e x", &e.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("e y", &e.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("e z", &e.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("e x", &e.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("e y", &e.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("e z", &e.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("f x", &f.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("f y", &f.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("f z", &f.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("f x", &f.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("f y", &f.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("f z", &f.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("g x", &g.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("g y", &g.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("g z", &g.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("g x", &g.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("g y", &g.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("g z", &g.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("h x", &h.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("h y", &h.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat("h z", &h.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat("h x", &h.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("h y", &h.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat("h z", &h.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
@@ -932,18 +932,18 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetNextWindowSize(ImVec2(256,275));
     ImGui::Begin("AABB Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::SliderFloat(" x max", &max.x, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat(" x min", &min.x, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat(" x max", &max.x, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat(" x min", &min.x, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat(" y max", &max.y, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat(" y min", &min.y, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat(" y max", &max.y, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat(" y min", &min.y, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
-    ImGui::SliderFloat(" z max", &max.z, 0.0f, 256.0f, "%.3f");
-    ImGui::SliderFloat(" z min", &min.z, 0.0f, 256.0f, "%.3f");
+    ImGui::SliderFloat(" z max", &max.z, 0.0f, float(DIM), "%.3f");
+    ImGui::SliderFloat(" z min", &min.z, 0.0f, float(DIM), "%.3f");
 
     ImGui::Separator();
 
@@ -1419,7 +1419,8 @@ void voraldo::draw_menu_and_take_input()
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_MINUS)
       GPU_Data.scale += 0.1f;     //make scale smaller (offsets are larger)
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_EQUALS) //SDLK_PLUS requires that you hit the shift
-      GPU_Data.scale -= 0.1f;     //make scale larger  (offsets are smaller)
+      GPU_Data.swap_blocks();
+      // GPU_Data.scale -= 0.1f;     //make scale larger  (offsets are smaller)
   }
 }
 
