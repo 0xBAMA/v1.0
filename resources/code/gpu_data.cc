@@ -168,6 +168,17 @@ void OpenGL_container::load_textures()
 
 
   cout << "finished load_textures()" << endl << endl;
+
+  //testing compute shader
+
+  glUseProgram(sphere_compute);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+
+
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 );
+
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
 }
 
 void OpenGL_container::display()
