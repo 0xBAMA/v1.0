@@ -27,7 +27,7 @@ void GLAPIENTRY MessageCallback( GLenum source,
     fprintf( stderr, "        GL CALLBACK: %s type = 0x%x, severity = GL_DEBUG_SEVERITY_LOW, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ), type, message );
 
-  bool show_notification_severity = true;
+  bool show_notification_severity = false;
   if(severity == GL_DEBUG_SEVERITY_NOTIFICATION && show_notification_severity)
     fprintf( stderr, "        GL CALLBACK: %s type = 0x%x, severity = GL_DEBUG_SEVERITY_NOTIFICATION, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ), type, message );
@@ -38,7 +38,7 @@ void gl_debug_enable()
   //DEBUG ENABLE
   glEnable              ( GL_DEBUG_OUTPUT );
   glDebugMessageCallback( MessageCallback, 0 );      //getting a seg fault here, I think
-  cout << "GL debug output enabled." << endl;
+  cout << "OpenGL debug output enabled." << endl << endl;
 }
 
 #endif

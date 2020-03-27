@@ -1426,8 +1426,10 @@ void voraldo::draw_menu_and_take_input()
 void voraldo::gl_data_setup()
 {
   //set up the textures and stuff
+  cout << "starting init..." << endl;
   GPU_Data.init();
   GPU_Data.load_textures();
+  cout << "finished init." << endl;
 }
 
 void voraldo::quit()
@@ -1448,5 +1450,5 @@ void voraldo::quit()
   SDL_DestroyWindow(window);
   SDL_Quit();
 
-  cout << "GOODBYE" << endl << endl; //last line of code before main's return statement
+  cout << endl << "GOODBYE" << endl; //last line of code before main's return statement
 }

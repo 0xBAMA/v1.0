@@ -3,18 +3,19 @@
 
 void OpenGL_container::init()
 {
-  GLint val;
-  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
-  cout << "max texture size reports: " << val << endl << endl;
+  //gl info
 
-  glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &val);
-  cout << "max 3dtexture size reports: " << val << " on all 3 edges" << endl << endl;
+  // GLint val;
+  // glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
+  // cout << "max texture size reports: " << val << endl << endl;
+  //
+  // glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &val);
+  // cout << "max 3dtexture size reports: " << val << " on all 3 edges" << endl << endl;
+  //
+  // glGetIntegerv(GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS, &val);
+  // cout << "max compute texture image units reports: " << val << endl << endl;
 
-  glGetIntegerv(GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS, &val);
-  cout << "max compute texture image units reports: " << val << endl << endl;
 
-
-  cout << "starting init" << endl;
   cout << "  compiling main display shaders.........";
   Shader s("resources/code/shaders/main.vs.glsl", "resources/code/shaders/main.fs.glsl");
 
