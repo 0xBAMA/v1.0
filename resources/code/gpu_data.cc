@@ -15,7 +15,7 @@ void OpenGL_container::init()
 
 
   cout << "starting init" << endl;
-  cout << "  compiling main display shaders...";
+  cout << "  compiling main display shaders.........";
   Shader s("resources/code/shaders/main.vs.glsl", "resources/code/shaders/main.fs.glsl");
 
   main_display_shader = s.Program;
@@ -26,7 +26,7 @@ void OpenGL_container::init()
   //║  │ ││││├─┘│ │ │ ├┤   ╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
 
-  cout << "  compiling sphere compute shader...";
+  cout << "  compiling sphere compute shader........";
   CShader cssphere("resources/code/shaders/sphere.cs.glsl");
 
   sphere_compute = cssphere.Program;
@@ -55,7 +55,7 @@ void OpenGL_container::init()
   points.push_back(glm::vec3( 1,-1, 0));  //D
 
   //vao, vbo
-  cout << "  setting up vao, vbo...";
+  cout << "  setting up vao, vbo....................";
   glGenVertexArrays( 1, &vao );
   glBindVertexArray( vao );
 
@@ -64,13 +64,13 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
   //buffer the data
-  cout << "  buffering data...";
+  cout << "  buffering data.........................";
   glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * points.size(), NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * points.size(), &points[0]);
   cout << "done." << endl;
 
   //set up attributes
-  cout << "  setting up attributes...";
+  cout << "  setting up attributes..................";
   GLuint points_attrib = glGetAttribLocation(main_display_shader, "vPosition");
   glEnableVertexAttribArray(points_attrib);
   glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
@@ -91,7 +91,7 @@ void OpenGL_container::load_textures()
   unsigned char val;
 
 
-  cout << "loading textures...";
+  cout << "  loading textures.......................";
 
   for(int x = 0; x < DIM; x++)
   {
@@ -160,7 +160,7 @@ void OpenGL_container::load_textures()
   location_of_previous_mask = 2;
   location_of_current_mask = 3;
 
-  cout << "...done." << endl;
+  cout << "done." << endl;
 
   draw_sphere();
 
