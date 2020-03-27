@@ -8,9 +8,13 @@ uniform layout(r8) image3D previous_mask;  //now-current value of the mask
 uniform layout(rgba8) image3D current;        //value of the block after the update
 uniform layout(r8) image3D current_mask;   //value of the mask after the update
 
-uniform vec3 location;
-uniform float radius;
-uniform vec4 color;
+
+uniform vec3 location;  //where is this sphere centered?
+uniform float radius;   //what is the radius of this sphere?
+uniform vec4 color;     //what color should it be drawn with?
+
+uniform bool draw;      //should this shape be drawn?
+uniform bool mask;      //this this shape be masked?
 
 void main()
 {

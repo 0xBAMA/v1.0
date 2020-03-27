@@ -74,7 +74,7 @@ void OpenGL_container::init()
   GLuint points_attrib = glGetAttribLocation(main_display_shader, "vPosition");
   glEnableVertexAttribArray(points_attrib);
   glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
-  cout << "done." << endl << endl;
+  cout << "done." << endl;
 
   scale = 5.0f;
   phi   = 0.0f;
@@ -91,7 +91,7 @@ void OpenGL_container::load_textures()
   unsigned char val;
 
 
-
+  cout << "loading textures...";
 
   for(int x = 0; x < DIM; x++)
   {
@@ -160,7 +160,7 @@ void OpenGL_container::load_textures()
   location_of_previous_mask = 2;
   location_of_current_mask = 3;
 
-  cout << "finished load_textures()" << endl << endl;
+  cout << "...done." << endl;
 
   draw_sphere();
 
@@ -191,11 +191,18 @@ void OpenGL_container::swap_blocks()
 
 void OpenGL_container::draw_sphere()
 {
-  //current values become previous values, previous values will become current values, potentially overwritten with new data
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
   swap_blocks();
 
   //testing compute shader
   glUseProgram(sphere_compute);
+
+  //send the sphere-specific values
+  // glUniform1i(glGetUniformLocation(sphere_compute, "mask"), true);
+  // glUniform1i(glGetUniformLocation(sphere_compute, "draw"), true);
+  // glUniform1fv(glGetUniformLocation(sphere_compute, "radius"), 1, &radius);
+  // glUniform3fv(glGetUniformLocation(sphere_compute, "location"), 1, glm::value_ptr(location));
+  // glUniform4fv(glGetUniformLocation(sphere_compute, "color"), 1, glm::value_ptr(color));
 
   //send the preveious texture handles
   glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
@@ -205,8 +212,10 @@ void OpenGL_container::draw_sphere()
   glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
   glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
 
+  //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 );
 
+  //wait for things to synchronize
   glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 
   //postcondition - "current" values have the most up-to-date data
