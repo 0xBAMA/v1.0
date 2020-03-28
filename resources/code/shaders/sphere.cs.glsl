@@ -9,7 +9,6 @@ uniform layout(r8) image3D previous_mask;  //now-current values of the mask
 uniform layout(rgba8) image3D current;        //values of the block after the update
 uniform layout(r8) image3D current_mask;   //values of the mask after the update
 
-
 uniform vec3 location;  //where is this sphere centered?
 uniform float radius;   //what is the radius of this sphere?
 uniform vec4 color;     //what color should it be drawn with?
@@ -17,24 +16,44 @@ uniform vec4 color;     //what color should it be drawn with?
 uniform bool draw;      //should this shape be drawn?
 uniform bool mask;      //this this shape be masked?
 
+bool in_shape()
+{
+  float d = distance(gl_GlobalInvocationID.xyz, location);
+
+  if(d < radius)  //sphere defined as all points within 'radius' of the center point
+    return true;
+  else
+    return false;
+}
+
+vec4 mask_true = vec4(1.0,0.0,0.0,0.0);
+vec4 mask_false = vec4(0.0,0.0,0.0,0.0);
+
 void main()
 {
-  float dist = distance(gl_GlobalInvocationID.xyz, vec3(127));
-  bool mask = (imageLoad(previous_mask, ivec3(gl_GlobalInvocationID.xyz)).r > 0.5);   //existing mask value (previous_mask = 0?)
+  bool pmask = (imageLoad(previous_mask, ivec3(gl_GlobalInvocationID.xyz)).r > 0.5);  //existing mask value (previous_mask = 0?)
   vec4 pcol = imageLoad(previous, ivec3(gl_GlobalInvocationID.xyz));                 //existing color value (what is the previous color?)
 
-  //there are three outcomes:
-
-  // if mask is true, write color and mask into the current block's data - the drawing operation specified by this shader will not take place for this cell.
-  // if mask is false, there are two possiblities - one, it is affected by the current drawing operation, or two, it is not.
-
-  //  in the case that it is affected by the current drawing operation, write the uniform color value to current, and the uniform mask value to current_mask
-  //  in the case it is not affected by the current drawing operation, write the color read into pcol to current, and a zero value will be written to current_mask
-
-
-  //placeholder, garbage data
-  if((int(dist) % 15 <= 5) && !mask)
+  if(pmask) //the cell was masked
   {
-    imageStore(current, ivec3(gl_GlobalInvocationID.xyz), vec4(0.5));
+    imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //color takes on previous color
+    imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_true);  //mask is set true
+  }
+  else if(!in_shape())  //the cell was not masked, but is outside the shape
+  {
+    imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //color takes previous color
+    imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_false); //mask is set false
+  }
+  else  //the cell was not masked, and is inside the shape
+  {
+    if(mask)  //uniform value telling whether or not to mask
+      imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_true);
+    else
+      imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_false);
+
+    if(draw)  //uniform value telling whether or not to draw
+      imageStore(current, ivec3(gl_GlobalInvocationID.xyz), color); //uniform color
+    else
+      imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //previous color
   }
 }

@@ -114,16 +114,19 @@ void OpenGL_container::load_textures()
         data2.push_back(0);                   //blue
         data2.push_back(1);                  //alpha
 
-        if(val < 127)
-        {
-          data3.push_back(255);               //populate the mask texture with some zero values, or 255 values
-          data4.push_back(0);
-        }
-        else
-        {
-          data3.push_back(0);
-          data4.push_back(255);
-        }
+        // if(val < 127)
+        // {
+        //   data3.push_back(255);               //populate the mask texture with some zero values, or 255 values
+        //   data4.push_back(0);
+        // }
+        // else
+        // {
+        //   data3.push_back(0);
+        //   data4.push_back(255);
+        // }
+
+        data3.push_back(0);
+        data4.push_back(0);
       }
     }
   }
@@ -163,7 +166,10 @@ void OpenGL_container::load_textures()
 
   cout << "done." << endl;
 
-  draw_sphere();
+  draw_sphere(glm::vec3(35,50,90), 45, glm::vec4(0.3,0.5,0.2,1.0), true, true);
+  draw_sphere(glm::vec3(35,90,90), 35, glm::vec4(0.7,0.1,0.8,0.2), true, true);
+  draw_sphere(glm::vec3(45,90,45), 90, glm::vec4(0.9,0.0,0.3,0.1), false, true);
+  draw_sphere(glm::vec3(127,127,127), 1000, glm::vec4(0.0,0.0,0.0,0.0), true, false);
 
 }
 
@@ -190,7 +196,7 @@ void OpenGL_container::swap_blocks()
   }
 }
 
-void OpenGL_container::draw_sphere()
+void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask)
 {
   //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
   swap_blocks();
@@ -199,11 +205,11 @@ void OpenGL_container::draw_sphere()
   glUseProgram(sphere_compute);
 
   //send the sphere-specific values
-  // glUniform1i(glGetUniformLocation(sphere_compute, "mask"), true);
-  // glUniform1i(glGetUniformLocation(sphere_compute, "draw"), true);
-  // glUniform1fv(glGetUniformLocation(sphere_compute, "radius"), 1, &radius);
-  // glUniform3fv(glGetUniformLocation(sphere_compute, "location"), 1, glm::value_ptr(location));
-  // glUniform4fv(glGetUniformLocation(sphere_compute, "color"), 1, glm::value_ptr(color));
+  glUniform1i(glGetUniformLocation(sphere_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(sphere_compute, "draw"), draw);
+  glUniform1fv(glGetUniformLocation(sphere_compute, "radius"), 1, &radius);
+  glUniform3fv(glGetUniformLocation(sphere_compute, "location"), 1, glm::value_ptr(location));
+  glUniform4fv(glGetUniformLocation(sphere_compute, "color"), 1, glm::value_ptr(color));
 
   //send the preveious texture handles
   glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);

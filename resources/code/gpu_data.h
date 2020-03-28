@@ -15,7 +15,7 @@ class OpenGL_container
 
     void display();
 
-    void draw_sphere(); //invokes the sphere compute shader
+    void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask); //invokes the sphere compute shader
 
 
 
