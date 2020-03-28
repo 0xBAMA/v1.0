@@ -548,7 +548,8 @@ void voraldo::draw_menu_and_take_input()
 
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
-        //draw the sphere with the selected values
+        //draw the sphere with the selected values  - draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask)
+        GPU_Data.draw_sphere(sphere_location, sphere_radius, glm::vec4(sphere_draw_color.x, sphere_draw_color.y, sphere_draw_color.z, sphere_draw_color.w), sphere_draw, sphere_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);

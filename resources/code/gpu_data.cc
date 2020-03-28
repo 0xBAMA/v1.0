@@ -166,10 +166,10 @@ void OpenGL_container::load_textures()
 
   cout << "done." << endl;
 
-  draw_sphere(glm::vec3(35,50,90), 45, glm::vec4(0.3,0.5,0.2,1.0), true, true);
-  draw_sphere(glm::vec3(35,90,90), 35, glm::vec4(0.7,0.1,0.8,0.2), true, true);
-  draw_sphere(glm::vec3(45,90,45), 90, glm::vec4(0.9,0.0,0.3,0.1), false, true);
-  draw_sphere(glm::vec3(127,127,127), 1000, glm::vec4(0.0,0.0,0.0,0.0), true, false);
+  // draw_sphere(glm::vec3(35,50,90), 45, glm::vec4(0.3,0.5,0.2,1.0), true, true);
+  // draw_sphere(glm::vec3(35,90,90), 35, glm::vec4(0.7,0.1,0.8,0.2), true, true);
+  // draw_sphere(glm::vec3(45,90,45), 90, glm::vec4(0.9,0.0,0.3,0.1), false, true);
+  // draw_sphere(glm::vec3(127,127,127), 1000, glm::vec4(0.0,0.0,0.0,0.0), true, false);
 
 }
 
