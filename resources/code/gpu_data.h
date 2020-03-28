@@ -17,6 +17,23 @@ class OpenGL_container
 
     void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask); //invokes the sphere compute shader
 
+    void draw_perlin_noise(); //parameter lists tbd
+    void draw_triangle();
+    void draw_ellipsoid();
+    void draw_cylinder();
+    void draw_tube();
+    void draw_cuboid();
+    void draw_aabb();
+    void draw_heightmap();
+    void draw_blur();
+    void clear_all();
+    void unmask_all();
+    void toggle_mask();
+    void mask_by_color();
+    void compute_static_lighting();
+    void compute_ambient_occlusion();
+    void game_of_life_update();
+    void wireworld_update();
 
 
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
@@ -35,11 +52,28 @@ class OpenGL_container
   //╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
   //╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
+    //display vertex/fragment shader pair
     GLuint main_display_shader;
 
-
+    //compute shaders to manipulate the image objects
     GLuint sphere_compute;
-    //  ... the rest of the compute shaders
+    GLuint perlin_noise_compute;
+    GLuint triangle_compute;
+    GLuint ellipsoid_compute;
+    GLuint cylinder_compute;
+    GLuint tube_compute;
+    GLuint cuboid_compute;
+    GLuint aabb_compute;
+    GLuint heightmap_compute;
+    GLuint blur_compute;
+    GLuint clear_all_compute;
+    GLuint unmask_all_compute;
+    GLuint toggle_mask_compute;
+    GLuint mask_by_color_compute;
+    GLuint static_lighting_compute;
+    GLuint ambient_occlusion_compute;
+    GLuint game_of_life_update_compute;
+    GLuint wireworld_update_compute;
 
 
   //╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐

@@ -29,9 +29,18 @@ void OpenGL_container::init()
 
   cout << "  compiling sphere compute shader........";
   CShader cssphere("resources/code/shaders/sphere.cs.glsl");
-
   sphere_compute = cssphere.Program;
   cout << "done." << endl;
+
+
+
+
+
+
+
+
+
+
 
   // A---------------B
   // |          .    |
@@ -196,8 +205,18 @@ void OpenGL_container::swap_blocks()
   }
 }
 
+
+
+//╔╦╗┬─┐┌─┐┬ ┬  ╔═╗┬ ┬┌┐┌┌─┐┌┬┐┬┌─┐┌┐┌┌─┐
+// ║║├┬┘├─┤│││  ╠╣ │ │││││   │ ││ ││││└─┐
+//═╩╝┴└─┴ ┴└┴┘  ╚  └─┘┘└┘└─┘ ┴ ┴└─┘┘└┘└─┘
+
+
 void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask)
 {
+//╔═╗┌─┐┬ ┬┌─┐┬─┐┌─┐
+//╚═╗├─┘├─┤├┤ ├┬┘├┤
+//╚═╝┴  ┴ ┴└─┘┴└─└─┘
   //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
   swap_blocks();
 
@@ -220,7 +239,7 @@ void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 c
   glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
-  glDispatchCompute( DIM/8, DIM/8, DIM/8 );
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
 
   //wait for things to synchronize
   glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
@@ -228,6 +247,145 @@ void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 c
   //postcondition - "current" values have the most up-to-date data
 
 }
+
+
+void OpenGL_container::draw_perlin_noise()
+{
+//╔═╗┌─┐┬─┐┬  ┬┌┐┌  ╔╗╔┌─┐┬┌─┐┌─┐
+//╠═╝├┤ ├┬┘│  ││││  ║║║│ ││└─┐├┤
+//╩  └─┘┴└─┴─┘┴┘└┘  ╝╚╝└─┘┴└─┘└─┘
+
+}
+
+void OpenGL_container::draw_triangle()
+{
+//╔╦╗┬─┐┬┌─┐┌┐┌┌─┐┬  ┌─┐
+// ║ ├┬┘│├─┤││││ ┬│  ├┤
+// ╩ ┴└─┴┴ ┴┘└┘└─┘┴─┘└─┘
+
+}
+
+void OpenGL_container::draw_ellipsoid()
+{
+//╔═╗┬  ┬  ┬┌─┐┌─┐┌─┐┬┌┬┐
+//║╣ │  │  │├─┘└─┐│ ││ ││
+//╚═╝┴─┘┴─┘┴┴  └─┘└─┘┴─┴┘
+
+}
+
+void OpenGL_container::draw_cylinder()
+{
+//╔═╗┬ ┬┬  ┬┌┐┌┌┬┐┌─┐┬─┐
+//║  └┬┘│  ││││ ││├┤ ├┬┘
+//╚═╝ ┴ ┴─┘┴┘└┘─┴┘└─┘┴└─
+
+}
+
+void OpenGL_container::draw_tube()
+{
+//╔╦╗┬ ┬┌┐ ┌─┐
+// ║ │ │├┴┐├┤
+// ╩ └─┘└─┘└─┘
+
+}
+
+void OpenGL_container::draw_cuboid()
+{
+//╔═╗┬ ┬┌┐ ┌─┐┬┌┬┐
+//║  │ │├┴┐│ ││ ││
+//╚═╝└─┘└─┘└─┘┴─┴┘
+
+}
+
+void OpenGL_container::draw_aabb()
+{
+//╔═╗╔═╗╔╗ ╔╗
+//╠═╣╠═╣╠╩╗╠╩╗
+//╩ ╩╩ ╩╚═╝╚═╝
+
+}
+
+void OpenGL_container::draw_heightmap()
+{
+//╦ ╦┌─┐┬┌─┐┬ ┬┌┬┐┌┬┐┌─┐┌─┐
+//╠═╣├┤ ││ ┬├─┤ │ │││├─┤├─┘
+//╩ ╩└─┘┴└─┘┴ ┴ ┴ ┴ ┴┴ ┴┴
+
+}
+
+void OpenGL_container::draw_blur()
+{
+//╔╗ ┬  ┬ ┬┬─┐
+//╠╩╗│  │ │├┬┘
+//╚═╝┴─┘└─┘┴└─
+
+}
+
+void OpenGL_container::clear_all()
+{
+//╔═╗┬  ┌─┐┌─┐┬─┐  ╔═╗┬  ┬
+//║  │  ├┤ ├─┤├┬┘  ╠═╣│  │
+//╚═╝┴─┘└─┘┴ ┴┴└─  ╩ ╩┴─┘┴─┘
+
+}
+
+void OpenGL_container::unmask_all()
+{
+//╦ ╦┌┐┌┌┬┐┌─┐┌─┐┬┌─  ╔═╗┬  ┬
+//║ ║││││││├─┤└─┐├┴┐  ╠═╣│  │
+//╚═╝┘└┘┴ ┴┴ ┴└─┘┴ ┴  ╩ ╩┴─┘┴─┘
+
+}
+
+void OpenGL_container::toggle_mask()
+{
+//╔╦╗┌─┐┌─┐┌─┐┬  ┌─┐  ╔╦╗┌─┐┌─┐┬┌─
+// ║ │ ││ ┬│ ┬│  ├┤   ║║║├─┤└─┐├┴┐
+// ╩ └─┘└─┘└─┘┴─┘└─┘  ╩ ╩┴ ┴└─┘┴ ┴
+
+}
+
+void OpenGL_container::mask_by_color()
+{
+//╔╦╗┌─┐┌─┐┬┌─  ┌┐ ┬ ┬  ╔═╗┌─┐┬  ┌─┐┬─┐
+//║║║├─┤└─┐├┴┐  ├┴┐└┬┘  ║  │ ││  │ │├┬┘
+//╩ ╩┴ ┴└─┘┴ ┴  └─┘ ┴   ╚═╝└─┘┴─┘└─┘┴└─
+
+}
+
+void OpenGL_container::compute_static_lighting()
+{
+//╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┌┬┐┌─┐┌┬┐┬┌─┐  ╦  ┬┌─┐┬ ┬┌┬┐┬┌┐┌┌─┐
+//║  │ ││││├─┘│ │ │ ├┤   ╚═╗ │ ├─┤ │ ││    ║  ││ ┬├─┤ │ │││││ ┬
+//╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝ ┴ ┴ ┴ ┴ ┴└─┘  ╩═╝┴└─┘┴ ┴ ┴ ┴┘└┘└─┘
+
+}
+
+void OpenGL_container::compute_ambient_occlusion()
+{
+//╔═╗┌┬┐┌┐ ┬┌─┐┌┐┌┌┬┐  ╔═╗┌─┐┌─┐┬  ┬ ┬┌─┐┬┌─┐┌┐┌
+//╠═╣│││├┴┐│├┤ │││ │   ║ ║│  │  │  │ │└─┐││ ││││
+//╩ ╩┴ ┴└─┘┴└─┘┘└┘ ┴   ╚═╝└─┘└─┘┴─┘└─┘└─┘┴└─┘┘└┘
+
+}
+
+void OpenGL_container::game_of_life_update()
+{
+//╔═╗┌─┐┌┬┐┌─┐  ┌─┐┌─┐  ╦  ┬┌─┐┌─┐
+//║ ╦├─┤│││├┤   │ │├┤   ║  │├┤ ├┤
+//╚═╝┴ ┴┴ ┴└─┘  └─┘└    ╩═╝┴└  └─┘
+
+}
+
+void OpenGL_container::wireworld_update()
+{
+//╦ ╦┬┬─┐┌─┐╦ ╦┌─┐┬─┐┬  ┌┬┐
+//║║║│├┬┘├┤ ║║║│ │├┬┘│   ││
+//╚╩╝┴┴└─└─┘╚╩╝└─┘┴└─┴─┘─┴┘
+
+}
+
+
 
 void OpenGL_container::display()
 {

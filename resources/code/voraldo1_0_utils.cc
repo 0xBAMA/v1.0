@@ -432,7 +432,7 @@ void voraldo::draw_menu_and_take_input()
   {
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,175));
+    ImGui::SetNextWindowSize(ImVec2(256,200));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text(" ");
@@ -445,9 +445,14 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Per Frame", ImVec2(120, 22)))
       current_menu_state = PER_FRAME_LIGHTING_CONFIG;
 
-
     ImGui::SetCursorPosX(70);
-    ImGui::SetCursorPosY(125);
+    if (ImGui::Button("AmbientOcclusion", ImVec2(120, 22)))
+    {
+      //to be determined
+    }
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
 
