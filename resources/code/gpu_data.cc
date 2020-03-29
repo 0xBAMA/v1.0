@@ -163,10 +163,16 @@ void OpenGL_container::load_textures()
   glBindImageTexture(3, mask_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
 
+
   //these are going to be standard textures, read only, with mipmaps and filtering
   glGenTextures(1, &perlin_texture);
-  glGenTextures(1, &heightmap_texture);
+  //3d texture for perlin noise - DIM on a side
 
+  glGenTextures(1, &heightmap_texture);
+  //2d texture for representation of a heightmap (greyscale) - also, DIM on a side
+
+
+//intialize these so we know which textures we're using
   location_of_previous = 0;
   location_of_current = 1;
 
@@ -174,12 +180,6 @@ void OpenGL_container::load_textures()
   location_of_current_mask = 3;
 
   cout << "done." << endl;
-
-  // draw_sphere(glm::vec3(35,50,90), 45, glm::vec4(0.3,0.5,0.2,1.0), true, true);
-  // draw_sphere(glm::vec3(35,90,90), 35, glm::vec4(0.7,0.1,0.8,0.2), true, true);
-  // draw_sphere(glm::vec3(45,90,45), 90, glm::vec4(0.9,0.0,0.3,0.1), false, true);
-  // draw_sphere(glm::vec3(127,127,127), 1000, glm::vec4(0.0,0.0,0.0,0.0), true, false);
-
 }
 
 void OpenGL_container::swap_blocks()

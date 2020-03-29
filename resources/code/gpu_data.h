@@ -17,23 +17,24 @@ class OpenGL_container
 
     void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask); //invokes the sphere compute shader
 
-    void draw_perlin_noise(); //parameter lists tbd
-    void draw_triangle();
-    void draw_ellipsoid();
-    void draw_cylinder();
-    void draw_tube();
-    void draw_cuboid();
-    void draw_aabb();
-    void draw_heightmap();
-    void draw_blur();
-    void clear_all();
-    void unmask_all();
-    void toggle_mask();
-    void mask_by_color();
-    void compute_static_lighting();
-    void compute_ambient_occlusion();
-    void game_of_life_update();
-    void wireworld_update();
+    //parameter lists tbd               shader exists | shader compiled | function written|
+    void draw_perlin_noise();         //      x       |       -         |       -         |
+    void draw_triangle();             //      x       |       -         |       -         |
+    void draw_ellipsoid();            //      x       |       -         |       -         |
+    void draw_cylinder();             //      x       |       -         |       -         |
+    void draw_tube();                 //      x       |       -         |       -         |
+    void draw_cuboid();               //      x       |       -         |       -         |
+    void draw_aabb();                 //      x       |       -         |       -         |
+    void draw_heightmap();            //      x       |       -         |       -         |
+    void draw_blur();                 //      -       |       -         |       -         |
+    void clear_all();                 //      -       |       -         |       -         |
+    void unmask_all();                //      -       |       -         |       -         |
+    void toggle_mask();               //      -       |       -         |       -         |
+    void mask_by_color();             //      -       |       -         |       -         |
+    void compute_static_lighting();   //      -       |       -         |       -         |
+    void compute_ambient_occlusion(); //      -       |       -         |       -         |
+    void game_of_life_update();       //      -       |       -         |       -         |
+    void wireworld_update();          //      -       |       -         |       -         |
 
 
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
