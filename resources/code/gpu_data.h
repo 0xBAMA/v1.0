@@ -18,23 +18,25 @@ class OpenGL_container
     void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask); //invokes the sphere compute shader
 
     //parameter lists tbd               shader exists | shader compiled | function written|
-    void draw_perlin_noise();         //      x       |       -         |       -         |
-    void draw_triangle();             //      x       |       -         |       -         |
-    void draw_ellipsoid();            //      x       |       -         |       -         |
-    void draw_cylinder();             //      x       |       -         |       -         |
-    void draw_tube();                 //      x       |       -         |       -         |
-    void draw_cuboid();               //      x       |       -         |       -         |
-    void draw_aabb();                 //      x       |       -         |       -         |
-    void draw_heightmap();            //      x       |       -         |       -         |
-    void draw_blur();                 //      -       |       -         |       -         |
-    void clear_all();                 //      -       |       -         |       -         |
-    void unmask_all();                //      -       |       -         |       -         |
-    void toggle_mask();               //      -       |       -         |       -         |
-    void mask_by_color();             //      -       |       -         |       -         |
-    void compute_static_lighting();   //      -       |       -         |       -         |
-    void compute_ambient_occlusion(); //      -       |       -         |       -         |
-    void game_of_life_update();       //      -       |       -         |       -         |
-    void wireworld_update();          //      -       |       -         |       -         |
+    void draw_perlin_noise();         //      x       |       -         |       -         | drawing perlin noise
+    void draw_triangle();             //      x       |       -         |       -         | drawing triangles
+    void draw_ellipsoid();            //      x       |       -         |       -         | drawing ellipsoids
+    void draw_cylinder();             //      x       |       -         |       -         | drawing cylinders
+    void draw_tube();                 //      x       |       -         |       -         | drawing tubes
+    void draw_cuboid();               //      x       |       -         |       -         | drawing cuboids
+    void draw_aabb();                 //      x       |       -         |       -         | drawing aabbs
+    void draw_heightmap();            //      x       |       -         |       -         | drawing heightmaps
+
+    // structure changes here - less shapes, more general operations
+    void draw_blur();                 //      -       |       -         |       -         | variable radius blurring operation
+    void clear_all();                 //      -       |       -         |       -         | clear all cells, respect mask value
+    void unmask_all();                //      -       |       -         |       -         | unmask all cells
+    void toggle_mask();               //      -       |       -         |       -         | toggle the mask value of all cells
+    void mask_by_color();             //      -       |       -         |       -         | mask based on value/variance per channel
+    void compute_static_lighting();   //      -       |       -         |       -         | compute static lighting - structure tbd
+    void compute_ambient_occlusion(); //      -       |       -         |       -         | compute ambient occlusion - based on neighborhood
+    void game_of_life_update();       //      -       |       -         |       -         | CA update, using GoL rules
+    void wireworld_update();          //      -       |       -         |       -         | CA update, using WireWorld rules
 
 
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
