@@ -45,6 +45,12 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling tube compute shader..........";
+  CShader cstube("resources/code/shaders/tube.cs.glsl");
+  tube_compute = cstube.Program;
+  cout << "done." << endl;
+
+
 
 
 
@@ -372,20 +378,35 @@ void OpenGL_container::draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radiu
 
 }
 
-void OpenGL_container::draw_tube()
+void OpenGL_container::draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask)
 {
 //╔╦╗┬ ┬┌┐ ┌─┐
 // ║ │ │├┴┐├┤
 // ╩ └─┘└─┘└─┘
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use aabb program
+  glUseProgram(tube_compute);
+
+  //send uniform variables specific to the aabb
+  glUniform1i(glGetUniformLocation(tube_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(tube_compute, "draw"), draw);
+  glUniform1fv(glGetUniformLocation(tube_compute, "iradius"), 1, &inner_radius);
+  glUniform1fv(glGetUniformLocation(tube_compute, "oradius"), 1, &outer_radius);
+  glUniform3fv(glGetUniformLocation(tube_compute, "bvec"), 1, glm::value_ptr(bvec));
+  glUniform3fv(glGetUniformLocation(tube_compute, "tvec"), 1, glm::value_ptr(tvec));
+  glUniform4fv(glGetUniformLocation(tube_compute, "color"), 1, glm::value_ptr(color));
+
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(tube_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(tube_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(tube_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(tube_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8

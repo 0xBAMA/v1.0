@@ -15,9 +15,10 @@ class OpenGL_container
 
     void display();
 
-    void draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask);                      //invokes the aabb compute shader
-    void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask);                //invokes the sphere compute shader
-    void draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask);  //invokes the cylinder compute shader
+    void draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask);                                            //invokes the aabb compute shader
+    void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask);                                      //invokes the sphere compute shader
+    void draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask);                        //invokes the cylinder compute shader
+    void draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask);  //invokes the tube compute shader
 
 
     //parameter lists tbd               shader exists | shader compiled | function written|
@@ -26,7 +27,6 @@ class OpenGL_container
     void draw_heightmap();            //      x       |       -         |       -         | drawing heightmaps
     void draw_perlin_noise();         //      x       |       -         |       -         | drawing perlin noise
     void draw_triangle();             //      x       |       -         |       -         | drawing triangles
-    void draw_tube();                 //      x       |       -         |       -         | drawing tubes
 
     // structure changes here - less shapes, more general operations
     void draw_blur();                 //      -       |       -         |       -         | variable radius blurring operation
@@ -62,13 +62,14 @@ class OpenGL_container
     //compute shaders to manipulate the image objects   | WORKING |
     GLuint sphere_compute;                      //      |    x    |
     GLuint aabb_compute;                        //      |    x    |
+    GLuint cylinder_compute;                    //      |    x    |
     GLuint cuboid_compute;                      //      |    -    |
-    GLuint cylinder_compute;                    //      |    -    |
     GLuint ellipsoid_compute;                   //      |    -    |
     GLuint heightmap_compute;                   //      |    -    |
     GLuint perlin_noise_compute;                //      |    -    |
     GLuint triangle_compute;                    //      |    -    |
     GLuint tube_compute;                        //      |    -    |
+
     GLuint blur_compute;                        //      |    -    |
     GLuint clear_all_compute;                   //      |    -    |
     GLuint unmask_all_compute;                  //      |    -    |

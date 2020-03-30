@@ -553,7 +553,7 @@ void voraldo::draw_menu_and_take_input()
 
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
-        //draw the sphere with the selected values  - draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask)
+        //draw the sphere with the selected values
         GPU_Data.draw_sphere(sphere_location, sphere_radius, glm::vec4(sphere_draw_color.x, sphere_draw_color.y, sphere_draw_color.z, sphere_draw_color.w), sphere_draw, sphere_mask);
     }
     ImGui::SameLine();
@@ -813,6 +813,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw the cylinder with the selected values
+        GPU_Data.draw_tube(tube_bvec, tube_tvec, tube_inner_radius, tube_outer_radius, glm::vec4(tube_draw_color.x, tube_draw_color.y, tube_draw_color.z, tube_draw_color.w), tube_draw, tube_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
