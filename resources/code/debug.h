@@ -40,7 +40,7 @@ void gl_debug_enable()
   glDebugMessageCallback( MessageCallback, 0 );      //getting a seg fault here, I think
   cout << "OpenGL debug output enabled." << endl << endl;
 
-  
+
   //report all gl extensions - useful on different platforms
 
   // GLint n;
@@ -52,6 +52,21 @@ void gl_debug_enable()
   //   cout << i << ": " << glGetStringi(GL_EXTENSIONS, i) << endl;
   //
   // cout << endl;
+
+
+
+
+  //gl info re:texture size, texture units
+
+  // GLint val;
+  // glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
+  // cout << "max texture size reports: " << val << endl << endl;
+  //
+  // glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &val);
+  // cout << "max 3dtexture size reports: " << val << " on all 3 edges" << endl << endl;
+  //
+  // glGetIntegerv(GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS, &val);
+  // cout << "max compute texture image units reports: " << val << endl << endl;
 }
 
 #endif

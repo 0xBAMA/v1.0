@@ -3,18 +3,6 @@
 
 void OpenGL_container::init()
 {
-  //gl info
-
-  // GLint val;
-  // glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
-  // cout << "max texture size reports: " << val << endl << endl;
-  //
-  // glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &val);
-  // cout << "max 3dtexture size reports: " << val << " on all 3 edges" << endl << endl;
-  //
-  // glGetIntegerv(GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS, &val);
-  // cout << "max compute texture image units reports: " << val << endl << endl;
-
 
   cout << "  compiling main display shaders.........";
   Shader s("resources/code/shaders/main.vs.glsl", "resources/code/shaders/main.fs.glsl");
@@ -22,6 +10,7 @@ void OpenGL_container::init()
   main_display_shader = s.Program;
   cout << "done." << endl;
 
+  SDL_Delay(30);
 
   //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
   //║  │ ││││├─┘│ │ │ ├┤   ╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
@@ -32,36 +21,42 @@ void OpenGL_container::init()
   sphere_compute = cssphere.Program;
   cout << "done." << endl;
 
+  SDL_Delay(30);
 
   cout << "  compiling aabb compute shader..........";
   CShader cssaabb("resources/code/shaders/aabb.cs.glsl");
   aabb_compute = cssaabb.Program;
   cout << "done." << endl;
 
+  SDL_Delay(30);
 
   cout << "  compiling cylinder compute shader......";
   CShader cscylinder("resources/code/shaders/cylinder.cs.glsl");
   cylinder_compute = cscylinder.Program;
   cout << "done." << endl;
 
+  SDL_Delay(30);
 
   cout << "  compiling tube compute shader..........";
   CShader cstube("resources/code/shaders/tube.cs.glsl");
   tube_compute = cstube.Program;
   cout << "done." << endl;
 
+  SDL_Delay(30);
 
   cout << "  compiling cuboid compute shader........";
   CShader cscuboid("resources/code/shaders/cuboid.cs.glsl");
   cuboid_compute = cscuboid.Program;
   cout << "done." << endl;
 
+  SDL_Delay(30);
 
   cout << "  compiling triangle compute shader......";
   CShader cstriangle("resources/code/shaders/triangle.cs.glsl");
   triangle_compute = cstriangle.Program;
   cout << "done." << endl;
 
+  SDL_Delay(30);
 
 
 
