@@ -9,7 +9,7 @@ uniform layout(r8) image3D previous_mask;  //now-current values of the mask
 uniform layout(rgba8) image3D current;        //values of the block after the update
 uniform layout(r8) image3D current_mask;   //values of the mask after the update
 
-uniform sampler3D map;          //heightmap texture
+uniform sampler2D map;          //heightmap texture
 uniform float scale;            //vertically scaling the texture
 
 uniform vec4 color;           //what color should it be drawn with?

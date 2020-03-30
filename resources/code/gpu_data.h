@@ -18,14 +18,14 @@ class OpenGL_container
     void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask); //invokes the sphere compute shader
 
     //parameter lists tbd               shader exists | shader compiled | function written|
+    void draw_aabb();                 //      x       |       -         |       -         | drawing aabbs
+    void draw_cuboid();               //      x       |       -         |       -         | drawing cuboids
+    void draw_cylinder();             //      x       |       -         |       -         | drawing cylinders
+    void draw_ellipsoid();            //      x       |       -         |       -         | drawing ellipsoids
+    void draw_heightmap();            //      x       |       -         |       -         | drawing heightmaps
     void draw_perlin_noise();         //      x       |       -         |       -         | drawing perlin noise
     void draw_triangle();             //      x       |       -         |       -         | drawing triangles
-    void draw_ellipsoid();            //      x       |       -         |       -         | drawing ellipsoids
-    void draw_cylinder();             //      x       |       -         |       -         | drawing cylinders
     void draw_tube();                 //      x       |       -         |       -         | drawing tubes
-    void draw_cuboid();               //      x       |       -         |       -         | drawing cuboids
-    void draw_aabb();                 //      x       |       -         |       -         | drawing aabbs
-    void draw_heightmap();            //      x       |       -         |       -         | drawing heightmaps
 
     // structure changes here - less shapes, more general operations
     void draw_blur();                 //      -       |       -         |       -         | variable radius blurring operation
@@ -58,25 +58,25 @@ class OpenGL_container
     //display vertex/fragment shader pair
     GLuint main_display_shader;
 
-    //compute shaders to manipulate the image objects
-    GLuint sphere_compute;
-    GLuint perlin_noise_compute;
-    GLuint triangle_compute;
-    GLuint ellipsoid_compute;
-    GLuint cylinder_compute;
-    GLuint tube_compute;
-    GLuint cuboid_compute;
-    GLuint aabb_compute;
-    GLuint heightmap_compute;
-    GLuint blur_compute;
-    GLuint clear_all_compute;
-    GLuint unmask_all_compute;
-    GLuint toggle_mask_compute;
-    GLuint mask_by_color_compute;
-    GLuint static_lighting_compute;
-    GLuint ambient_occlusion_compute;
-    GLuint game_of_life_update_compute;
-    GLuint wireworld_update_compute;
+    //compute shaders to manipulate the image objects   | WORKING |
+    GLuint sphere_compute;                      //      |    x    |
+    GLuint perlin_noise_compute;                //      |    -    |
+    GLuint triangle_compute;                    //      |    -    |
+    GLuint ellipsoid_compute;                   //      |    -    |
+    GLuint cylinder_compute;                    //      |    -    |
+    GLuint tube_compute;                        //      |    -    |
+    GLuint cuboid_compute;                      //      |    -    |
+    GLuint aabb_compute;                        //      |    -    |
+    GLuint heightmap_compute;                   //      |    -    |
+    GLuint blur_compute;                        //      |    -    |
+    GLuint clear_all_compute;                   //      |    -    |
+    GLuint unmask_all_compute;                  //      |    -    |
+    GLuint toggle_mask_compute;                 //      |    -    |
+    GLuint mask_by_color_compute;               //      |    -    |
+    GLuint static_lighting_compute;             //      |    -    |
+    GLuint ambient_occlusion_compute;           //      |    -    |
+    GLuint game_of_life_update_compute;         //      |    -    |
+    GLuint wireworld_update_compute;            //      |    -    |
 
 
   //╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐

@@ -39,6 +39,19 @@ void gl_debug_enable()
   glEnable              ( GL_DEBUG_OUTPUT );
   glDebugMessageCallback( MessageCallback, 0 );      //getting a seg fault here, I think
   cout << "OpenGL debug output enabled." << endl << endl;
+
+  
+  //report all gl extensions - useful on different platforms
+
+  // GLint n;
+  //
+  // glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+  // cout << "starting dump of " << n << " extensions" << endl;
+  //
+  // for(int i=0; i<n; i++)
+  //   cout << i << ": " << glGetStringi(GL_EXTENSIONS, i) << endl;
+  //
+  // cout << endl;
 }
 
 #endif

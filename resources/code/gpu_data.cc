@@ -255,6 +255,23 @@ void OpenGL_container::draw_perlin_noise()
 //╠═╝├┤ ├┬┘│  ││││  ║║║│ ││└─┐├┤
 //╩  └─┘┴└─┴─┘┴┘└┘  ╝╚╝└─┘┴└─┘└─┘
 
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
+
 }
 
 void OpenGL_container::draw_triangle()
@@ -262,6 +279,23 @@ void OpenGL_container::draw_triangle()
 //╔╦╗┬─┐┬┌─┐┌┐┌┌─┐┬  ┌─┐
 // ║ ├┬┘│├─┤││││ ┬│  ├┤
 // ╩ ┴└─┴┴ ┴┘└┘└─┘┴─┘└─┘
+
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 
 }
 
@@ -271,6 +305,23 @@ void OpenGL_container::draw_ellipsoid()
 //║╣ │  │  │├─┘└─┐│ ││ ││
 //╚═╝┴─┘┴─┘┴┴  └─┘└─┘┴─┴┘
 
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
+
 }
 
 void OpenGL_container::draw_cylinder()
@@ -278,6 +329,23 @@ void OpenGL_container::draw_cylinder()
 //╔═╗┬ ┬┬  ┬┌┐┌┌┬┐┌─┐┬─┐
 //║  └┬┘│  ││││ ││├┤ ├┬┘
 //╚═╝ ┴ ┴─┘┴┘└┘─┴┘└─┘┴└─
+
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 
 }
 
@@ -287,6 +355,23 @@ void OpenGL_container::draw_tube()
 // ║ │ │├┴┐├┤
 // ╩ └─┘└─┘└─┘
 
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
+
 }
 
 void OpenGL_container::draw_cuboid()
@@ -294,6 +379,23 @@ void OpenGL_container::draw_cuboid()
 //╔═╗┬ ┬┌┐ ┌─┐┬┌┬┐
 //║  │ │├┴┐│ ││ ││
 //╚═╝└─┘└─┘└─┘┴─┴┘
+
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 
 }
 
@@ -303,6 +405,23 @@ void OpenGL_container::draw_aabb()
 //╠═╣╠═╣╠╩╗╠╩╗
 //╩ ╩╩ ╩╚═╝╚═╝
 
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
+
 }
 
 void OpenGL_container::draw_heightmap()
@@ -310,6 +429,23 @@ void OpenGL_container::draw_heightmap()
 //╦ ╦┌─┐┬┌─┐┬ ┬┌┬┐┌┬┐┌─┐┌─┐
 //╠═╣├┤ ││ ┬├─┤ │ │││├─┤├─┘
 //╩ ╩└─┘┴└─┘┴ ┴ ┴ ┴ ┴┴ ┴┴
+
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 
 }
 

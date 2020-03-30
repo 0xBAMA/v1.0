@@ -611,10 +611,6 @@ void voraldo::draw_menu_and_take_input()
 
   triangle_config_label:
     // three point positions, thickness, color, bool draw, bool mask
-    // static glm::vec3 point1, point2, point3;
-    // static float thickness;
-    // color
-    //static bool draw, mask
   {
     static float thickness;
     static glm::vec3 point1, point2, point3;
@@ -672,7 +668,6 @@ void voraldo::draw_menu_and_take_input()
 
   ellipsoid_config_label:
     //radii, (rotation?), position, color, bool draw, bool mask
-    // static glm::vec3 radii, position
   {
     static glm::vec3 radius, center, rotation;
     static bool ellipsoid_draw = true, ellipsoid_mask = false;
