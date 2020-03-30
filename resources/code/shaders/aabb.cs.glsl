@@ -19,7 +19,7 @@ uniform bool mask;      //this this shape be masked?
 
 bool in_shape()
 {
-  if(gl_GlobalInvocationID.x < maxs.x && gl_GlobalInvocationID.x > mins.x && gl_GlobalInvocationID.y < maxs.y && gl_GlobalInvocationID.y > mins.y && gl_GlobalInvocationID.z < maxs.z && gl_GlobalInvocationID.z > mins.z)
+  if(gl_GlobalInvocationID.x <= maxs.x && gl_GlobalInvocationID.x >= mins.x && gl_GlobalInvocationID.y <= maxs.y && gl_GlobalInvocationID.y >= mins.y && gl_GlobalInvocationID.z <= maxs.z && gl_GlobalInvocationID.z >= mins.z)
     return true;
   else
     return false;

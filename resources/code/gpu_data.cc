@@ -39,6 +39,11 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling cylinder compute shader......";
+  CShader cscylinder("resources/code/shaders/cylinder.cs.glsl");
+  cylinder_compute = cscylinder.Program;
+  cout << "done." << endl;
+
 
 
 
@@ -329,20 +334,33 @@ void OpenGL_container::draw_ellipsoid()
 
 }
 
-void OpenGL_container::draw_cylinder()
+void OpenGL_container::draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask)
 {
 //╔═╗┬ ┬┬  ┬┌┐┌┌┬┐┌─┐┬─┐
 //║  └┬┘│  ││││ ││├┤ ├┬┘
 //╚═╝ ┴ ┴─┘┴┘└┘─┴┘└─┘┴└─
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use aabb program
+  glUseProgram(cylinder_compute);
+
+  //send uniform variables specific to the aabb
+  glUniform1i(glGetUniformLocation(cylinder_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(cylinder_compute, "draw"), draw);
+  glUniform1fv(glGetUniformLocation(cylinder_compute, "radius"), 1, &radius);
+  glUniform3fv(glGetUniformLocation(cylinder_compute, "bvec"), 1, glm::value_ptr(bvec));
+  glUniform3fv(glGetUniformLocation(cylinder_compute, "tvec"), 1, glm::value_ptr(tvec));
+  glUniform4fv(glGetUniformLocation(cylinder_compute, "color"), 1, glm::value_ptr(color));
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(cylinder_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(cylinder_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(cylinder_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(cylinder_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8

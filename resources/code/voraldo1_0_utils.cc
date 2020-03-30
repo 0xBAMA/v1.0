@@ -760,6 +760,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw the cylinder with the selected values
+        GPU_Data.draw_cylinder(cylinder_bvec, cylinder_tvec, cylinder_radius, glm::vec4(cylinder_draw_color.x, cylinder_draw_color.y, cylinder_draw_color.z, cylinder_draw_color.w), cylinder_draw, cylinder_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
