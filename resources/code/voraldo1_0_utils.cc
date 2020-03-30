@@ -960,7 +960,9 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw the sphere with the selected values
+        GPU_Data.draw_aabb(min, max, glm::vec4(aabb_draw_color.x, aabb_draw_color.y, aabb_draw_color.z, aabb_draw_color.w), aabb_draw, aabb_mask);
     }
+
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
     if (ImGui::Button("Back", ImVec2(100, 22)))

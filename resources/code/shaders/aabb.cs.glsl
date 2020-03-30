@@ -12,12 +12,10 @@ uniform layout(r8) image3D current_mask;   //values of the mask after the update
 uniform vec3 mins;            //minimum values on x,y,z
 uniform vec3 maxs;            //maximum values on x,y,z
 
-
 uniform vec4 color;           //what color should it be drawn with?
 
 uniform bool draw;      //should this shape be drawn?
 uniform bool mask;      //this this shape be masked?
-
 
 bool in_shape()
 {

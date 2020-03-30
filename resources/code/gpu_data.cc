@@ -33,6 +33,11 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling aabb compute shader..........";
+  CShader cssaabb("resources/code/shaders/aabb.cs.glsl");
+  aabb_compute = cssaabb.Program;
+  cout << "done." << endl;
+
 
 
 
@@ -399,20 +404,32 @@ void OpenGL_container::draw_cuboid()
 
 }
 
-void OpenGL_container::draw_aabb()
+void OpenGL_container::draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask)
 {
 //╔═╗╔═╗╔╗ ╔╗
 //╠═╣╠═╣╠╩╗╠╩╗
 //╩ ╩╩ ╩╚═╝╚═╝
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use aabb program
+  glUseProgram(aabb_compute);
+
+  //send uniform variables specific to the aabb
+  glUniform1i(glGetUniformLocation(aabb_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(aabb_compute, "draw"), draw);
+  glUniform3fv(glGetUniformLocation(aabb_compute, "mins"), 1, glm::value_ptr(min));
+  glUniform3fv(glGetUniformLocation(aabb_compute, "maxs"), 1, glm::value_ptr(max));
+  glUniform4fv(glGetUniformLocation(aabb_compute, "color"), 1, glm::value_ptr(color));
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(aabb_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(aabb_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(aabb_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(aabb_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8

@@ -16,9 +16,10 @@ class OpenGL_container
     void display();
 
     void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask); //invokes the sphere compute shader
+    void draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask);
+
 
     //parameter lists tbd               shader exists | shader compiled | function written|
-    void draw_aabb();                 //      x       |       -         |       -         | drawing aabbs
     void draw_cuboid();               //      x       |       -         |       -         | drawing cuboids
     void draw_cylinder();             //      x       |       -         |       -         | drawing cylinders
     void draw_ellipsoid();            //      x       |       -         |       -         | drawing ellipsoids
@@ -60,14 +61,14 @@ class OpenGL_container
 
     //compute shaders to manipulate the image objects   | WORKING |
     GLuint sphere_compute;                      //      |    x    |
+    GLuint aabb_compute;                        //      |    -    |
+    GLuint cuboid_compute;                      //      |    -    |
+    GLuint cylinder_compute;                    //      |    -    |
+    GLuint ellipsoid_compute;                   //      |    -    |
+    GLuint heightmap_compute;                   //      |    -    |
     GLuint perlin_noise_compute;                //      |    -    |
     GLuint triangle_compute;                    //      |    -    |
-    GLuint ellipsoid_compute;                   //      |    -    |
-    GLuint cylinder_compute;                    //      |    -    |
     GLuint tube_compute;                        //      |    -    |
-    GLuint cuboid_compute;                      //      |    -    |
-    GLuint aabb_compute;                        //      |    -    |
-    GLuint heightmap_compute;                   //      |    -    |
     GLuint blur_compute;                        //      |    -    |
     GLuint clear_all_compute;                   //      |    -    |
     GLuint unmask_all_compute;                  //      |    -    |
