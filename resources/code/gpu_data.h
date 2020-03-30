@@ -15,18 +15,18 @@ class OpenGL_container
 
     void display();
 
-    void draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask);                                            //invokes the aabb compute shader
-    void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask);                                      //invokes the sphere compute shader
-    void draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask);                        //invokes the cylinder compute shader
-    void draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask);  //invokes the tube compute shader
+    void draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask);                                                                              //invokes the aabb compute shader
+    void draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask);                                                                        //invokes the sphere compute shader
+    void draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask);                                                          //invokes the cylinder compute shader
+    void draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask);                                    //invokes the tube compute shader
+    void draw_cuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 e, glm::vec3 f, glm::vec3 g, glm::vec3 h, glm::vec4 color, bool draw, bool mask);  //invokes the cuboid compute shader
+    void draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask);
 
 
     //parameter lists tbd               shader exists | shader compiled | function written|
-    void draw_cuboid();               //      x       |       -         |       -         | drawing cuboids
     void draw_ellipsoid();            //      x       |       -         |       -         | drawing ellipsoids
     void draw_heightmap();            //      x       |       -         |       -         | drawing heightmaps
     void draw_perlin_noise();         //      x       |       -         |       -         | drawing perlin noise
-    void draw_triangle();             //      x       |       -         |       -         | drawing triangles
 
     // structure changes here - less shapes, more general operations
     void draw_blur();                 //      -       |       -         |       -         | variable radius blurring operation

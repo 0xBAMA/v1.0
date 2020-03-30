@@ -24,9 +24,128 @@ uniform bool draw;      //should this shape be drawn?
 uniform bool mask;      //this this shape be masked?
 
 
+bool planetest(vec3 plane_point, vec3 plane_normal, vec3 test_point)
+{
+	// Determines whether a point is above or below a plane
+
+  //		return false if the point is above the plane
+	//		return true if the point is below the plane
+
+	float result = 0.0;
+
+	//equation of plane
+
+	// a (x-x1) + b (y-y1) + c (z-z1) = 0
+
+	float a = plane_normal.x;
+	float b = plane_normal.y;
+	float c = plane_normal.z;
+
+	float x1 = plane_point.x;
+	float y1 = plane_point.y;
+	float z1 = plane_point.z;
+
+	float x = test_point.x;
+	float y = test_point.y;
+	float z = test_point.z;
+
+	result = a * (x - x1) + b * (y - y1) + c * (z - z1);
+
+	return (result < 0) ? true : false;
+
+}
+
+
 bool in_shape()
 {
-  //code to see if gl_GlobalInvocationID.xyz is inside the shape
+  //QUADRILATERAL HEXAHEDRON (CUBOID)
+
+	// 	point location reference - it can be rotated, but the faces must be
+	//		ACEG, CGDH, EGFH, ABEF, ABCD and BDFH - axes just for reference
+	//
+	// 	   e-------g    +y
+	// 	  /|      /|		 |
+	// 	 / |     / |     |___+x
+	// 	a-------c  |    /
+	// 	|  f----|--h   +z
+	// 	| /     | /
+	//  |/      |/
+	// 	b-------d
+
+	//		the four points making up each of the 6 faces must be coplanar - if not,
+	// 			the shape will not come out as intended (there would be two potential
+	//			planes for each face, and only one of them is used to represent that face)
+
+	//		that being said, there is still a degree of freedom allowing a lot of
+	//			potential for non-cube shapes, making use of trapezoidal or
+	//			rhombus-shaped faces which need not be parallel to one another.
+
+	//		the algorithm is very similar to the one used for the triangle - I have
+	//			seen it said that it can be generalized to any convex polyhedron -
+	//			concave shapes do not work as there are areas that should be within the
+	//			shape that will not pass all the requisite plane tests, which will
+	//			exclude some of the area that should lie within the shape
+
+
+
+  // note (3/30/2020): this function is only really being included for legacy purposes
+  //    as it is very difficult to configure and use in any real way. There is a requirement
+  //    that the four points defining any given face are coplanar - this is not easy to
+  //    enforce when you're laying it out by hand. While it is very flexible, as a primitive,
+  //    there is very little value in it due to how hard it is to use, and how easy it is
+  //    to have the case where the four points on a face are not coplanar.
+
+  vec3 quad_hex_center;
+
+  vec3 quad_hex_top_normal;
+  vec3 quad_hex_bottom_normal;
+  vec3 quad_hex_left_normal;
+  vec3 quad_hex_right_normal;
+  vec3 quad_hex_front_normal;
+  vec3 quad_hex_back_normal;
+
+  bool draw_cuboid;
+
+  quad_hex_center = (a + b + c + d + e + f + g + h) / 8.0f;
+
+  // "TOP" (ACEG) - using ACE
+  quad_hex_top_normal = normalize( cross( a - c, e - c ) ); //compute a normal cantidate
+  quad_hex_top_normal = planetest( a, quad_hex_top_normal, quad_hex_center) ? quad_hex_top_normal : ( quad_hex_top_normal * -1.0f ); //valid if center is below plane, else invert normal
+
+  // "BOTTOM" (BDFH) - using BFD
+  quad_hex_bottom_normal = normalize( cross( b - f, d - f ) );
+  quad_hex_bottom_normal = planetest( b, quad_hex_bottom_normal, quad_hex_center) ? quad_hex_bottom_normal : ( quad_hex_bottom_normal * -1.0f );
+
+  // "LEFT" (ABEF) - using FEA
+  quad_hex_left_normal = normalize( cross( f - e, a - e ) );
+  quad_hex_left_normal = planetest( f, quad_hex_left_normal, quad_hex_center) ? quad_hex_left_normal : ( quad_hex_left_normal * -1.0f );
+
+  // "RIGHT" (CDGH) - using CGH
+  quad_hex_right_normal = normalize( cross( c - g, h - g ) );
+  quad_hex_right_normal = planetest( c, quad_hex_right_normal, quad_hex_center) ? quad_hex_right_normal : ( quad_hex_right_normal * -1.0f );
+
+  // "FRONT" (ABCD) - using ABD
+  quad_hex_front_normal = normalize( cross( a - b, d - b ) );
+  quad_hex_front_normal = planetest( a, quad_hex_front_normal, quad_hex_center) ? quad_hex_front_normal : ( quad_hex_front_normal * -1.0f );
+
+  // "BACK" (EFGH) - using GHF
+  quad_hex_back_normal = normalize( cross( g - h, f - h ) );
+  quad_hex_back_normal = planetest( g, quad_hex_back_normal, quad_hex_center) ? quad_hex_back_normal : ( quad_hex_back_normal * -1.0f );
+
+
+  draw_cuboid =  planetest(a, quad_hex_top_normal, gl_GlobalInvocationID.xyz) &&
+                planetest( b, quad_hex_bottom_normal, gl_GlobalInvocationID.xyz) &&
+                planetest( f, quad_hex_left_normal, gl_GlobalInvocationID.xyz) &&
+                planetest( c, quad_hex_right_normal, gl_GlobalInvocationID.xyz) &&
+                planetest( a, quad_hex_front_normal, gl_GlobalInvocationID.xyz) &&
+                planetest( g, quad_hex_back_normal, gl_GlobalInvocationID.xyz);
+
+
+  if(draw_cuboid)
+  {
+    return true;
+  }
+
   return false;
 }
 

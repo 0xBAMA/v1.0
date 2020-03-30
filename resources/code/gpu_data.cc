@@ -51,6 +51,19 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling cuboid compute shader........";
+  CShader cscuboid("resources/code/shaders/cuboid.cs.glsl");
+  cuboid_compute = cscuboid.Program;
+  cout << "done." << endl;
+
+
+  cout << "  compiling triangle compute shader......";
+  CShader cstriangle("resources/code/shaders/triangle.cs.glsl");
+  triangle_compute = cstriangle.Program;
+  cout << "done." << endl;
+
+
+
 
 
 
@@ -228,7 +241,7 @@ void OpenGL_container::swap_blocks()
 //═╩╝┴└─┴ ┴└┴┘  ╚  └─┘┘└┘└─┘ ┴ ┴└─┘┘└┘└─┘
 
 
-void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 color, bool draw, bool mask) //done
 {
 //╔═╗┌─┐┬ ┬┌─┐┬─┐┌─┐
 //╚═╗├─┘├─┤├┤ ├┬┘├┤
@@ -264,7 +277,6 @@ void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 c
 
 }
 
-
 void OpenGL_container::draw_perlin_noise()
 {
 //╔═╗┌─┐┬─┐┬  ┬┌┐┌  ╔╗╔┌─┐┬┌─┐┌─┐
@@ -290,20 +302,32 @@ void OpenGL_container::draw_perlin_noise()
 
 }
 
-void OpenGL_container::draw_triangle()
+void OpenGL_container::draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask)
 {
 //╔╦╗┬─┐┬┌─┐┌┐┌┌─┐┬  ┌─┐
 // ║ ├┬┘│├─┤││││ ┬│  ├┤
 // ╩ ┴└─┴┴ ┴┘└┘└─┘┴─┘└─┘
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //testing compute shader
+  glUseProgram(triangle_compute);
+  glUniform1i(glGetUniformLocation(triangle_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(triangle_compute, "draw"), draw);
+  glUniform1fv(glGetUniformLocation(triangle_compute, "thickness"), 1, &thickness);
+  glUniform3fv(glGetUniformLocation(triangle_compute, "point1"), 1, glm::value_ptr(point1));
+  glUniform3fv(glGetUniformLocation(triangle_compute, "point2"), 1, glm::value_ptr(point2));
+  glUniform3fv(glGetUniformLocation(triangle_compute, "point3"), 1, glm::value_ptr(point3));
+  glUniform4fv(glGetUniformLocation(triangle_compute, "color"), 1, glm::value_ptr(color));
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(triangle_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(triangle_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(triangle_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(triangle_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
@@ -340,7 +364,7 @@ void OpenGL_container::draw_ellipsoid()
 
 }
 
-void OpenGL_container::draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask) //done
 {
 //╔═╗┬ ┬┬  ┬┌┐┌┌┬┐┌─┐┬─┐
 //║  └┬┘│  ││││ ││├┤ ├┬┘
@@ -378,7 +402,7 @@ void OpenGL_container::draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radiu
 
 }
 
-void OpenGL_container::draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask) //done
 {
 //╔╦╗┬ ┬┌┐ ┌─┐
 // ║ │ │├┴┐├┤
@@ -418,20 +442,38 @@ void OpenGL_container::draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_rad
 
 }
 
-void OpenGL_container::draw_cuboid()
+void OpenGL_container::draw_cuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 e, glm::vec3 f, glm::vec3 g, glm::vec3 h, glm::vec4 color, bool draw, bool mask)
 {
 //╔═╗┬ ┬┌┐ ┌─┐┬┌┬┐
 //║  │ │├┴┐│ ││ ││
 //╚═╝└─┘└─┘└─┘┴─┴┘
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use aabb program
+  glUseProgram(cuboid_compute);
+
+  //uniform variables defining shape
+  glUniform1i(glGetUniformLocation(cuboid_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(cuboid_compute, "draw"), draw);
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "a"), 1, glm::value_ptr(a));
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "b"), 1, glm::value_ptr(b));
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "c"), 1, glm::value_ptr(c));
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "d"), 1, glm::value_ptr(d));
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "e"), 1, glm::value_ptr(e));
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "f"), 1, glm::value_ptr(f));
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "g"), 1, glm::value_ptr(g));
+  glUniform3fv(glGetUniformLocation(cuboid_compute, "h"), 1, glm::value_ptr(h));
+  glUniform4fv(glGetUniformLocation(cuboid_compute, "color"), 1, glm::value_ptr(color));
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(cuboid_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(cuboid_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(cuboid_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(cuboid_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
@@ -443,7 +485,7 @@ void OpenGL_container::draw_cuboid()
 
 }
 
-void OpenGL_container::draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, bool draw, bool mask) //done
 {
 //╔═╗╔═╗╔╗ ╔╗
 //╠═╣╠═╣╠╩╗╠╩╗
@@ -504,6 +546,8 @@ void OpenGL_container::draw_heightmap()
   //postcondition - "current" values have the most up-to-date data
 
 }
+
+
 
 void OpenGL_container::draw_blur()
 {

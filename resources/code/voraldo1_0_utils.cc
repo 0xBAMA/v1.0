@@ -656,7 +656,8 @@ void voraldo::draw_menu_and_take_input()
 
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
-        //draw the sphere with the selected values
+        //draw the triangle with the selected values
+        GPU_Data.draw_triangle(point1, point2, point3, thickness, glm::vec4(triangle_draw_color.x, triangle_draw_color.y, triangle_draw_color.z, triangle_draw_color.w), triangle_draw, triangle_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
@@ -915,6 +916,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw the cylinder with the selected values
+        GPU_Data.draw_cuboid(a, b, c, d, e, f, g, h, glm::vec4(cuboid_draw_color.x, cuboid_draw_color.y, cuboid_draw_color.z, cuboid_draw_color.w), cuboid_draw, cuboid_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
