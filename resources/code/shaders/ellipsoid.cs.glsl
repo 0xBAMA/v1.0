@@ -18,11 +18,39 @@ uniform vec4 color;           //what color should it be drawn with?
 uniform bool draw;      //should this shape be drawn?
 uniform bool mask;      //this this shape be masked?
 
+//thanks to Neil Mendoza via http://www.neilmendoza.com/glsl-rotation-about-an-arbitrary-axis/
+mat3 rotationMatrix(vec3 axis, float angle)
+{
+    axis = normalize(axis);
+    float s = sin(angle);
+    float c = cos(angle);
+    float oc = 1.0 - c;
+
+    return mat3(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
+}
 
 bool in_shape()
 {
-  //code to see if gl_GlobalInvocationID.xyz is inside the shape
-  return false;
+  //subtract center.xyz from gl_GlobalInvocationID.xyz
+  vec3 local = gl_GlobalInvocationID.xyz - center.xyz;
+
+  //rotate the result, using the rotation vector - this is inverted
+  local *= rotationMatrix(vec3(1,0,0), -rotation.x);
+  local *= rotationMatrix(vec3(0,1,0), -rotation.y);
+  local *= rotationMatrix(vec3(0,0,1), -rotation.z);
+
+  //test the result of the rotation, against the forumula for an ellipsoid:
+  //   x^2 / a^2  +  y^2 / b^2  +  z^2 / c^2  =  1    (<= to one for our purposes)
+  //where x, y and z are the components of the result of the rotation
+  //and a, b and c are the x,y and z radii components
+  float result = pow(local.x, 2) / pow(radii.x,2) + pow(local.y, 2) / pow(radii.y,2) + pow(local.z, 2) / pow(radii.z,2);
+
+  if(result <= 1)
+    return true;
+  else
+    return false;
 }
 
 vec4 mask_true = vec4(1.0,0.0,0.0,0.0);

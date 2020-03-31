@@ -58,6 +58,13 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling ellipsoid compute shader.....";
+  CShader csellipsoid("resources/code/shaders/ellipsoid.cs.glsl");
+  ellipsoid_compute = csellipsoid.Program;
+  SDL_Delay(30);
+  cout << "done." << endl;
+
+
 
 
 
@@ -278,6 +285,12 @@ void OpenGL_container::draw_perlin_noise()
 //╠═╝├┤ ├┬┘│  ││││  ║║║│ ││└─┐├┤
 //╩  └─┘┴└─┴─┘┴┘└┘  ╝╚╝└─┘┴└─┘└─┘
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //testing compute shader
+  glUseProgram(sphere_compute);
+
 
   //send the preveious texture handles
   glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
@@ -340,14 +353,28 @@ void OpenGL_container::draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::ve
 //║╣ │  │  │├─┘└─┐│ ││ ││
 //╚═╝┴─┘┴─┘┴┴  └─┘└─┘┴─┴┘
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //testing compute shader
+  glUseProgram(ellipsoid_compute);
+
+  //send the sphere-specific values
+  glUniform1i(glGetUniformLocation(ellipsoid_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(ellipsoid_compute, "draw"), draw);
+  glUniform3fv(glGetUniformLocation(ellipsoid_compute, "radii"), 1, glm::value_ptr(radii));
+  glUniform3fv(glGetUniformLocation(ellipsoid_compute, "rotation"), 1, glm::value_ptr(rotation));
+  glUniform3fv(glGetUniformLocation(ellipsoid_compute, "center"), 1, glm::value_ptr(center));
+  glUniform4fv(glGetUniformLocation(ellipsoid_compute, "color"), 1, glm::value_ptr(color));
+
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(ellipsoid_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(ellipsoid_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(ellipsoid_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(ellipsoid_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
@@ -523,6 +550,11 @@ void OpenGL_container::draw_heightmap()
 //╠═╣├┤ ││ ┬├─┤ │ │││├─┤├─┘
 //╩ ╩└─┘┴└─┘┴ ┴ ┴ ┴ ┴┴ ┴┴
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //testing compute shader
+  glUseProgram(sphere_compute);
 
   //send the preveious texture handles
   glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);

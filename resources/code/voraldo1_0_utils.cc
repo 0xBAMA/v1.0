@@ -319,13 +319,13 @@ void voraldo::draw_menu_and_take_input()
     static float values[FPS_HISTORY_SIZE] = {};
     float average = 0;
 
-    for(int n = 0; n < IM_ARRAYSIZE(values); n++)
+    for(int n = 0; n < FPS_HISTORY_SIZE; n++)
     {
       values[n] = fps_history[n];
       average += fps_history[n];
     }
 
-    average /= 32;
+    average /= FPS_HISTORY_SIZE;
     char overlay[32];
     sprintf(overlay, "avg %.2f fps (%.2f ms)", average, 1000.0f/average);
     ImGui::PlotLines("", values, IM_ARRAYSIZE(values), 0, overlay, 0.0f, 100.0f, ImVec2(240,60));
@@ -692,9 +692,9 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Separator();
 
-    ImGui::SliderFloat("x rotation", &rotation.x, 0.0f, 360.0f, "%.3f");
-    ImGui::SliderFloat("y rotation", &rotation.y, 0.0f, 360.0f, "%.3f");
-    ImGui::SliderFloat("z rotation", &rotation.z, 0.0f, 360.0f, "%.3f");
+    ImGui::SliderFloat("x rotation", &rotation.x, 0.0f, 6.28f, "%.3f");
+    ImGui::SliderFloat("y rotation", &rotation.y, 0.0f, 6.28f, "%.3f");
+    ImGui::SliderFloat("z rotation", &rotation.z, 0.0f, 6.28f, "%.3f");
 
     ImGui::Separator();
 
@@ -712,6 +712,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw the ellipsoid with the selected values
+        GPU_Data.draw_ellipsoid(center, radius, rotation, glm::vec4(ellipsoid_draw_color.x, ellipsoid_draw_color.y, ellipsoid_draw_color.z, ellipsoid_draw_color.w), ellipsoid_draw, ellipsoid_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
@@ -1436,9 +1437,10 @@ void voraldo::gl_data_setup()
   cout << "starting init..." << endl;
   GPU_Data.init();
   GPU_Data.load_textures();
+  SDL_Delay(30);
   cout << "finished init." << endl;
-
   SDL_Delay(100);
+
   SDL_ShowWindow(window);
 }
 
@@ -1460,5 +1462,7 @@ void voraldo::quit()
   SDL_DestroyWindow(window);
   SDL_Quit();
 
+  SDL_Delay(100);
   cout << endl << "GOODBYE" << endl; //last line of code before main's return statement
+  SDL_Delay(100);
 }
