@@ -20,13 +20,13 @@ class OpenGL_container
     void draw_cylinder(glm::vec3 bvec, glm::vec3 tvec, float radius, glm::vec4 color, bool draw, bool mask);                                                          //invokes the cylinder compute shader
     void draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask);                                    //invokes the tube compute shader
     void draw_cuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 e, glm::vec3 f, glm::vec3 g, glm::vec3 h, glm::vec4 color, bool draw, bool mask);  //invokes the cuboid compute shader
-    void draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask);
+    void draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask);                                 //invokes the triangle compute shader
+    void draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask);                                                //invokes the ellipsoid compute shader
 
 
     //parameter lists tbd               shader exists | shader compiled | function written|
-    void draw_ellipsoid();            //      x       |       -         |       -         | drawing ellipsoids
     void draw_heightmap();            //      x       |       -         |       -         | drawing heightmaps
-    void draw_perlin_noise();         //      x       |       -         |       -         | drawing perlin noise
+    void draw_perlin_noise();         //      x       |       -         |       -         | drawing perlin noise - smooth or solid color
 
     // structure changes here - less shapes, more general operations
     void draw_blur();                 //      -       |       -         |       -         | variable radius blurring operation

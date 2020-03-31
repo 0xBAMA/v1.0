@@ -19,44 +19,44 @@ void OpenGL_container::init()
   cout << "  compiling sphere compute shader........";
   CShader cssphere("resources/code/shaders/sphere.cs.glsl");
   sphere_compute = cssphere.Program;
+  SDL_Delay(30);
   cout << "done." << endl;
 
-  SDL_Delay(30);
 
   cout << "  compiling aabb compute shader..........";
   CShader cssaabb("resources/code/shaders/aabb.cs.glsl");
   aabb_compute = cssaabb.Program;
+  SDL_Delay(30);
   cout << "done." << endl;
 
-  SDL_Delay(30);
 
   cout << "  compiling cylinder compute shader......";
   CShader cscylinder("resources/code/shaders/cylinder.cs.glsl");
   cylinder_compute = cscylinder.Program;
+  SDL_Delay(30);
   cout << "done." << endl;
 
-  SDL_Delay(30);
 
   cout << "  compiling tube compute shader..........";
   CShader cstube("resources/code/shaders/tube.cs.glsl");
   tube_compute = cstube.Program;
+  SDL_Delay(30);
   cout << "done." << endl;
 
-  SDL_Delay(30);
 
   cout << "  compiling cuboid compute shader........";
   CShader cscuboid("resources/code/shaders/cuboid.cs.glsl");
   cuboid_compute = cscuboid.Program;
+  SDL_Delay(30);
   cout << "done." << endl;
 
-  SDL_Delay(30);
 
   cout << "  compiling triangle compute shader......";
   CShader cstriangle("resources/code/shaders/triangle.cs.glsl");
   triangle_compute = cstriangle.Program;
+  SDL_Delay(30);
   cout << "done." << endl;
 
-  SDL_Delay(30);
 
 
 
@@ -98,7 +98,7 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
   //buffer the data
-  cout << "  buffering data.........................";
+  cout << "  buffering vertex data..................";
   glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * points.size(), NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * points.size(), &points[0]);
   cout << "done." << endl;
@@ -125,7 +125,7 @@ void OpenGL_container::load_textures()
   unsigned char val;
 
 
-  cout << "  loading textures.......................";
+  cout << "  loading textures......................." << std::flush;
 
   for(int x = 0; x < DIM; x++)
   {
@@ -297,7 +297,7 @@ void OpenGL_container::draw_perlin_noise()
 
 }
 
-void OpenGL_container::draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask)  //done
 {
 //╔╦╗┬─┐┬┌─┐┌┐┌┌─┐┬  ┌─┐
 // ║ ├┬┘│├─┤││││ ┬│  ├┤
@@ -334,7 +334,7 @@ void OpenGL_container::draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::ve
 
 }
 
-void OpenGL_container::draw_ellipsoid()
+void OpenGL_container::draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask)
 {
 //╔═╗┬  ┬  ┬┌─┐┌─┐┌─┐┬┌┬┐
 //║╣ │  │  │├─┘└─┐│ ││ ││
@@ -437,7 +437,7 @@ void OpenGL_container::draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_rad
 
 }
 
-void OpenGL_container::draw_cuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 e, glm::vec3 f, glm::vec3 g, glm::vec3 h, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_cuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 e, glm::vec3 f, glm::vec3 g, glm::vec3 h, glm::vec4 color, bool draw, bool mask) //done
 {
 //╔═╗┬ ┬┌┐ ┌─┐┬┌┬┐
 //║  │ │├┴┐│ ││ ││
