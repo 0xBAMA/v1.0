@@ -72,6 +72,20 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling unmask all compute shader....";
+  CShader csunmask_all("resources/code/shaders/unmask_all.cs.glsl");
+  unmask_all_compute = csunmask_all.Program;
+  SDL_Delay(30);
+  cout << "done." << endl;
+
+
+  cout << "  compiling toggle mask compute shader...";
+  CShader cstoggle_mask("resources/code/shaders/toggle_mask.cs.glsl");
+  toggle_mask_compute = cstoggle_mask.Program;
+  SDL_Delay(30);
+  cout << "done." << endl;
+
+
 
 
 
@@ -600,10 +614,10 @@ void OpenGL_container::clear_all(bool respect_mask) //done
   //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
   swap_blocks();
 
-  //use aabb program
+  //use clear_all program
   glUseProgram(clear_all_compute);
 
-  //send uniform variables specific to the aabb
+  //send uniform variables specific to the clear_all function
   glUniform1i(glGetUniformLocation(clear_all_compute, "respect_mask"), respect_mask);
 
   //send the preveious texture handles
@@ -623,12 +637,33 @@ void OpenGL_container::clear_all(bool respect_mask) //done
   //postcondition - "current" values have the most up-to-date data
 }
 
-void OpenGL_container::unmask_all()
+void OpenGL_container::unmask_all() //done
 {
 //╦ ╦┌┐┌┌┬┐┌─┐┌─┐┬┌─  ╔═╗┬  ┬
 //║ ║││││││├─┤└─┐├┴┐  ╠═╣│  │
 //╚═╝┘└┘┴ ┴┴ ┴└─┘┴ ┴  ╩ ╩┴─┘┴─┘
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use aabb program
+  glUseProgram(unmask_all_compute);
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(unmask_all_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(unmask_all_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(unmask_all_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(unmask_all_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 }
 
 void OpenGL_container::toggle_mask()
@@ -637,6 +672,27 @@ void OpenGL_container::toggle_mask()
 // ║ │ ││ ┬│ ┬│  ├┤   ║║║├─┤└─┐├┴┐
 // ╩ └─┘└─┘└─┘┴─┘└─┘  ╩ ╩┴ ┴└─┘┴ ┴
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use aabb program
+  glUseProgram(toggle_mask_compute);
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(toggle_mask_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(toggle_mask_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(toggle_mask_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(toggle_mask_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 }
 
 void OpenGL_container::mask_by_color()
@@ -699,7 +755,7 @@ void OpenGL_container::display()
 
   glUniform4fv(glGetUniformLocation(main_display_shader, "clear_color"), 1, glm::value_ptr(clear_color));
 
-  glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current_mask);
 
   glDrawArrays( GL_TRIANGLES, 0, 6 );
 }

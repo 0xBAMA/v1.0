@@ -23,21 +23,21 @@ class OpenGL_container
     void draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask);                                 //invokes the triangle compute shader
     void draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask);                                                //invokes the ellipsoid compute shader
     void clear_all(bool respect_mask);                                                                                                                                //invokes the clear_all compute shader
+    void unmask_all();                                                                                                                                                //invokes the unmask_all compute shader
+    void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
 
 
-    //parameter lists tbd               shader exists | shader compiled | function written|
-    void draw_heightmap();            //      x       |       -         |       -         | drawing heightmaps
-    void draw_perlin_noise();         //      x       |       -         |       -         | drawing perlin noise - smooth or solid color
+    //parameter lists tbd
+    void draw_heightmap();            //drawing heightmaps
+    void draw_perlin_noise();         //drawing perlin noise - smooth or solid color
 
     // structure changes here - less shapes, more general operations
-    void draw_blur();                 //      -       |       -         |       -         | variable radius blurring operation
-    void unmask_all();                //      -       |       -         |       -         | unmask all cells
-    void toggle_mask();               //      -       |       -         |       -         | toggle the mask value of all cells
-    void mask_by_color();             //      -       |       -         |       -         | mask based on value/variance per channel
-    void compute_static_lighting();   //      -       |       -         |       -         | compute static lighting - structure tbd
-    void compute_ambient_occlusion(); //      -       |       -         |       -         | compute ambient occlusion - based on neighborhood
-    void game_of_life_update();       //      -       |       -         |       -         | CA update, using GoL rules
-    void wireworld_update();          //      -       |       -         |       -         | CA update, using WireWorld rules
+    void draw_blur();                 //variable radius blurring operation
+    void mask_by_color();             //mask based on value/variance per channel
+    void compute_static_lighting();   //compute static lighting - structure tbd
+    void compute_ambient_occlusion(); //compute ambient occlusion - based on neighborhood
+    void game_of_life_update();       //CA update, using GoL rules
+    void wireworld_update();          //CA update, using WireWorld rules
 
 
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions

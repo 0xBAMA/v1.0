@@ -1098,6 +1098,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Unmask All", ImVec2(100, 22)))
     {
         //unmask all cells
+        GPU_Data.unmask_all();
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
@@ -1120,6 +1121,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Toggle", ImVec2(100, 22)))
     {
         //do the toggle operation
+        GPU_Data.toggle_mask();
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
