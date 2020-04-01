@@ -25,7 +25,7 @@ class OpenGL_container
     void clear_all(bool respect_mask);                                                                                                                                //invokes the clear_all compute shader
     void unmask_all();                                                                                                                                                //invokes the unmask_all compute shader
     void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
-    void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                  //invokes the blurring operation
+    void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                       //invokes the blurring operation
 
 
     //parameter lists tbd
@@ -70,7 +70,7 @@ class OpenGL_container
     GLuint triangle_compute;                    //      |    x    |
     GLuint tube_compute;                        //      |    x    |
 
-    GLuint blur_compute;                        //      |    -    |
+    GLuint blur_compute;                        //      |    x    |
     GLuint clear_all_compute;                   //      |    x    |
     GLuint unmask_all_compute;                  //      |    x    |
     GLuint toggle_mask_compute;                 //      |    x    |
@@ -90,6 +90,10 @@ class OpenGL_container
 
     GLint location_of_previous;
     GLint location_of_previous_mask;
+
+
+    GLint location_of_heightmap;
+    GLint location_of_perlin_noise;
 
 
 

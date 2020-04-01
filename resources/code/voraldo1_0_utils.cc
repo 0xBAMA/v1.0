@@ -1366,6 +1366,7 @@ void voraldo::draw_menu_and_take_input()
         current_menu_state = EXIT;
     if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
         current_menu_state = EXIT;
+
     if (event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_ESCAPE)
     {
       switch (current_menu_state)
@@ -1439,6 +1440,17 @@ void voraldo::draw_menu_and_take_input()
       GPU_Data.scale += 0.1f;     //make scale smaller (offsets are larger)
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_EQUALS) //SDLK_PLUS requires that you hit the shift
       GPU_Data.scale -= 0.1f;     //make scale larger  (offsets are smaller)
+    if(event.type == SDL_MOUSEWHEEL)
+    {
+      if(event.wheel.y > 0) // scroll up
+      {
+        GPU_Data.scale -= 0.1f;
+      }
+      else if(event.wheel.y < 0) // scroll down
+      {
+        GPU_Data.scale += 0.1f;
+      }
+    }
   }
 }
 
