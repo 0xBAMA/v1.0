@@ -65,6 +65,13 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling clear all compute shader.....";
+  CShader csclear_all("resources/code/shaders/clear_all.cs.glsl");
+  clear_all_compute = csclear_all.Program;
+  SDL_Delay(30);
+  cout << "done." << endl;
+
+
 
 
 
@@ -347,7 +354,7 @@ void OpenGL_container::draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::ve
 
 }
 
-void OpenGL_container::draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask) //done
 {
 //╔═╗┬  ┬  ┬┌─┐┌─┐┌─┐┬┌┬┐
 //║╣ │  │  │├─┘└─┐│ ││ ││
@@ -584,12 +591,36 @@ void OpenGL_container::draw_blur()
 
 }
 
-void OpenGL_container::clear_all()
+void OpenGL_container::clear_all(bool respect_mask) //done
 {
 //╔═╗┬  ┌─┐┌─┐┬─┐  ╔═╗┬  ┬
 //║  │  ├┤ ├─┤├┬┘  ╠═╣│  │
 //╚═╝┴─┘└─┘┴ ┴┴└─  ╩ ╩┴─┘┴─┘
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use aabb program
+  glUseProgram(clear_all_compute);
+
+  //send uniform variables specific to the aabb
+  glUniform1i(glGetUniformLocation(clear_all_compute, "respect_mask"), respect_mask);
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(clear_all_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(clear_all_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(clear_all_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(clear_all_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 }
 
 void OpenGL_container::unmask_all()

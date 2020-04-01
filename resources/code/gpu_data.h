@@ -22,6 +22,7 @@ class OpenGL_container
     void draw_cuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 e, glm::vec3 f, glm::vec3 g, glm::vec3 h, glm::vec4 color, bool draw, bool mask);  //invokes the cuboid compute shader
     void draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask);                                 //invokes the triangle compute shader
     void draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask);                                                //invokes the ellipsoid compute shader
+    void clear_all(bool respect_mask);                                                                                                                                //invokes the clear_all compute shader
 
 
     //parameter lists tbd               shader exists | shader compiled | function written|
@@ -30,7 +31,6 @@ class OpenGL_container
 
     // structure changes here - less shapes, more general operations
     void draw_blur();                 //      -       |       -         |       -         | variable radius blurring operation
-    void clear_all();                 //      -       |       -         |       -         | clear all cells, respect mask value
     void unmask_all();                //      -       |       -         |       -         | unmask all cells
     void toggle_mask();               //      -       |       -         |       -         | toggle the mask value of all cells
     void mask_by_color();             //      -       |       -         |       -         | mask based on value/variance per channel
@@ -63,12 +63,12 @@ class OpenGL_container
     GLuint sphere_compute;                      //      |    x    |
     GLuint aabb_compute;                        //      |    x    |
     GLuint cylinder_compute;                    //      |    x    |
-    GLuint cuboid_compute;                      //      |    -    |
-    GLuint ellipsoid_compute;                   //      |    -    |
+    GLuint cuboid_compute;                      //      |    x    |
+    GLuint ellipsoid_compute;                   //      |    x    |
     GLuint heightmap_compute;                   //      |    -    |
     GLuint perlin_noise_compute;                //      |    -    |
-    GLuint triangle_compute;                    //      |    -    |
-    GLuint tube_compute;                        //      |    -    |
+    GLuint triangle_compute;                    //      |    x    |
+    GLuint tube_compute;                        //      |    x    |
 
     GLuint blur_compute;                        //      |    -    |
     GLuint clear_all_compute;                   //      |    -    |

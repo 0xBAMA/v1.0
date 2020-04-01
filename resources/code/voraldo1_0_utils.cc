@@ -1025,6 +1025,7 @@ void voraldo::draw_menu_and_take_input()
   {
     static int blur_radius = 0;
     static bool touch_alpha = true;
+    static bool respect_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,130));
@@ -1035,6 +1036,9 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Separator();
 
     ImGui::Checkbox("  Touch alpha ", &touch_alpha);
+    ImGui::Checkbox("  Respect mask ", &respect_mask);
+
+
 
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
@@ -1054,10 +1058,13 @@ void voraldo::draw_menu_and_take_input()
   clear_all_config_label:
     //clear, like reinit but respects the mask values of all cells
   {
+    static bool respect_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::SetNextWindowSize(ImVec2(256,105));
     ImGui::Begin("Clear All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Checkbox("  Respect mask ", &respect_mask);
 
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
@@ -1065,6 +1072,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Clear", ImVec2(100, 22)))
     {
         //do the clear all operation - note that this respects the mask values
+        GPU_Data.clear_all(respect_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
