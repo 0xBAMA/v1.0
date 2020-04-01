@@ -25,6 +25,7 @@ class OpenGL_container
     void clear_all(bool respect_mask);                                                                                                                                //invokes the clear_all compute shader
     void unmask_all();                                                                                                                                                //invokes the unmask_all compute shader
     void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
+    void draw_blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                                    //invokes the blurring operation
 
 
     //parameter lists tbd
@@ -32,7 +33,6 @@ class OpenGL_container
     void draw_perlin_noise();         //drawing perlin noise - smooth or solid color
 
     // structure changes here - less shapes, more general operations
-    void draw_blur();                 //variable radius blurring operation
     void mask_by_color();             //mask based on value/variance per channel
     void compute_static_lighting();   //compute static lighting - structure tbd
     void compute_ambient_occlusion(); //compute ambient occlusion - based on neighborhood
@@ -71,9 +71,9 @@ class OpenGL_container
     GLuint tube_compute;                        //      |    x    |
 
     GLuint blur_compute;                        //      |    -    |
-    GLuint clear_all_compute;                   //      |    -    |
-    GLuint unmask_all_compute;                  //      |    -    |
-    GLuint toggle_mask_compute;                 //      |    -    |
+    GLuint clear_all_compute;                   //      |    x    |
+    GLuint unmask_all_compute;                  //      |    x    |
+    GLuint toggle_mask_compute;                 //      |    x    |
     GLuint mask_by_color_compute;               //      |    -    |
     GLuint static_lighting_compute;             //      |    -    |
     GLuint ambient_occlusion_compute;           //      |    -    |

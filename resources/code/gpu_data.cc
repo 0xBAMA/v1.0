@@ -597,12 +597,38 @@ void OpenGL_container::draw_heightmap()
 
 
 
-void OpenGL_container::draw_blur()
+void OpenGL_container::draw_blur(int radius, bool touch_alpha, bool respect_mask)
 {
 //╔╗ ┬  ┬ ┬┬─┐
 //╠╩╗│  │ │├┬┘
 //╚═╝┴─┘└─┘┴└─
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();
+
+  //use clear_all program
+  glUseProgram(blur_compute);
+
+  //send uniform variables specific to the clear_all function
+  glUniform1i(glGetUniformLocation(blur_compute, "radius"), radius);
+  glUniform1i(glGetUniformLocation(blur_compute, "touch_alpha"), touch_alpha);
+  glUniform1i(glGetUniformLocation(blur_compute, "respect_mask"), respect_mask);
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(blur_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(blur_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(blur_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(blur_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 }
 
 void OpenGL_container::clear_all(bool respect_mask) //done
@@ -666,7 +692,7 @@ void OpenGL_container::unmask_all() //done
   //postcondition - "current" values have the most up-to-date data
 }
 
-void OpenGL_container::toggle_mask()
+void OpenGL_container::toggle_mask()  //done
 {
 //╔╦╗┌─┐┌─┐┌─┐┬  ┌─┐  ╔╦╗┌─┐┌─┐┬┌─
 // ║ │ ││ ┬│ ┬│  ├┤   ║║║├─┤└─┐├┴┐

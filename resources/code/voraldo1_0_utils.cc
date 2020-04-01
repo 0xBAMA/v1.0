@@ -1043,9 +1043,10 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
 
-    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    if (ImGui::Button("Blur", ImVec2(100, 22)))
     {
         //do the blur operation with the selected values
+        GPU_Data.blur(blur_radius, touch_alpha, respect_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
