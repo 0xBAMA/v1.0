@@ -25,7 +25,7 @@ class OpenGL_container
     void clear_all(bool respect_mask);                                                                                                                                //invokes the clear_all compute shader
     void unmask_all();                                                                                                                                                //invokes the unmask_all compute shader
     void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
-    void draw_blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                                    //invokes the blurring operation
+    void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                  //invokes the blurring operation
 
 
     //parameter lists tbd

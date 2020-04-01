@@ -86,6 +86,13 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling blur compute shader..........";
+  CShader csblur("resources/code/shaders/blur.cs.glsl");
+  blur_compute = csblur.Program;
+  SDL_Delay(30);
+  cout << "done." << endl;
+
+
 
 
 
@@ -597,7 +604,7 @@ void OpenGL_container::draw_heightmap()
 
 
 
-void OpenGL_container::draw_blur(int radius, bool touch_alpha, bool respect_mask)
+void OpenGL_container::blur(int radius, bool touch_alpha, bool respect_mask)
 {
 //╔╗ ┬  ┬ ┬┬─┐
 //╠╩╗│  │ │├┬┘
@@ -611,8 +618,8 @@ void OpenGL_container::draw_blur(int radius, bool touch_alpha, bool respect_mask
 
   //send uniform variables specific to the clear_all function
   glUniform1i(glGetUniformLocation(blur_compute, "radius"), radius);
-  glUniform1i(glGetUniformLocation(blur_compute, "touch_alpha"), touch_alpha);
   glUniform1i(glGetUniformLocation(blur_compute, "respect_mask"), respect_mask);
+  glUniform1i(glGetUniformLocation(blur_compute, "touch_alpha"), touch_alpha);
 
   //send the preveious texture handles
   glUniform1iv(glGetUniformLocation(blur_compute, "previous"), 1, &location_of_previous);
@@ -781,7 +788,7 @@ void OpenGL_container::display()
 
   glUniform4fv(glGetUniformLocation(main_display_shader, "clear_color"), 1, glm::value_ptr(clear_color));
 
-  glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current);
 
   glDrawArrays( GL_TRIANGLES, 0, 6 );
 }
