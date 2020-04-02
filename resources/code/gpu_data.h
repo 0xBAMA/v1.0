@@ -40,6 +40,10 @@ class OpenGL_container
     void wireworld_update();          //CA update, using WireWorld rules
 
 
+    //functions to generate new heightmaps
+    void generate_diamond_square();
+    void generate_perlin();
+
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
     float phi;
     float theta;

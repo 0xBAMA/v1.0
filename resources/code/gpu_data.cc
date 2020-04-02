@@ -93,7 +93,7 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
-  
+
 
 
 
@@ -150,6 +150,8 @@ void OpenGL_container::init()
   scale = 5.0f;
   phi   = 0.0f;
   theta = 0.0f;
+
+  generate_diamond_square();
 }
 
 void OpenGL_container::load_textures()
@@ -264,6 +266,59 @@ void OpenGL_container::swap_blocks()
     location_of_previous_mask = 2;
     location_of_current_mask = 3;
   }
+}
+
+void OpenGL_container::generate_diamond_square()
+{
+  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+  std::default_random_engine engine{seed};
+  std::uniform_real_distribution<float> distribution{0, 1};
+
+  constexpr auto size = 513;
+  constexpr auto edge = size - 1;
+
+  uint8_t map[size][size] = {{0}};
+  map[0][0] = map[edge][0] = map[0][edge] = map[edge][edge] = 128;
+
+  heightfield::diamond_square_no_wrap(
+      size,
+      // random
+      [&engine, &distribution](float range)
+      {
+          return distribution(engine) * range;
+      },
+      // variance
+      [](int level) -> float
+      {
+          return 64.0f * std::pow(0.5f, level);
+      },
+      // at
+      [&map](int x, int y) -> uint8_t&
+      {
+          return map[y][x];
+      }
+  );
+
+  //put this data in a byte array
+  //send it to the GPU
+
+  // // Output PGM (Netpbm greyscale image format)
+  // std::cout << "P2 " << size << ' ' << size << " 255\n";
+  //
+  // for (auto& row : map)
+  // {
+  //     for (auto& cell : row)
+  //     {
+  //         std::cout << static_cast<int>(cell) << " ";
+  //     }
+  //     std::cout << std::endl;
+  // }
+}
+
+void OpenGL_containergenerate_perlin()
+{
+
 }
 
 

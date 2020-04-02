@@ -15,6 +15,9 @@
 #include <sstream>
 #include <vector>
 #include <deque>
+#include <chrono>
+#include <cstdint>
+#include <cstdlib>
 
 //iostream aliases
 using std::cin;
@@ -64,7 +67,7 @@ using std::endl;
 #include "menu_states.h"
 
 #include "gpu_data.h"
-
+#include "diamond_square.h"
 
 //this sets how many texels are on an edge. Trying not to hardcode this anywhere, so that I can easily switch from 256, 512, 1024, etc
 #define DIM 256

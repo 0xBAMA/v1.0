@@ -1440,7 +1440,8 @@ void voraldo::draw_menu_and_take_input()
       GPU_Data.scale += 0.1f;     //make scale smaller (offsets are larger)
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_EQUALS) //SDLK_PLUS requires that you hit the shift
       GPU_Data.scale -= 0.1f;     //make scale larger  (offsets are smaller)
-    if(event.type == SDL_MOUSEWHEEL)
+
+    if(event.type == SDL_MOUSEWHEEL)  //allow scroll to do the same thing as +/-
     {
       if(event.wheel.y > 0) // scroll up
       {
@@ -1451,6 +1452,7 @@ void voraldo::draw_menu_and_take_input()
         GPU_Data.scale += 0.1f;
       }
     }
+
   }
 }
 
