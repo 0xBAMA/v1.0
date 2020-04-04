@@ -150,8 +150,6 @@ void OpenGL_container::init()
   scale = 5.0f;
   phi   = 0.0f;
   theta = 0.0f;
-
-  generate_diamond_square();
 }
 
 void OpenGL_container::load_textures()
@@ -181,10 +179,18 @@ void OpenGL_container::load_textures()
         data.push_back(1);                  //alpha
 
 
-        data2.push_back(val);                   //red
-        data2.push_back(0);                    //green
-        data2.push_back(0);                   //blue
-        data2.push_back(1);                  //alpha
+        // data2.push_back(val);                   //red
+        // data2.push_back(0);                    //green
+        // data2.push_back(0);                   //blue
+        // data2.push_back(1);                  //alpha
+
+
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
+
+
 
         // if(val < 127)
         // {
@@ -243,6 +249,9 @@ void OpenGL_container::load_textures()
   location_of_current_mask = 3;
 
   cout << "done." << endl;
+
+  generate_heightmap_XOR();
+
 }
 
 void OpenGL_container::swap_blocks()
@@ -268,7 +277,7 @@ void OpenGL_container::swap_blocks()
   }
 }
 
-void OpenGL_container::generate_diamond_square()
+void OpenGL_container::generate_heightmap_diamond_square()
 {
   auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 
@@ -300,27 +309,61 @@ void OpenGL_container::generate_diamond_square()
       }
   );
 
+
+  std::vector<unsigned char> data;
+
   //put this data in a byte array
   //send it to the GPU
 
-  // // Output PGM (Netpbm greyscale image format)
-  // std::cout << "P2 " << size << ' ' << size << " 255\n";
-  //
-  // for (auto& row : map)
-  // {
-  //     for (auto& cell : row)
-  //     {
-  //         std::cout << static_cast<int>(cell) << " ";
-  //     }
-  //     std::cout << std::endl;
-  // }
+
+
+
+
+
+
+
+        // // Output PGM (Netpbm greyscale image format)
+        // std::cout << "P2 " << size << ' ' << size << " 255\n";
+        //
+        // for (auto& row : map)
+        // {
+        //     for (auto& cell : row)
+        //     {
+        //         std::cout << static_cast<int>(cell) << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
 }
 
-void OpenGL_containergenerate_perlin()
+void OpenGL_container::generate_heightmap_perlin()
 {
+  std::vector<unsigned char> data;
 
+  PerlinNoise p;
+
+  //create the byte array - parameters?
+  //send it to the gpu
 }
 
+void OpenGL_container::generate_heightmap_XOR()
+{
+  //create the byte array
+  //send it to the gpu
+
+
+  std::vector<unsigned char> data;
+
+  for(int x = 0; x < 512; x++)
+  {
+    for(int y = 0; y < 512; y++)
+    {
+      cout << " "<< ((unsigned char)(x%256) ^ (unsigned char)(y%256));
+      data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));
+    }
+  }
+
+  //send the data to the gpu
+}
 
 
 //╔╦╗┬─┐┌─┐┬ ┬  ╔═╗┬ ┬┌┐┌┌─┐┌┬┐┬┌─┐┌┐┌┌─┐

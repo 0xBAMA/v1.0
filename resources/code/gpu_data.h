@@ -41,8 +41,9 @@ class OpenGL_container
 
 
     //functions to generate new heightmaps
-    void generate_diamond_square();
-    void generate_perlin();
+    void generate_heightmap_diamond_square();
+    void generate_heightmap_perlin();
+    void generate_heightmap_XOR();
 
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
     float phi;
