@@ -188,8 +188,8 @@ void OpenGL_container::load_textures()
         data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
         data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
         data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
-        data2.push_back(255-((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
-        //data2.push_back(255);
+        // data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
+        data2.push_back(255);
 
 
 
@@ -859,7 +859,7 @@ void OpenGL_container::toggle_mask()  //done
   //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
   swap_blocks();
 
-  //use aabb program
+   //use aabb program
   glUseProgram(toggle_mask_compute);
 
   //send the preveious texture handles
@@ -890,7 +890,7 @@ void OpenGL_container::mask_by_color()
 void OpenGL_container::compute_static_lighting()
 {
 //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┌┬┐┌─┐┌┬┐┬┌─┐  ╦  ┬┌─┐┬ ┬┌┬┐┬┌┐┌┌─┐
-//║  │ ││││├─┘│ │ │ ├┤   ╚═╗ │ ├─┤ │ ││    ║  ││ ┬├─┤ │ │││││ ┬
+//║  │ ││││├─┘│ │ │ ├┤   ╚═╗ │ ├─┤ │ ││    ║  ││ ┬├─┤ │ │││││ ┬ 
 //╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝ ┴ ┴ ┴ ┴ ┴└─┘  ╩═╝┴└─┘┴ ┴ ┴ ┴┘└┘└─┘
 
 }
