@@ -984,16 +984,26 @@ void voraldo::draw_menu_and_take_input()
     static ImVec4 heightmap_draw_color;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,240));
+    ImGui::SetNextWindowSize(ImVec2(256,465));
     ImGui::Begin("Heightmap Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::Text(" ");
-    ImGui::Text(" TO BE DETERMINED ");
-    ImGui::Text("   (show the current");   //option to enter string and load a file of a heightmap, too - look at line 816 in the demo code for how to display images
-    ImGui::Text("      heightmap here)");               //since the image function expects an OpenGL texture handle, we can use the actual texture, residing on the GPU
-    ImGui::Text(" ");
+    //show off the currently held texture
+    ImGui::Image((void*)(intptr_t) 6   /*not a good way to do this, but it works right now*/ , ImVec2(DIM, DIM));
+
+    
 
 
+    if (ImGui::Button("perlin", ImVec2(100, 22)))
+    {
+
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("diamond-square", ImVec2(100, 22)))
+    {
+        GPU_Data.generate_heightmap_diamond_square();
+    }
 
     ImGui::Separator();
     ImGui::SliderFloat(" Scale", &heightmap_vertical_scale, 0.0f, 5.0f, "%.3f");

@@ -239,7 +239,7 @@ void OpenGL_container::load_textures()
   glBindTexture(GL_TEXTURE_3D, perlin_texture);
 
   glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
@@ -250,11 +250,11 @@ void OpenGL_container::load_textures()
   glBindTexture(GL_TEXTURE_2D, heightmap_texture);
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   //2d texture for representation of a heightmap (greyscale) - also, DIM on a side
-
+  generate_heightmap_diamond_square();
 
 //intialize these so we know which textures we're using
   location_of_previous = 0;
@@ -299,7 +299,7 @@ void OpenGL_container::generate_heightmap_diamond_square()
   std::default_random_engine engine{seed};
   std::uniform_real_distribution<float> distribution{0, 1};
 
-  constexpr auto size = 513;
+  constexpr auto size =  DIM + 1;
   constexpr auto edge = size - 1;
 
   uint8_t map[size][size] = {{0}};
@@ -328,9 +328,9 @@ void OpenGL_container::generate_heightmap_diamond_square()
   std::vector<unsigned char> data;
 
 
-  for(int x = 0; x < 512; x++)
+  for(int x = 0; x < DIM; x++)
   {
-    for(int y = 0; y < 512; y++)
+    for(int y = 0; y < DIM; y++)
   	{
       data.push_back(map[x][y]);
       data.push_back(map[x][y]);
@@ -342,7 +342,7 @@ void OpenGL_container::generate_heightmap_diamond_square()
 
   //send it to the GPU
     glBindTexture(GL_TEXTURE_2D, heightmap_texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, DIM, DIM, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
     glGenerateMipmap(GL_TEXTURE_2D);
 
 
@@ -372,7 +372,7 @@ void OpenGL_container::generate_heightmap_XOR()
   {
     for(int y = 0; y < 512; y++)
     {
-      cout << " "<< ((unsigned char)(x%256) ^ (unsigned char)(y%256));
+      //cout << " "<< ((unsigned char)(x%256) ^ (unsigned char)(y%256));
       data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));
       data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));
       data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));

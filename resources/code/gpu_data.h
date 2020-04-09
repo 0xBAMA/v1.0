@@ -51,6 +51,8 @@ class OpenGL_container
 
     glm::vec4 clear_color;
 
+
+
   private:
     GLuint vao; //vertex array object
     GLuint vbo; //vertex buffer object
