@@ -188,7 +188,7 @@ void OpenGL_container::load_textures()
         data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
         data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
         data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
-        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
+        data2.push_back(255-((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
         //data2.push_back(255);
 
 
@@ -354,10 +354,39 @@ void OpenGL_container::generate_heightmap_perlin()
 
   PerlinNoise p;
 
-  float xscale = 0.1;
+    float xscale = 0.014f;
+    float yscale = 0.04f;
+
+    //might add more parameters at some point, but we'll see
 
   //create the byte array - parameters?
   //send it to the gpu
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<float> distribution(-500.0,500.0);
+
+//    float offset = distribution(generator);
+
+
+    static float offset = 0;
+
+    for(int x = 0; x < DIM; x++)
+    {
+        for(int y = 0; y < DIM; y++)
+        {
+            data.push_back((unsigned char)(p.noise(x*xscale,y*yscale,offset) * 255));
+            data.push_back((unsigned char)(p.noise(x*xscale,y*yscale,offset) * 255));
+            data.push_back((unsigned char)(p.noise(x*xscale,y*yscale,offset) * 255));
+            data.push_back(255);
+        }
+    }
+
+    offset += 0.5;
+
+
+    glBindTexture(GL_TEXTURE_2D, heightmap_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, DIM, DIM, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 void OpenGL_container::generate_heightmap_XOR()
@@ -368,9 +397,9 @@ void OpenGL_container::generate_heightmap_XOR()
 
   std::vector<unsigned char> data;
 
-  for(int x = 0; x < 512; x++)
+  for(int x = 0; x < DIM; x++)
   {
-    for(int y = 0; y < 512; y++)
+    for(int y = 0; y < DIM; y++)
     {
       //cout << " "<< ((unsigned char)(x%256) ^ (unsigned char)(y%256));
       data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));
@@ -381,6 +410,10 @@ void OpenGL_container::generate_heightmap_XOR()
   }
 
   //send the data to the gpu
+
+    glBindTexture(GL_TEXTURE_2D, heightmap_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, DIM, DIM, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 

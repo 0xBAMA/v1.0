@@ -993,17 +993,25 @@ void voraldo::draw_menu_and_take_input()
     
 
 
-    if (ImGui::Button("perlin", ImVec2(100, 22)))
+    if (ImGui::Button("perlin"))
     {
-
+        GPU_Data.generate_heightmap_perlin();
     }
 
     ImGui::SameLine();
 
-    if (ImGui::Button("diamond-square", ImVec2(100, 22)))
+    if (ImGui::Button("diamond-square"))
     {
         GPU_Data.generate_heightmap_diamond_square();
     }
+
+    ImGui::SameLine();
+    
+    if (ImGui::Button("XOR"))
+    {
+        GPU_Data.generate_heightmap_XOR();
+    }
+
 
     ImGui::Separator();
     ImGui::SliderFloat(" Scale", &heightmap_vertical_scale, 0.0f, 5.0f, "%.3f");
