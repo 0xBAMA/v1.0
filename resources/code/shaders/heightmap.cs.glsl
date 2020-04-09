@@ -10,9 +10,10 @@ uniform layout(rgba8) image3D current;        //values of the block after the up
 uniform layout(r8) image3D current_mask;   //values of the mask after the update
 
 uniform sampler2D map;          //heightmap texture
-uniform float scale;            //vertically scaling the texture
+uniform float vscale;            //vertically scaling the texture
 
 uniform vec4 color;           //what color should it be drawn with?
+uniform bool height_color;      //should the coloring be scaled by the height
 
 uniform bool draw;      //should this shape be drawn?
 uniform bool mask;      //this this shape be masked?
@@ -21,7 +22,12 @@ uniform bool mask;      //this this shape be masked?
 bool in_shape()
 {
   //code to see if gl_GlobalInvocationID.xyz is inside the shape
-  return false;
+  vec4 mapread = 256.0f*vscale*texture(map,vec2(gl_GlobalInvocationID.xy/256));
+  
+  if(gl_GlobalInvocationID.z < mapread.r)
+    return true;
+  else
+    return false;
 }
 
 vec4 mask_true = vec4(1.0,0.0,0.0,0.0);
@@ -50,8 +56,15 @@ void main()
       imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_false);
 
     if(draw)  //uniform value telling whether or not to draw
-      imageStore(current, ivec3(gl_GlobalInvocationID.xyz), color); //uniform color
+    {
+        if(height_color)
+            imageStore(current, ivec3(gl_GlobalInvocationID.xyz), vec4(color.rgb * (float(gl_GlobalInvocationID.y)/float(vscale)), color.a)); //uniform color, scaled by y
+        else
+            imageStore(current, ivec3(gl_GlobalInvocationID.xyz), color); //uniform color
+    }
     else
-      imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //previous color
+    {
+        imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //previous color
+    }
   }
 }

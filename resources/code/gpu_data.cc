@@ -93,14 +93,14 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling heightmap compute shader.....";
+  CShader csheightmap("resources/code/shaders/heightmap.cs.glsl");
+  heightmap_compute = csheightmap.Program;
+  SDL_Delay(30);
+  cout << "done." << endl;
 
 
-
-
-
-
-
-
+  //cout <<
 
 
   // A---------------B
@@ -185,10 +185,11 @@ void OpenGL_container::load_textures()
         // data2.push_back(1);                  //alpha
 
 
-        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
-        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
-        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
-        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256)));
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
+        data2.push_back(((unsigned char)(x%256) ^ (unsigned char)(y%256) ^ (unsigned char)(z%256)));
+        //data2.push_back(255);
 
 
 
@@ -235,9 +236,23 @@ void OpenGL_container::load_textures()
 
   //these are going to be standard textures, read only, with mipmaps and filtering
   glGenTextures(1, &perlin_texture);
+  glBindTexture(GL_TEXTURE_3D, perlin_texture);
+
+  glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
   //3d texture for perlin noise - DIM on a side
 
+
   glGenTextures(1, &heightmap_texture);
+  glBindTexture(GL_TEXTURE_2D, heightmap_texture);
+
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   //2d texture for representation of a heightmap (greyscale) - also, DIM on a side
 
 
@@ -312,27 +327,25 @@ void OpenGL_container::generate_heightmap_diamond_square()
 
   std::vector<unsigned char> data;
 
-  //put this data in a byte array
+
+  for(int x = 0; x < 512; x++)
+  {
+    for(int y = 0; y < 512; y++)
+  	{
+      data.push_back(map[x][y]);
+      data.push_back(map[x][y]);
+      data.push_back(map[x][y]);
+      data.push_back(255);
+  	}
+  }
+
+
   //send it to the GPU
+    glBindTexture(GL_TEXTURE_2D, heightmap_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
 
-
-
-
-
-
-
-        // // Output PGM (Netpbm greyscale image format)
-        // std::cout << "P2 " << size << ' ' << size << " 255\n";
-        //
-        // for (auto& row : map)
-        // {
-        //     for (auto& cell : row)
-        //     {
-        //         std::cout << static_cast<int>(cell) << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
 }
 
 void OpenGL_container::generate_heightmap_perlin()
@@ -340,6 +353,8 @@ void OpenGL_container::generate_heightmap_perlin()
   std::vector<unsigned char> data;
 
   PerlinNoise p;
+
+  float xscale = 0.1;
 
   //create the byte array - parameters?
   //send it to the gpu
@@ -359,6 +374,9 @@ void OpenGL_container::generate_heightmap_XOR()
     {
       cout << " "<< ((unsigned char)(x%256) ^ (unsigned char)(y%256));
       data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));
+      data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));
+      data.push_back((unsigned char)(x%256) ^ (unsigned char)(y%256));
+      data.push_back(255);
     }
   }
 
