@@ -100,7 +100,10 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
-  //cout <<
+  cout << "  compiling perlin noise compute shader..";
+  CShader csperlin("resources/code/shaders/perlin.cs.glsl");
+  SDL_Delay(30);
+  cout << "done." << endl;
 
 
   // A---------------B
@@ -486,7 +489,7 @@ void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 c
 
 }
 
-void OpenGL_container::draw_perlin_noise()
+void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask)
 {
 //╔═╗┌─┐┬─┐┬  ┬┌┐┌  ╔╗╔┌─┐┬┌─┐┌─┐
 //╠═╝├┤ ├┬┘│  ││││  ║║║│ ││└─┐├┤
@@ -751,7 +754,7 @@ void OpenGL_container::draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, 
 
 }
 
-void OpenGL_container::draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw)
+void OpenGL_container::draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw) //done
 {
 //╦ ╦┌─┐┬┌─┐┬ ┬┌┬┐┌┬┐┌─┐┌─┐
 //╠═╣├┤ ││ ┬├─┤ │ │││├─┤├─┘
@@ -798,7 +801,7 @@ void OpenGL_container::draw_heightmap(float height_scale, bool height_color, glm
 
 
 
-void OpenGL_container::blur(int radius, bool touch_alpha, bool respect_mask)
+void OpenGL_container::blur(int radius, bool touch_alpha, bool respect_mask)  //done
 {
 //╔╗ ┬  ┬ ┬┬─┐
 //╠╩╗│  │ │├┬┘

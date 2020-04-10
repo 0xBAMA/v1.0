@@ -30,8 +30,7 @@ class OpenGL_container
     void draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw);
 
     //parameter lists tbd
-//    void draw_heightmap();            //drawing heightmaps
-    void draw_perlin_noise();         //drawing perlin noise - smooth or solid color
+    void draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask);         //drawing perlin noise - smooth or solid color
 
     // structure changes here - less shapes, more general operations
     void mask_by_color();             //mask based on value/variance per channel
