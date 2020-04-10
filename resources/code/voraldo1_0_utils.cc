@@ -988,7 +988,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Begin("Heightmap Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     //show off the currently held texture
-    ImGui::Image((void*)(intptr_t) 6   /*not a good way to do this, but it works right now*/ , ImVec2(DIM, DIM));
+    ImGui::Image((void*)(intptr_t) 6   /*not a good way to do this, but it works right now*/ , ImVec2(240,256));
 
     
 

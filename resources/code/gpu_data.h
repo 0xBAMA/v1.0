@@ -46,6 +46,9 @@ class OpenGL_container
     void generate_heightmap_perlin();
     void generate_heightmap_XOR();
 
+    void generate_perlin_noise(float xscale, float yscale, float zscale);
+
+
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
     float phi;
     float theta;
@@ -100,8 +103,8 @@ class OpenGL_container
     GLint location_of_previous_mask;
 
 
-    GLint location_of_heightmap;
     GLint location_of_perlin_noise;
+    GLint location_of_heightmap;
 
 
 

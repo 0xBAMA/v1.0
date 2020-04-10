@@ -245,10 +245,11 @@ void OpenGL_container::load_textures()
 
   glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
   //3d texture for perlin noise - DIM on a side
+  generate_perlin_noise(0.014, 0.04, 0.014);
 
 
   glGenTextures(1, &heightmap_texture);
@@ -423,6 +424,26 @@ void OpenGL_container::generate_heightmap_XOR()
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
+void OpenGL_container::generate_perlin_noise(float xscale=0.014, float yscale=0.04, float zscale=0.014)
+{
+    PerlinNoise p;
+    std::vector<unsigned char> data;
+
+    for(int x = 0; x < DIM; x++)
+        for(int y = 0; y < DIM; y++)
+            for(int z = 0; z < DIM; z++)
+            {
+                data.push_back((unsigned char)(p.noise(x*xscale,y*yscale,z*zscale) * 255));
+                data.push_back((unsigned char)(p.noise(x*xscale,y*yscale,z*zscale) * 255));
+                data.push_back((unsigned char)(p.noise(x*xscale,y*yscale,z*zscale) * 255));
+                data.push_back(255);
+            }
+
+
+   glBindTexture(GL_TEXTURE_3D, perlin_texture);
+   glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
+   glGenerateMipmap(GL_TEXTURE_3D);
+}
 
 //╔╦╗┬─┐┌─┐┬ ┬  ╔═╗┬ ┬┌┐┌┌─┐┌┬┐┬┌─┐┌┐┌┌─┐
 // ║║├┬┘├─┤│││  ╠╣ │ │││││   │ ││ ││││└─┐
