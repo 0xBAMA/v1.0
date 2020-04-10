@@ -22,9 +22,9 @@ uniform bool mask;      //this this shape be masked?
 bool in_shape()
 {
   //code to see if gl_GlobalInvocationID.xyz is inside the shape
-  vec4 mapread = 256.0f*vscale*texture(map,vec2(gl_GlobalInvocationID.xy/256));
+  vec4 mapread = texture(map,vec2(gl_GlobalInvocationID.xz/256.0f));
   
-  if(gl_GlobalInvocationID.z < mapread.r)
+  if(gl_GlobalInvocationID.y < (mapread.r * 256.0f * vscale))
     return true;
   else
     return false;
@@ -58,7 +58,7 @@ void main()
     if(draw)  //uniform value telling whether or not to draw
     {
         if(height_color)
-            imageStore(current, ivec3(gl_GlobalInvocationID.xyz), vec4(color.rgb * (float(gl_GlobalInvocationID.y)/float(vscale)), color.a)); //uniform color, scaled by y
+            imageStore(current, ivec3(gl_GlobalInvocationID.xyz), color*texture(map, vec2(gl_GlobalInvocationID.xz/256.0f))); //uniform color, scaled by y
         else
             imageStore(current, ivec3(gl_GlobalInvocationID.xyz), color); //uniform color
     }

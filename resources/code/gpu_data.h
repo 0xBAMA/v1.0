@@ -27,9 +27,10 @@ class OpenGL_container
     void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
     void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                       //invokes the blurring operation
 
+    void draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw);
 
     //parameter lists tbd
-    void draw_heightmap();            //drawing heightmaps
+//    void draw_heightmap();            //drawing heightmaps
     void draw_perlin_noise();         //drawing perlin noise - smooth or solid color
 
     // structure changes here - less shapes, more general operations

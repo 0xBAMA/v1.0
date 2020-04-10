@@ -1029,6 +1029,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw the heightmap with the selected values
+        GPU_Data.draw_heightmap(heightmap_vertical_scale, true, glm::vec4(heightmap_draw_color.x, heightmap_draw_color.y, heightmap_draw_color.z, heightmap_draw_color.w), heightmap_mask, heightmap_draw);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);

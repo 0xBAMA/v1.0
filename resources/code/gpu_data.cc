@@ -212,10 +212,12 @@ void OpenGL_container::load_textures()
 
   glGenTextures(2, &block_textures[0]);
 
+  glActiveTexture(GL_TEXTURE0+0);
   glBindTexture(GL_TEXTURE_3D, block_textures[0]); // use the specified ID
   glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
   glBindImageTexture(0, block_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
 
+  glActiveTexture(GL_TEXTURE0+1); 
   glBindTexture(GL_TEXTURE_3D, block_textures[1]);
   glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data2[0]);
   glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
@@ -224,10 +226,12 @@ void OpenGL_container::load_textures()
 
   glGenTextures(2, &mask_textures[0]);
 
+  glActiveTexture(GL_TEXTURE0+2);
   glBindTexture(GL_TEXTURE_3D, mask_textures[0]);
   glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data3[0]);
   glBindImageTexture(2, mask_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
+  glActiveTexture(GL_TEXTURE0+3);
   glBindTexture(GL_TEXTURE_3D, mask_textures[1]);
   glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data4[0]);
   glBindImageTexture(3, mask_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
@@ -236,6 +240,7 @@ void OpenGL_container::load_textures()
 
   //these are going to be standard textures, read only, with mipmaps and filtering
   glGenTextures(1, &perlin_texture);
+  glActiveTexture(GL_TEXTURE0+4);
   glBindTexture(GL_TEXTURE_3D, perlin_texture);
 
   glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -247,12 +252,13 @@ void OpenGL_container::load_textures()
 
 
   glGenTextures(1, &heightmap_texture);
+  glActiveTexture(GL_TEXTURE0+5);  
   glBindTexture(GL_TEXTURE_2D, heightmap_texture);
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
   //2d texture for representation of a heightmap (greyscale) - also, DIM on a side
   generate_heightmap_diamond_square();
 
@@ -263,9 +269,10 @@ void OpenGL_container::load_textures()
   location_of_previous_mask = 2;
   location_of_current_mask = 3;
 
-  cout << "done." << endl;
+  location_of_perlin_noise = 4;
+  location_of_heightmap = 5;
 
-  generate_heightmap_XOR();
+  cout << "done." << endl;
 
 }
 
@@ -723,7 +730,7 @@ void OpenGL_container::draw_aabb(glm::vec3 min, glm::vec3 max, glm::vec4 color, 
 
 }
 
-void OpenGL_container::draw_heightmap()
+void OpenGL_container::draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw)
 {
 //╦ ╦┌─┐┬┌─┐┬ ┬┌┬┐┌┬┐┌─┐┌─┐
 //╠═╣├┤ ││ ┬├─┤ │ │││├─┤├─┘
@@ -733,15 +740,30 @@ void OpenGL_container::draw_heightmap()
   swap_blocks();
 
   //testing compute shader
-  glUseProgram(sphere_compute);
+  glUseProgram(heightmap_compute);
+
+
+  //sampler is in unit 6, so that can be sent directly
+  //vscale scales the map vertically
+  //height color tells whether to vary the color with the height, or false to have solid color
+  //draw and mask are the same as before
+
+  glUniform1i(glGetUniformLocation(heightmap_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(heightmap_compute, "draw"), draw);
+  glUniform1i(glGetUniformLocation(heightmap_compute, "height_color"), height_color);
+  glUniform1i(glGetUniformLocation(heightmap_compute, "map"), location_of_heightmap);
+  glUniform1f(glGetUniformLocation(heightmap_compute, "vscale"), height_scale);
+  glUniform4fv(glGetUniformLocation(heightmap_compute, "color"), 1, glm::value_ptr(color));
+
+
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(heightmap_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(heightmap_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(heightmap_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(heightmap_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
