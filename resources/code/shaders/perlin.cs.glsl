@@ -9,9 +9,9 @@ uniform layout(r8) image3D previous_mask;  //now-current values of the mask
 uniform layout(rgba8) image3D current;        //values of the block after the update
 uniform layout(r8) image3D current_mask;   //values of the mask after the update
 
-uniform sampler3D noise;        //noise texture
-uniform float scale;            //scaling the texture
-uniform float threshold;        //positive applies 'less than' logic, negative applies 'greater than' logic
+uniform sampler3D tex;        //noise texture
+uniform float low_thresh;  //lowest value in perlin texture to accept
+uniform float high_thresh; //highest value in perlin texture to accept
 
 uniform vec4 color;           //what color should it be drawn with?
 
@@ -22,7 +22,12 @@ uniform bool mask;      //this this shape be masked?
 bool in_shape()
 {
   //code to see if gl_GlobalInvocationID.xyz is inside the shape
-  return false;
+  vec4 texread = texture(tex, gl_GlobalInvocationID.xyz/256.0);   
+    
+  if(texread.r < high_thresh && texread.r > low_thresh)
+    return true;
+  else
+    return false;
 }
 
 vec4 mask_true = vec4(1.0,0.0,0.0,0.0);

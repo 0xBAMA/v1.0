@@ -568,24 +568,36 @@ void voraldo::draw_menu_and_take_input()
     //set scale, etc, and offer the option to load that new one into texture memory (or should we look at a compute shader that does it?)
     // need something to generate a new perlin texture, put it on the gpu?
   {
-    static float perlin_scale;
-    static float perlin_threshold = 0.0f;
+    static float perlin_scale_x = 0.014;
+    static float perlin_scale_y = 0.014;
+    static float perlin_scale_z = 0.014;
+    static float perlin_threshold_lo = 0.0f;
+    static float perlin_threshold_hi = 0.0f;
     static ImVec4 perlin_draw_color;
     static bool perlin_draw = true;
     static bool perlin_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,225));
+    ImGui::SetNextWindowSize(ImVec2(256,450));
     ImGui::Begin("Perlin Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text(" ");
-    ImGui::Text("[PUT BUTTONS TO GENERATE HERE]");
+    ImGui::SliderFloat("  xscale", &perlin_scale_x, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("  yscale", &perlin_scale_y, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("  zscale", &perlin_scale_z, 0.0f, 1.0f, "%.3f");
     ImGui::Text(" ");
+
+    if(ImGui::Button("generate"))
+    {
+        GPU_Data.generate_perlin_noise(perlin_scale_x, perlin_scale_y, perlin_scale_z);
+    }
+
     ImGui::Separator();
 
-    ImGui::SliderFloat("  scale", &perlin_scale, 0.0f, 1.0f, "%.3f");
-    ImGui::SliderFloat("  thresh", &perlin_threshold, -1.0f, 1.0f, "%.3f");
 
+    ImGui::SliderFloat(" hithresh", &perlin_threshold_hi, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat(" lothresh", &perlin_threshold_lo, 0.0f, 1.0f, "%.3f");
+    
     ImGui::Separator();
 
     ImGui::Checkbox("  Draw ", &perlin_draw);
@@ -599,7 +611,8 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetCursorPosX(16);
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
-        //draw the sphere with the selected values
+        //draw with the selected values
+        GPU_Data.draw_perlin_noise(perlin_threshold_lo, perlin_threshold_hi, glm::vec4(perlin_draw_color.x, perlin_draw_color.y, perlin_draw_color.z, perlin_draw_color.w), perlin_draw, perlin_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);

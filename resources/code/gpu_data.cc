@@ -102,8 +102,19 @@ void OpenGL_container::init()
 
   cout << "  compiling perlin noise compute shader..";
   CShader csperlin("resources/code/shaders/perlin.cs.glsl");
+  perlin_noise_compute = csperlin.Program;
   SDL_Delay(30);
   cout << "done." << endl;
+
+  //remaining:
+  //    mask by color
+  //    static lighting
+  //    ambient occlusion
+  //    game of life
+  //    wireworld
+
+
+
 
 
   // A---------------B
@@ -150,6 +161,7 @@ void OpenGL_container::init()
   glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
   cout << "done." << endl;
 
+  //rotation, scaling of view
   scale = 5.0f;
   phi   = 0.0f;
   theta = 0.0f;
@@ -278,7 +290,11 @@ void OpenGL_container::load_textures()
 
   cout << "done." << endl;
 
+
+  //draw_perlin_noise(0.2,0.6,glm::vec4(0.1,0.2,0.3,0.4),true,false);
+  //draw_perlin_noise(0.2,0.4,glm::vec4(0.8,0.2,0.3,0.4),true,false);
 }
+
 
 void OpenGL_container::swap_blocks()
 {
@@ -499,16 +515,23 @@ void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, gl
   swap_blocks();
 
   //testing compute shader
-  glUseProgram(sphere_compute);
+  glUseProgram(perlin_noise_compute);
+
+  glUniform1i(glGetUniformLocation(perlin_noise_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(perlin_noise_compute, "draw"), draw);
+  glUniform1i(glGetUniformLocation(perlin_noise_compute, "tex"), location_of_perlin_noise);
+  glUniform1f(glGetUniformLocation(perlin_noise_compute, "low_thresh"), low_thresh);
+  glUniform1f(glGetUniformLocation(perlin_noise_compute, "high_thresh"), high_thresh);
+  glUniform4fv(glGetUniformLocation(perlin_noise_compute, "color"), 1, glm::value_ptr(color));
 
 
   //send the preveious texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous"), 1, &location_of_previous);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "previous_mask"), 1, &location_of_previous_mask);
+  glUniform1iv(glGetUniformLocation(perlin_noise_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(perlin_noise_compute, "previous_mask"), 1, &location_of_previous_mask);
 
   //send the current texture handles
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current"), 1, &location_of_current);
-  glUniform1iv(glGetUniformLocation(sphere_compute, "current_mask"), 1, &location_of_current_mask);
+  glUniform1iv(glGetUniformLocation(perlin_noise_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(perlin_noise_compute, "current_mask"), 1, &location_of_current_mask);
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
