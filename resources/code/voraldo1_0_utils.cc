@@ -1167,8 +1167,55 @@ void voraldo::draw_menu_and_take_input()
   mask_by_color_config_label:
     //base value and range for r/g/b/a - powerful tool
   {
-    //display the color somehow
+    static bool use_r;
+    static bool use_g;
+    static bool use_b;
+    static bool use_a;
+
+    static ImVec4 select_color;
+
+    static float r_variance=0.1;
+    static float g_variance=0.2;
+    static float b_variance=0.3;
+    static float a_variance=0.4;
+   
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,465));
+    ImGui::Begin("Mask by Color Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+
+
+    ImGui::ColorEdit4("  Color", (float*)&select_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
     //sliders
+
+    ImGui::Checkbox("use r", &use_r);
+    ImGui::SameLine();
+    ImGui::SliderFloat("r variance", &r_variance, 0.0f, 1.0f, "%.3f");
+
+    ImGui::Checkbox("use g", &use_g);
+    ImGui::SameLine();
+    ImGui::SliderFloat("g variance", &g_variance, 0.0f, 1.0f, "%.3f");
+    
+    ImGui::Checkbox("use b", &use_b);
+    ImGui::SameLine();
+    ImGui::SliderFloat("b variance", &b_variance, 0.0f, 1.0f, "%.3f");
+    
+    ImGui::Checkbox("use a", &use_a);
+    ImGui::SameLine();
+    ImGui::SliderFloat("a variance", &a_variance, 0.0f, 1.0f, "%.3f");
+
+    
+    if (ImGui::Button("Mask", ImVec2(100, 22)))
+      current_menu_state = MASK_MENU;
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = MASK_MENU;
+
+
     goto done;
   }
 
