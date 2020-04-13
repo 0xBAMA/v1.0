@@ -4,7 +4,7 @@ in vec4 v_color;
 out vec4 fragment_output;
 
 uniform layout(rgba8) image3D current;
-
+uniform layout(r8) image3D lighting;
 
 uniform vec4 clear_color;     //bg color
 uniform int x_resolution;    //width, in pixels
@@ -98,6 +98,7 @@ vec4 get_color_for_pixel(vec3 org, vec3 dir)
   ivec3 samp = ivec3((vec3(imageSize(current))/2.0f)*(org+current_t*dir+vec3(1)));
 
   vec4 new_read = imageLoad(current,samp);
+  vec4 new_light_read = imageLoad(lighting,samp);
 
   for(int i = 0; i < NUM_STEPS; i++)
   {
@@ -107,7 +108,12 @@ vec4 get_color_for_pixel(vec3 org, vec3 dir)
       samp = ivec3((vec3(imageSize(current))/2.0f)*(org+current_t*dir+vec3(1)));
 
       new_read = imageLoad(current,samp);
+      new_light_read = imageLoad(lighting,samp);
 
+
+      new_read *= (2*new_light_read.r);
+          
+          
       // it's a over b, where a is the new sample and b is the current color, t_color
       t_color.rgb = new_read.rgb * new_read.a + t_color.rgb * t_color.a * ( 1 - new_read.a );
       t_color.a = new_read.a + t_color.a * ( 1 - new_read.a );

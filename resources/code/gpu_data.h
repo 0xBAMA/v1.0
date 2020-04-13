@@ -81,8 +81,8 @@ class OpenGL_container
     GLuint cylinder_compute;                    //      |    x    |
     GLuint cuboid_compute;                      //      |    x    |
     GLuint ellipsoid_compute;                   //      |    x    |
-    GLuint heightmap_compute;                   //      |    -    |
-    GLuint perlin_noise_compute;                //      |    -    |
+    GLuint heightmap_compute;                   //      |    x    |
+    GLuint perlin_noise_compute;                //      |    x    |
     GLuint triangle_compute;                    //      |    x    |
     GLuint tube_compute;                        //      |    x    |
 
@@ -90,16 +90,20 @@ class OpenGL_container
     GLuint clear_all_compute;                   //      |    x    |
     GLuint unmask_all_compute;                  //      |    x    |
     GLuint toggle_mask_compute;                 //      |    x    |
-    GLuint mask_by_color_compute;               //      |    -    |
+    GLuint mask_by_color_compute;               //      |    x    |
     GLuint static_lighting_compute;             //      |    -    |
     GLuint ambient_occlusion_compute;           //      |    -    |
     GLuint game_of_life_update_compute;         //      |    -    |
     GLuint wireworld_update_compute;            //      |    -    |
 
 
-  //╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐
-  // ║ ├┤ ┌┴┬┘ │ │ │├┬┘├┤ └─┐
-  // ╩ └─┘┴ └─ ┴ └─┘┴└─└─┘└─┘
+
+
+
+
+  //╦┌┬┐┌─┐┌─┐┌─┐┌─┐
+  //║│││├─┤│ ┬├┤ └─┐
+  //╩┴ ┴┴ ┴└─┘└─┘└─┘
 
     GLint location_of_current;
     GLint location_of_current_mask;
@@ -107,6 +111,12 @@ class OpenGL_container
     GLint location_of_previous;
     GLint location_of_previous_mask;
 
+    GLint location_of_light_buffer;
+
+
+  //╔╦╗┌─┐─┐ ┬┌┬┐┬ ┬┬─┐┌─┐┌─┐
+  // ║ ├┤ ┌┴┬┘ │ │ │├┬┘├┤ └─┐
+  // ╩ └─┘┴ └─ ┴ └─┘┴└─└─┘└─┘
 
     GLint location_of_perlin_noise;
     GLint location_of_heightmap;
@@ -115,9 +125,10 @@ class OpenGL_container
 
     GLuint block_textures[2];
     GLuint mask_textures[2];
+    GLuint light_texture;
+    
     GLuint perlin_texture;
     GLuint heightmap_texture;
-
 
 };
 

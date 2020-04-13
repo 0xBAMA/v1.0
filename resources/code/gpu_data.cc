@@ -4,7 +4,7 @@
 void OpenGL_container::init()
 {
 
-  cout << "  compiling main display shaders...........";
+  cout << "  compiling main display shaders...............";
   Shader s("resources/code/shaders/main.vs.glsl", "resources/code/shaders/main.fs.glsl");
 
   main_display_shader = s.Program;
@@ -14,87 +14,103 @@ void OpenGL_container::init()
   //║  │ ││││├─┘│ │ │ ├┤   ╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
 
-  cout << "  compiling sphere compute shader..........";
+  cout << "  compiling sphere compute shader..............";
   CShader cssphere("resources/code/shaders/sphere.cs.glsl");
   sphere_compute = cssphere.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling aabb compute shader............";
+  cout << "  compiling aabb compute shader................";
   CShader cssaabb("resources/code/shaders/aabb.cs.glsl");
   aabb_compute = cssaabb.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling cylinder compute shader........";
+  cout << "  compiling cylinder compute shader............";
   CShader cscylinder("resources/code/shaders/cylinder.cs.glsl");
   cylinder_compute = cscylinder.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling tube compute shader............";
+  cout << "  compiling tube compute shader................";
   CShader cstube("resources/code/shaders/tube.cs.glsl");
   tube_compute = cstube.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling cuboid compute shader..........";
+  cout << "  compiling cuboid compute shader..............";
   CShader cscuboid("resources/code/shaders/cuboid.cs.glsl");
   cuboid_compute = cscuboid.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling triangle compute shader........";
+  cout << "  compiling triangle compute shader............";
   CShader cstriangle("resources/code/shaders/triangle.cs.glsl");
   triangle_compute = cstriangle.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling ellipsoid compute shader.......";
+  cout << "  compiling ellipsoid compute shader...........";
   CShader csellipsoid("resources/code/shaders/ellipsoid.cs.glsl");
   ellipsoid_compute = csellipsoid.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling clear all compute shader.......";
+  cout << "  compiling clear all compute shader...........";
   CShader csclear_all("resources/code/shaders/clear_all.cs.glsl");
   clear_all_compute = csclear_all.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling unmask all compute shader......";
+  cout << "  compiling unmask all compute shader..........";
   CShader csunmask_all("resources/code/shaders/unmask_all.cs.glsl");
   unmask_all_compute = csunmask_all.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling toggle mask compute shader.....";
+  cout << "  compiling toggle mask compute shader.........";
   CShader cstoggle_mask("resources/code/shaders/toggle_mask.cs.glsl");
   toggle_mask_compute = cstoggle_mask.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling blur compute shader............";
+  cout << "  compiling blur compute shader................";
   CShader csblur("resources/code/shaders/blur.cs.glsl");
   blur_compute = csblur.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling heightmap compute shader.......";
+  cout << "  compiling heightmap compute shader...........";
   CShader csheightmap("resources/code/shaders/heightmap.cs.glsl");
   heightmap_compute = csheightmap.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling perlin noise compute shader....";
+  cout << "  compiling perlin noise compute shader........";
   CShader csperlin("resources/code/shaders/perlin.cs.glsl");
   perlin_noise_compute = csperlin.Program;
   cout << "done." << endl;
 
 
-  cout << "  compiling mask by color compute shader...";
+  cout << "  compiling mask by color compute shader.......";
   CShader csmaskbycolor("resources/code/shaders/mask_by_color.cs.glsl");
   mask_by_color_compute = csmaskbycolor.Program;
+  cout << "done." << endl;
+
+
+  cout << "  compiling AO compute shader..................";
+  cout << "done." << endl;
+
+
+  cout << "  compiling static lighting compute shader.....";
+  cout << "done." << endl;
+
+
+  cout << "  compiling Game of Life compute shader........";
+  cout << "done." << endl;
+
+
+  cout << "  compiling WireWorld3d compute shader.........";
   cout << "done." << endl;
 
 
@@ -132,7 +148,7 @@ void OpenGL_container::init()
   points.push_back(glm::vec3( 1,-1, 0));  //D
 
   //vao, vbo
-  cout << "  setting up vao, vbo......................";
+  cout << "  setting up vao, vbo..........................";
   glGenVertexArrays( 1, &vao );
   glBindVertexArray( vao );
 
@@ -141,13 +157,13 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
   //buffer the data
-  cout << "  buffering vertex data....................";
+  cout << "  buffering vertex data........................";
   glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * points.size(), NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * points.size(), &points[0]);
   cout << "done." << endl;
 
   //set up attributes
-  cout << "  setting up attributes....................";
+  cout << "  setting up attributes........................";
   GLuint points_attrib = glGetAttribLocation(main_display_shader, "vPosition");
   glEnableVertexAttribArray(points_attrib);
   glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
@@ -169,7 +185,7 @@ void OpenGL_container::load_textures()
   unsigned char val;
 
 
-  cout << "  loading textures......................." << std::flush;
+  cout << "  loading textures............................." << std::flush;
 
   for(int x = 0; x < DIM; x++)
   {
@@ -212,7 +228,8 @@ void OpenGL_container::load_textures()
         // }
 
         data3.push_back(0);
-        data4.push_back(0);
+        //data4.push_back(127);
+        data4.push_back(val);
       }
     }
   }
@@ -240,14 +257,25 @@ void OpenGL_container::load_textures()
 
   glActiveTexture(GL_TEXTURE0+3);
   glBindTexture(GL_TEXTURE_3D, mask_textures[1]);
-  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data4[0]);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0,  GL_RED, GL_UNSIGNED_BYTE, &data3[0]);
   glBindImageTexture(3, mask_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
+
+
+
+
+
+  glGenTextures(1, &light_texture);
+  
+  glActiveTexture(GL_TEXTURE0+4);
+  glBindTexture(GL_TEXTURE_3D, light_texture);
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, DIM, DIM, DIM, 0, GL_RED, GL_UNSIGNED_BYTE, &data4[0]);
+  glBindImageTexture(4, light_texture, 0, GL_TRUE, 0, GL_READ_WRITE, GL_R8);
 
 
 
   //these are going to be standard textures, read only, with mipmaps and filtering
   glGenTextures(1, &perlin_texture);
-  glActiveTexture(GL_TEXTURE0+4);
+  glActiveTexture(GL_TEXTURE0+5);
   glBindTexture(GL_TEXTURE_3D, perlin_texture);
 
   glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -260,7 +288,7 @@ void OpenGL_container::load_textures()
 
 
   glGenTextures(1, &heightmap_texture);
-  glActiveTexture(GL_TEXTURE0+5);  
+  glActiveTexture(GL_TEXTURE0+6);  
   glBindTexture(GL_TEXTURE_2D, heightmap_texture);
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -277,8 +305,10 @@ void OpenGL_container::load_textures()
   location_of_previous_mask = 2;
   location_of_current_mask = 3;
 
-  location_of_perlin_noise = 4;
-  location_of_heightmap = 5;
+  location_of_light_buffer = 4;
+
+  location_of_perlin_noise = 5;
+  location_of_heightmap = 6;
 
   cout << "done." << endl;
 }
@@ -1027,9 +1057,10 @@ void OpenGL_container::display()
   glUniform1fv(glGetUniformLocation(main_display_shader, "uphi"),         1, &phi);
   glUniform1fv(glGetUniformLocation(main_display_shader, "utheta"),       1, &theta);
 
-  glUniform4fv(glGetUniformLocation(main_display_shader, "clear_color"), 1, glm::value_ptr(clear_color));
+  glUniform4fv(glGetUniformLocation(main_display_shader, "clear_color"),  1, glm::value_ptr(clear_color));
 
   glUniform1iv(glGetUniformLocation(main_display_shader, "current"),      1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(main_display_shader, "lighting"),     1, &location_of_light_buffer);
 
   glDrawArrays( GL_TRIANGLES, 0, 6 );
 }
