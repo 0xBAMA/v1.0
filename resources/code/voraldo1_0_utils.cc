@@ -1208,7 +1208,9 @@ void voraldo::draw_menu_and_take_input()
 
     
     if (ImGui::Button("Mask", ImVec2(100, 22)))
-      current_menu_state = MASK_MENU;
+    {
+        GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), r_variance, g_variance, b_variance, a_variance);
+    }
 
     ImGui::SameLine();
 

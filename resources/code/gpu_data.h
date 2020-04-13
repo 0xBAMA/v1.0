@@ -33,7 +33,13 @@ class OpenGL_container
     void draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask);         //drawing perlin noise - smooth or solid color
 
     // structure changes here - less shapes, more general operations
-    void mask_by_color();             //mask based on value/variance per channel
+    void mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 color, float r_var, float g_var, float b_var, float a_var);             //mask based on value/variance per channel
+
+    
+    
+    
+    
+    
     void compute_static_lighting();   //compute static lighting - structure tbd
     void compute_ambient_occlusion(); //compute ambient occlusion - based on neighborhood
     void game_of_life_update();       //CA update, using GoL rules

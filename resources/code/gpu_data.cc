@@ -4,110 +4,102 @@
 void OpenGL_container::init()
 {
 
-  cout << "  compiling main display shaders.........";
+  cout << "  compiling main display shaders...........";
   Shader s("resources/code/shaders/main.vs.glsl", "resources/code/shaders/main.fs.glsl");
 
   main_display_shader = s.Program;
   cout << "done." << endl;
 
-  SDL_Delay(30);
-
   //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┬ ┬┌─┐┌┬┐┌─┐┬─┐┌─┐
   //║  │ ││││├─┘│ │ │ ├┤   ╚═╗├─┤├─┤ ││├┤ ├┬┘└─┐
   //╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝┴ ┴┴ ┴─┴┘└─┘┴└─└─┘
 
-  cout << "  compiling sphere compute shader........";
+  cout << "  compiling sphere compute shader..........";
   CShader cssphere("resources/code/shaders/sphere.cs.glsl");
   sphere_compute = cssphere.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling aabb compute shader..........";
+  cout << "  compiling aabb compute shader............";
   CShader cssaabb("resources/code/shaders/aabb.cs.glsl");
   aabb_compute = cssaabb.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling cylinder compute shader......";
+  cout << "  compiling cylinder compute shader........";
   CShader cscylinder("resources/code/shaders/cylinder.cs.glsl");
   cylinder_compute = cscylinder.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling tube compute shader..........";
+  cout << "  compiling tube compute shader............";
   CShader cstube("resources/code/shaders/tube.cs.glsl");
   tube_compute = cstube.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling cuboid compute shader........";
+  cout << "  compiling cuboid compute shader..........";
   CShader cscuboid("resources/code/shaders/cuboid.cs.glsl");
   cuboid_compute = cscuboid.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling triangle compute shader......";
+  cout << "  compiling triangle compute shader........";
   CShader cstriangle("resources/code/shaders/triangle.cs.glsl");
   triangle_compute = cstriangle.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling ellipsoid compute shader.....";
+  cout << "  compiling ellipsoid compute shader.......";
   CShader csellipsoid("resources/code/shaders/ellipsoid.cs.glsl");
   ellipsoid_compute = csellipsoid.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling clear all compute shader.....";
+  cout << "  compiling clear all compute shader.......";
   CShader csclear_all("resources/code/shaders/clear_all.cs.glsl");
   clear_all_compute = csclear_all.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling unmask all compute shader....";
+  cout << "  compiling unmask all compute shader......";
   CShader csunmask_all("resources/code/shaders/unmask_all.cs.glsl");
   unmask_all_compute = csunmask_all.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling toggle mask compute shader...";
+  cout << "  compiling toggle mask compute shader.....";
   CShader cstoggle_mask("resources/code/shaders/toggle_mask.cs.glsl");
   toggle_mask_compute = cstoggle_mask.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling blur compute shader..........";
+  cout << "  compiling blur compute shader............";
   CShader csblur("resources/code/shaders/blur.cs.glsl");
   blur_compute = csblur.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling heightmap compute shader.....";
+  cout << "  compiling heightmap compute shader.......";
   CShader csheightmap("resources/code/shaders/heightmap.cs.glsl");
   heightmap_compute = csheightmap.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
 
-  cout << "  compiling perlin noise compute shader..";
+  cout << "  compiling perlin noise compute shader....";
   CShader csperlin("resources/code/shaders/perlin.cs.glsl");
   perlin_noise_compute = csperlin.Program;
-  SDL_Delay(30);
   cout << "done." << endl;
 
+
+  cout << "  compiling mask by color compute shader...";
+  CShader csmaskbycolor("resources/code/shaders/mask_by_color.cs.glsl");
+  mask_by_color_compute = csmaskbycolor.Program;
+  cout << "done." << endl;
+
+
+
   //remaining:
-  //    mask by color
   //    static lighting
   //    ambient occlusion
   //    game of life
@@ -289,10 +281,6 @@ void OpenGL_container::load_textures()
   location_of_heightmap = 5;
 
   cout << "done." << endl;
-
-
-  //draw_perlin_noise(0.2,0.6,glm::vec4(0.1,0.2,0.3,0.4),true,false);
-  //draw_perlin_noise(0.2,0.4,glm::vec4(0.8,0.2,0.3,0.4),true,false);
 }
 
 
@@ -505,7 +493,7 @@ void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 c
 
 }
 
-void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask)   //done
 {
 //╔═╗┌─┐┬─┐┬  ┬┌┐┌  ╔╗╔┌─┐┬┌─┐┌─┐
 //╠═╝├┤ ├┬┘│  ││││  ║║║│ ││└─┐├┤
@@ -948,13 +936,46 @@ void OpenGL_container::toggle_mask()  //done
   //postcondition - "current" values have the most up-to-date data
 }
 
-void OpenGL_container::mask_by_color()
+void OpenGL_container::mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 color, float r_var, float g_var, float b_var, float a_var)
 {
 //╔╦╗┌─┐┌─┐┬┌─  ┌┐ ┬ ┬  ╔═╗┌─┐┬  ┌─┐┬─┐
 //║║║├─┤└─┐├┴┐  ├┴┐└┬┘  ║  │ ││  │ │├┬┘
 //╩ ╩┴ ┴└─┘┴ ┴  └─┘ ┴   ╚═╝└─┘┴─┘└─┘┴└─
 
+  //"current" values become "previous" values, "previous" values will become "current" values, as they will be overwritten with new data
+  swap_blocks();  
+
+  glUseProgram(mask_by_color_compute);
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current_mask"), 1, &location_of_current_mask);
+
+  glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_r"), r);
+  glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_g"), g);
+  glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_b"), b);
+  glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_a"), a);
+
+  glUniform4fv(glGetUniformLocation(mask_by_color_compute, "color"), 1, glm::value_ptr(color));
+
+  glUniform1f(glGetUniformLocation(mask_by_color_compute, "r_var"), r_var);
+  glUniform1f(glGetUniformLocation(mask_by_color_compute, "g_var"), g_var);
+  glUniform1f(glGetUniformLocation(mask_by_color_compute, "b_var"), b_var);
+  glUniform1f(glGetUniformLocation(mask_by_color_compute, "a_var"), a_var);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+  //postcondition - "current" values have the most up-to-date data
 }
+
 
 void OpenGL_container::compute_static_lighting()
 {
