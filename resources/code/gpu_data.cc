@@ -132,7 +132,7 @@ void OpenGL_container::init()
   points.push_back(glm::vec3( 1,-1, 0));  //D
 
   //vao, vbo
-  cout << "  setting up vao, vbo....................";
+  cout << "  setting up vao, vbo......................";
   glGenVertexArrays( 1, &vao );
   glBindVertexArray( vao );
 
@@ -141,13 +141,13 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
   //buffer the data
-  cout << "  buffering vertex data..................";
+  cout << "  buffering vertex data....................";
   glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * points.size(), NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec3) * points.size(), &points[0]);
   cout << "done." << endl;
 
   //set up attributes
-  cout << "  setting up attributes..................";
+  cout << "  setting up attributes....................";
   GLuint points_attrib = glGetAttribLocation(main_display_shader, "vPosition");
   glEnableVertexAttribArray(points_attrib);
   glVertexAttribPointer(points_attrib, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
