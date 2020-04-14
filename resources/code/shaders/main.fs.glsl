@@ -111,7 +111,7 @@ vec4 get_color_for_pixel(vec3 org, vec3 dir)
       new_light_read = imageLoad(lighting,samp);
 
 
-      new_read *= (2*new_light_read.r);
+      new_read.rgb *= (2*new_light_read.r);
           
           
       // it's a over b, where a is the new sample and b is the current color, t_color

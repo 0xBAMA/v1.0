@@ -177,12 +177,12 @@ void OpenGL_container::init()
 
 void OpenGL_container::load_textures()
 {
-  PerlinNoise p;
-  std::vector<unsigned char> data;
-  std::vector<unsigned char> data2;
-  std::vector<unsigned char> data3;
-  std::vector<unsigned char> data4;
-  unsigned char val;
+  //PerlinNoise p;
+  std::vector<unsigned char> data;  //back buffer, not seen
+  std::vector<unsigned char> data2; //XOR texture as the starting value for color
+  std::vector<unsigned char> data3; //initial mask values
+  std::vector<unsigned char> data4; //initial light buffer values
+  //unsigned char val;
 
 
   cout << "  loading textures............................." << std::flush;
@@ -193,11 +193,11 @@ void OpenGL_container::load_textures()
     {
       for(int z = 0; z < DIM; z++)
       {
-        val = (unsigned char)(p.noise(x*0.014,y*0.04,z*0.014) * 255);
+        //val = (unsigned char)(p.noise(x*0.014,y*0.04,z*0.014) * 255);
 
         //populate the 4 component texture with some values
         data.push_back(0);                     //red
-        data.push_back(val);                  //green
+        data.push_back(0);                  //green
         data.push_back(0);                   //blue
         data.push_back(1);                  //alpha
 
@@ -228,8 +228,8 @@ void OpenGL_container::load_textures()
         // }
 
         data3.push_back(0);
-        //data4.push_back(127);
-        data4.push_back(val);
+        data4.push_back(127); //127 maps to 0.5, in the shader, and the shader doubles it so that's the unit value
+        //data4.push_back((x*y*z)%256); //interesting pattern
       }
     }
   }
@@ -1007,7 +1007,7 @@ void OpenGL_container::mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 c
 }
 
 
-void OpenGL_container::compute_static_lighting()
+void OpenGL_container::compute_static_lighting(float theta, float phi, float ground_intensity, float intial_ray_intensity)
 {
 //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┌┬┐┌─┐┌┬┐┬┌─┐  ╦  ┬┌─┐┬ ┬┌┬┐┬┌┐┌┌─┐
 //║  │ ││││├─┘│ │ │ ├┤   ╚═╗ │ ├─┤ │ ││    ║  ││ ┬├─┤ │ │││││ ┬ 

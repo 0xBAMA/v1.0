@@ -40,7 +40,7 @@ class OpenGL_container
     
     
     
-    void compute_static_lighting();   //compute static lighting - structure tbd
+    void compute_static_lighting(float theta, float phi, float ground_intensity, float initial_ray_intensity);   //compute static lighting - structure tbd
     void compute_ambient_occlusion(); //compute ambient occlusion - based on neighborhood
     void game_of_life_update();       //CA update, using GoL rules
     void wireworld_update();          //CA update, using WireWorld rules
