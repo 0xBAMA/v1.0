@@ -102,15 +102,26 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
-  cout << "  compiling static lighting compute shader.....";
+  cout << "  compiling static lighting compute shader(s)..";
+  //there's two, one to clear the block, the same structure as all the others
+  CShader cslightingclear("resources/code/shaders/lighting_clear.cs.glsl");
+  lighting_clear_compute = cslightingclear.Program;
+
+  //and one to do the actual raycasting operation, in the same style as the rendering operation
+  CShader csstaticlighting("resources/code/shaders/static_lighting.cs.glsl");
+  static_lighting_compute = csstaticlighting.Program;
   cout << "done." << endl;
 
 
   cout << "  compiling Game of Life compute shader........";
+  CShader csgameoflife("resources/code/shaders/gol.cs.glsl");
+  game_of_life_update_compute = csgameoflife.Program;
   cout << "done." << endl;
 
 
   cout << "  compiling WireWorld3d compute shader.........";
+  CShader cswireworld("resources/code/shaders/wireworld.cs.glsl");
+
   cout << "done." << endl;
 
 

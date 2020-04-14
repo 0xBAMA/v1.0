@@ -91,6 +91,7 @@ class OpenGL_container
     GLuint unmask_all_compute;                  //      |    x    |
     GLuint toggle_mask_compute;                 //      |    x    |
     GLuint mask_by_color_compute;               //      |    x    |
+    GLuint lighting_clear;                      //      |    -    |
     GLuint static_lighting_compute;             //      |    -    |
     GLuint ambient_occlusion_compute;           //      |    -    |
     GLuint game_of_life_update_compute;         //      |    -    |
