@@ -1020,6 +1020,9 @@ void OpenGL_container::compute_static_lighting(float theta, float phi, float gro
 //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┌┬┐┌─┐┌┬┐┬┌─┐  ╦  ┬┌─┐┬ ┬┌┬┐┬┌┐┌┌─┐
 //║  │ ││││├─┘│ │ │ ├┤   ╚═╗ │ ├─┤ │ ││    ║  ││ ┬├─┤ │ │││││ ┬ 
 //╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝ ┴ ┴ ┴ ┴ ┴└─┘  ╩═╝┴└─┘┴ ┴ ┴ ┴┘└┘└─┘
+    
+    //this will only manipulate the light buffer - it doesn't need handles for the previous or current mask/color images
+
     glUseProgram(lighting_clear_compute);
     //clear the thing
 
@@ -1057,6 +1060,17 @@ void OpenGL_container::game_of_life_update()
 //╚═╝┴ ┴┴ ┴└─┘  └─┘└    ╩═╝┴└  └─┘
     glUseProgram(game_of_life_update_compute);
 
+    //send the preveious texture handles
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous"), 1, &location_of_previous);
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+    //send the current texture handles
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current"), 1, &location_of_current);
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current_mask"), 1, &location_of_current_mask);
+
+    glDispatchCompute(DIM/8, DIM/8, DIM/8);
+
+    glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 }
 
 void OpenGL_container::wireworld_update()
@@ -1066,6 +1080,17 @@ void OpenGL_container::wireworld_update()
 //╚╩╝┴┴└─└─┘╚╩╝└─┘┴└─┴─┘─┴┘
     glUseProgram(wireworld_update_compute);
 
+    //send the preveious texture handles
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous"), 1, &location_of_previous);
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+    //send the current texture handles
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current"), 1, &location_of_current);
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current_mask"), 1, &location_of_current_mask);
+
+    glDispatchCompute(DIM/8, DIM/8, DIM/8);
+
+    glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 }
 
 
