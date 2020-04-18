@@ -26,25 +26,15 @@ class OpenGL_container
     void unmask_all();                                                                                                                                                //invokes the unmask_all compute shader
     void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
     void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                       //invokes the blurring operation
-
     void draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw);
-
-    //parameter lists tbd
     void draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask);         //drawing perlin noise - smooth or solid color
-
-    // structure changes here - less shapes, more general operations
     void mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 color, float r_var, float g_var, float b_var, float a_var);             //mask based on value/variance per channel
-
-    
-    
-    
-    
     
     void compute_static_lighting(float theta, float phi, float ground_intensity, float initial_ray_intensity);   //compute static lighting - structure tbd
+    void lighting_clear(float intensity);
     void compute_ambient_occlusion(); //compute ambient occlusion - based on neighborhood
     void game_of_life_update();       //CA update, using GoL rules
     void wireworld_update();          //CA update, using WireWorld rules
-
 
     //functions to generate new heightmaps
     void generate_heightmap_diamond_square();
@@ -91,7 +81,7 @@ class OpenGL_container
     GLuint unmask_all_compute;                  //      |    x    |
     GLuint toggle_mask_compute;                 //      |    x    |
     GLuint mask_by_color_compute;               //      |    x    |
-    GLuint lighting_clear;                      //      |    -    |
+    GLuint lighting_clear_compute;              //      |    -    |
     GLuint static_lighting_compute;             //      |    -    |
     GLuint ambient_occlusion_compute;           //      |    -    |
     GLuint game_of_life_update_compute;         //      |    -    |

@@ -98,7 +98,11 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  //unimplemented
+
   cout << "  compiling AO compute shader..................";
+  CShader csao("resources/code/shaders/ambient_occlusion.cs.glsl");
+  ambient_occlusion_compute = csao.Program;
   cout << "done." << endl;
 
 
@@ -121,16 +125,9 @@ void OpenGL_container::init()
 
   cout << "  compiling WireWorld3d compute shader.........";
   CShader cswireworld("resources/code/shaders/wireworld.cs.glsl");
-
+  wireworld_update_compute = cswireworld.Program;
   cout << "done." << endl;
 
-
-
-  //remaining:
-  //    static lighting
-  //    ambient occlusion
-  //    game of life
-  //    wireworld
 
 
 
@@ -1023,7 +1020,11 @@ void OpenGL_container::compute_static_lighting(float theta, float phi, float gro
 //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┌┬┐┌─┐┌┬┐┬┌─┐  ╦  ┬┌─┐┬ ┬┌┬┐┬┌┐┌┌─┐
 //║  │ ││││├─┘│ │ │ ├┤   ╚═╗ │ ├─┤ │ ││    ║  ││ ┬├─┤ │ │││││ ┬ 
 //╚═╝└─┘┴ ┴┴  └─┘ ┴ └─┘  ╚═╝ ┴ ┴ ┴ ┴ ┴└─┘  ╩═╝┴└─┘┴ ┴ ┴ ┴┘└┘└─┘
+    glUseProgram(lighting_clear_compute);
+    //clear the thing
 
+    glUseProgram(static_lighting_compute);
+    //draw the new lighting
 }
 
 void OpenGL_container::compute_ambient_occlusion()
@@ -1031,7 +1032,8 @@ void OpenGL_container::compute_ambient_occlusion()
 //╔═╗┌┬┐┌┐ ┬┌─┐┌┐┌┌┬┐  ╔═╗┌─┐┌─┐┬  ┬ ┬┌─┐┬┌─┐┌┐┌
 //╠═╣│││├┴┐│├┤ │││ │   ║ ║│  │  │  │ │└─┐││ ││││
 //╩ ╩┴ ┴└─┘┴└─┘┘└┘ ┴   ╚═╝└─┘└─┘┴─┘└─┘└─┘┴└─┘┘└┘
-
+    glUseProgram(ambient_occlusion_compute);
+    //this one just directly manipulates the color data
 }
 
 void OpenGL_container::game_of_life_update()
@@ -1039,6 +1041,7 @@ void OpenGL_container::game_of_life_update()
 //╔═╗┌─┐┌┬┐┌─┐  ┌─┐┌─┐  ╦  ┬┌─┐┌─┐
 //║ ╦├─┤│││├┤   │ │├┤   ║  │├┤ ├┤
 //╚═╝┴ ┴┴ ┴└─┘  └─┘└    ╩═╝┴└  └─┘
+    glUseProgram(game_of_life_update_compute);
 
 }
 
@@ -1047,6 +1050,7 @@ void OpenGL_container::wireworld_update()
 //╦ ╦┬┬─┐┌─┐╦ ╦┌─┐┬─┐┬  ┌┬┐
 //║║║│├┬┘├┤ ║║║│ │├┬┘│   ││
 //╚╩╝┴┴└─└─┘╚╩╝└─┘┴└─┴─┘─┴┘
+    glUseProgram(wireworld_update_compute);
 
 }
 
