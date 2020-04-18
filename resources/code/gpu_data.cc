@@ -1032,8 +1032,22 @@ void OpenGL_container::compute_ambient_occlusion()
 //╔═╗┌┬┐┌┐ ┬┌─┐┌┐┌┌┬┐  ╔═╗┌─┐┌─┐┬  ┬ ┬┌─┐┬┌─┐┌┐┌
 //╠═╣│││├┴┐│├┤ │││ │   ║ ║│  │  │  │ │└─┐││ ││││
 //╩ ╩┴ ┴└─┘┴└─┘┘└┘ ┴   ╚═╝└─┘└─┘┴─┘└─┘└─┘┴└─┘┘└┘
+    swap_blocks();
+
     glUseProgram(ambient_occlusion_compute);
     //this one just directly manipulates the color data
+
+    //send the preveious texture handles
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous"), 1, &location_of_previous);
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+    //send the current texture handles
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current"), 1, &location_of_current);
+    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current_mask"), 1, &location_of_current_mask);
+
+    glDispatchCompute(DIM/8, DIM/8, DIM/8);
+
+    glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 }
 
 void OpenGL_container::game_of_life_update()
