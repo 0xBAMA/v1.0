@@ -1429,7 +1429,7 @@ void voraldo::draw_menu_and_take_input()
 
 
     ImGui::Text("Enter filename:");
-    ImGui::InputTextWithHint("file", "", str0, IM_ARRAYSIZE(str0));
+    ImGui::InputTextWithHint(".png", "", str0, IM_ARRAYSIZE(str0));
     ImGui::SameLine();
     HelpMarker("USER:\nHold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.");
 
@@ -1531,7 +1531,7 @@ void voraldo::draw_menu_and_take_input()
     if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
         current_menu_state = EXIT;
 
-    if (event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_ESCAPE)
+    if ((event.type == SDL_KEYUP  && event.key.keysym.sym == SDLK_ESCAPE) || (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_X1)) //x1 is browser back on the mouse
     {
       switch (current_menu_state)
       {
