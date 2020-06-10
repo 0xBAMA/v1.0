@@ -44,6 +44,12 @@ class OpenGL_container
     void generate_perlin_noise(float xscale, float yscale, float zscale);
 
 
+    void load(std::string filename);
+    void save(std::string filename);
+
+
+
+
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
     float phi;
     float theta;

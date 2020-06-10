@@ -2,6 +2,22 @@
 #include "voraldo1_0.h"
 
 //this is where stuff like the init functions will all be defined
+bool hasEnding(std::string fullString, std::string ending) 
+{
+    if (fullString.length() >= ending.length())
+    {
+        return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
+    } 
+    else 
+    {
+        return false;
+    }
+}
+
+bool hasPNG(std::string filename)
+{
+    return hasEnding(filename, std::string(".png"));
+}
 
 void voraldo::create_window()
 {
@@ -1356,8 +1372,8 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetNextWindowSize(ImVec2(256,100));
     ImGui::Begin("Load/Save Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-
-    ImGui::InputTextWithHint("file", "enter filename here", str0, IM_ARRAYSIZE(str0));
+    ImGui::Text("Enter filename:");
+    ImGui::InputTextWithHint("file", "", str0, IM_ARRAYSIZE(str0));
     ImGui::SameLine();
     HelpMarker("USER:\nHold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.");
 
@@ -1367,13 +1383,29 @@ void voraldo::draw_menu_and_take_input()
 
     if (ImGui::Button("Load", ImVec2(60, 22)))
     {
-        //compute one update
+        //load that image
+        if(hasPNG(std::string(str0)))
+        {
+            GPU_Data.load(std::string(str0));
+        }
+        else
+        {
+            GPU_Data.load(std::string(str0)+std::string(".png"));
+        }
     }
+
     ImGui::SameLine();
 
     if (ImGui::Button("Save", ImVec2(60, 22)))
     {
-        //compute one update
+        if(hasPNG(std::string(str0)))
+        {
+            GPU_Data.save(std::string(str0));
+        }
+        else
+        {
+            GPU_Data.save(std::string(str0)+std::string(".png"));
+        }
     }
     ImGui::SameLine();
 

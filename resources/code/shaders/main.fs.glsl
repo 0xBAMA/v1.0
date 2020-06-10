@@ -31,8 +31,9 @@ mat3 rotationMatrix(vec3 axis, float angle)
 double tmin, tmax; //global scope, set in hit() to tell min and max parameters
 
 // #define NUM_STEPS 2000
-#define NUM_STEPS 165
+//#define NUM_STEPS 165
 
+#define NUM_STEPS 500
 #define MIN_DISTANCE 0.0
 #define MAX_DISTANCE 10.0
 
