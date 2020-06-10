@@ -1099,18 +1099,17 @@ void OpenGL_container::load(std::string filename)
     std::vector<unsigned char> image_loaded_bytes;
     unsigned width, height;
 
+    filename = std::string("saves/") + filename; 
+
     unsigned error = lodepng::decode(image_loaded_bytes, width, height, filename.c_str());
 
     //report any errors
     if(error) std::cout << "decode error during load(\" "+ filename +" \") " << error << ": " << lodepng_error_text(error) << std::endl;
 
     //put that shit in the front buffer with glTexImage3D()
-    glBindTexture(GL_TEXTURE_3D, block_textures[0]); // use the specified ID
+    glBindTexture(GL_TEXTURE_3D, block_textures[location_of_current]); // use the specified ID
     glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &image_loaded_bytes[0]);
 
-    glBindTexture(GL_TEXTURE_3D, block_textures[1]); // use the specified ID
-    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &image_loaded_bytes[0]);
-    
     cout << "filename on load is: " << filename << std::endl << std::endl;
     
 }
@@ -1124,9 +1123,10 @@ void OpenGL_container::save(std::string filename)
     height = DIM*DIM;
 
     image_bytes_to_save.resize(4*DIM*DIM*DIM);
+    filename = std::string("saves/") + filename; 
 
     //get that shit from the front buffer with glGetTexImage(), put it in image_bytes_to_save
-    glGetTextureImage( block_textures[0], 0, GL_RGBA, GL_UNSIGNED_BYTE, 4*DIM*DIM*DIM, &image_bytes_to_save[0]); 
+    glGetTextureImage( block_textures[location_of_current], 0, GL_RGBA, GL_UNSIGNED_BYTE, 4*DIM*DIM*DIM, &image_bytes_to_save[0]); 
     
     unsigned error = lodepng::encode(filename.c_str(), image_bytes_to_save, width, height);
 
