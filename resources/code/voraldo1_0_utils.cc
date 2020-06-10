@@ -2,6 +2,10 @@
 #include "voraldo1_0.h"
 
 //this is where stuff like the init functions will all be defined
+
+
+
+//used in load/save operation to check extension
 bool hasEnding(std::string fullString, std::string ending) 
 {
     if (fullString.length() >= ending.length())
@@ -18,6 +22,40 @@ bool hasPNG(std::string filename)
 {
     return hasEnding(filename, std::string(".png"));
 }
+
+
+
+
+//got this from http://www.martinbroadhurst.com/list-the-files-in-a-directory-in-c.html
+//the intention is to read all the files in the current directory and put them in the array
+
+#define LISTBOX_SIZE 256
+std::vector<std::string> directory_strings;
+
+struct path_leaf_string
+{
+    std::string operator()(const std::filesystem::directory_entry& entry) const
+    {
+        return entry.path().string();
+    }
+};
+ 
+void update_listbox_items()
+{
+    directory_strings.clear();
+
+    std::filesystem::path p("saves");
+    std::filesystem::directory_iterator start(p);
+    std::filesystem::directory_iterator end;
+
+    std::transform(start, end, std::back_inserter(directory_strings), path_leaf_string());
+}
+
+
+
+
+
+
 
 void voraldo::create_window()
 {
@@ -82,6 +120,7 @@ void voraldo::create_window()
   #define FPS_HISTORY_SIZE 45
   fps_history.resize(FPS_HISTORY_SIZE);   //initialize the array of fps values
 
+  update_listbox_items();   //initialize the list of what's in the saves directory
 
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
@@ -203,9 +242,8 @@ void voraldo::draw_menu_and_take_input()
   fps_history.pop_front();
 
 
-  // static bool show_demo_window = true;
-  // if (show_demo_window)
-  //   ImGui::ShowDemoWindow(&show_demo_window);
+  static bool show_demo_window = true;
+  if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
 
 
   //this switch is simplified with the use of gotos, the labels below are where all the labeling happens,
@@ -1369,8 +1407,26 @@ void voraldo::draw_menu_and_take_input()
     static char str0[256] = "";
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,100));
+    ImGui::SetNextWindowSize(ImVec2(256,350));
     ImGui::Begin("Load/Save Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    const char* listbox_items[LISTBOX_SIZE];
+
+    //count up the number of non-null c-strings
+    int i;
+    for(i = 0; i < LISTBOX_SIZE && i < directory_strings.size(); ++i)
+    {
+        listbox_items[i] = directory_strings[i].c_str();
+    }
+
+
+    ImGui::Text("Files in saves folder:");
+    static int listbox_select_index = 1;
+    ImGui::ListBox(" ", &listbox_select_index, listbox_items, i, 10);
+
+
+
+
 
     ImGui::Text("Enter filename:");
     ImGui::InputTextWithHint("file", "", str0, IM_ARRAYSIZE(str0));
@@ -1384,14 +1440,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Load", ImVec2(60, 22)))
     {
         //load that image
-        if(hasPNG(std::string(str0)))
-        {
-            GPU_Data.load(std::string(str0));
-        }
-        else
-        {
-            GPU_Data.load(std::string(str0)+std::string(".png"));
-        }
+        GPU_Data.load(directory_strings[listbox_select_index]);
     }
 
     ImGui::SameLine();
@@ -1406,6 +1455,8 @@ void voraldo::draw_menu_and_take_input()
         {
             GPU_Data.save(std::string(str0)+std::string(".png"));
         }
+
+        update_listbox_items();
     }
     ImGui::SameLine();
 

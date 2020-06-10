@@ -1099,7 +1099,7 @@ void OpenGL_container::load(std::string filename)
     std::vector<unsigned char> image_loaded_bytes;
     unsigned width, height;
 
-    filename = std::string("saves/") + filename; 
+    //filename = std::string("saves/") + filename; 
 
     unsigned error = lodepng::decode(image_loaded_bytes, width, height, filename.c_str());
 
