@@ -22,7 +22,7 @@ bool in_shape()
   bool y = (gl_GlobalInvocationID.y % spacing.y) <= width.y; 
   bool z = (gl_GlobalInvocationID.z % spacing.z) <= width.z; 
 
-  return (x || y || z);
+  return ((x && y) || (x && z) || (y && z));
 }
 
 vec4 mask_true = vec4(1.0,0.0,0.0,0.0);

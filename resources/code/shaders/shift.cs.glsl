@@ -9,8 +9,9 @@ uniform layout(r8) image3D previous_mask;  //now-current values of the mask
 uniform layout(rgba8) image3D current;        //values of the block after the update
 uniform layout(r8) image3D current_mask;   //values of the mask after the update
 
-uniform ivec3 movement
-uniform bool loop;
+uniform ivec3 movement;     //  
+uniform bool loop;          //does the data loop off the sides (toroid style)
+uniform bool carry_mask;    //does this also shift the mask
 
 uniform bool draw;      //should this shape be drawn?
 uniform bool mask;      //this this shape be masked?
