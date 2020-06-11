@@ -270,6 +270,8 @@ void voraldo::draw_menu_and_take_input()
         goto perlin_noise_config_label;
       case TRIANGLE_CONFIG:
         goto triangle_config_label;
+      case GRID_CONFIG:
+        goto grid_config_label;
       case ELLIPSOID_CONFIG:
         goto ellipsoid_config_label;
       case CYLINDER_CONFIG:
@@ -392,7 +394,7 @@ void voraldo::draw_menu_and_take_input()
   draw_menu_label:
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,395));
+    ImGui::SetNextWindowSize(ImVec2(256,425));
     ImGui::Begin("Draw Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 
     ImGui::Text(" ");
@@ -404,6 +406,10 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Perlin Noise", ImVec2(120, 22)))
       current_menu_state = PERLIN_NOISE_CONFIG;
+
+    ImGui::SetCursorPosX(70);
+    if (ImGui::Button("Grid", ImVec2(120, 22)))
+      current_menu_state = GRID_CONFIG;
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Triangle", ImVec2(120, 22)))
@@ -654,6 +660,7 @@ void voraldo::draw_menu_and_take_input()
     
     ImGui::Separator();
 
+
     ImGui::Checkbox("  Draw ", &perlin_draw);
     ImGui::SameLine();
     ImGui::Checkbox("  Mask ", &perlin_mask);
@@ -675,6 +682,55 @@ void voraldo::draw_menu_and_take_input()
 
     goto done;
   }
+
+  grid_config_label:
+  {
+    static int xoff, yoff, zoff;
+    static int xwid, ywid, zwid;
+    static ImVec4 grid_draw_color;
+    static bool grid_draw = true;
+    static bool grid_mask = false;
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,370));
+
+    ImGui::Begin("Grid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    ImGui::Text("spacing");
+    ImGui::SliderInt(" xs", &xoff, 0, 15);
+    ImGui::SliderInt(" ys", &yoff, 0, 15);
+    ImGui::SliderInt(" zs", &zoff, 0, 15);
+
+    ImGui::Text("width");
+    ImGui::SliderInt(" xw", &xwid, 0, 15);
+    ImGui::SliderInt(" yw", &ywid, 0, 15);
+    ImGui::SliderInt(" zw", &zwid, 0, 15);
+
+    ImGui::Checkbox("  Draw ", &grid_draw);
+    ImGui::SameLine();
+    ImGui::Checkbox("  Mask ", &grid_mask);
+
+    ImGui::ColorEdit4("  Color", (float*)&grid_draw_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
+    ImGui::Text(" ");
+
+    
+    ImGui::SetCursorPosX(16);
+    if (ImGui::Button("Draw", ImVec2(100, 22)))
+    {
+        //draw with the selected values
+    
+        GPU_Data.draw_grid(glm::ivec3(xoff, yoff, zoff), glm::ivec3(xwid, ywid, zwid), glm::vec4(grid_draw_color.x, grid_draw_color.y, grid_draw_color.z, grid_draw_color.w), grid_draw, grid_mask);
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = DRAW_MENU;
+
+    goto done;
+  }
+
+
 
   triangle_config_label:
     // three point positions, thickness, color, bool draw, bool mask
@@ -1499,8 +1555,6 @@ void voraldo::draw_menu_and_take_input()
     //finished the label for the current window, so do the end() thing and render it
 
 
-
-
   ImGui::End();
   ImGui::Render();
 
@@ -1549,6 +1603,7 @@ void voraldo::draw_menu_and_take_input()
 
         case SPHERE_CONFIG:           //two levels deep
         case PERLIN_NOISE_CONFIG:
+        case GRID_CONFIG:
         case TRIANGLE_CONFIG:
         case ELLIPSOID_CONFIG:
         case CYLINDER_CONFIG:

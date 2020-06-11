@@ -44,6 +44,12 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling grid compute shader................";
+  CShader csgrid("resources/code/shaders/grid.cs.glsl");
+  grid_compute = csgrid.Program;
+  cout << "done." << endl;
+
+
   cout << "  compiling triangle compute shader............";
   CShader cstriangle("resources/code/shaders/triangle.cs.glsl");
   triangle_compute = cstriangle.Program;
@@ -566,6 +572,39 @@ void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, gl
   glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 
   //postcondition - "current" values have the most up-to-date data
+
+}
+
+void OpenGL_container::draw_grid(glm::ivec3 spacing, glm::ivec3 widths, glm::vec4 color, bool draw, bool mask)
+{
+//  ╔═╗┬─┐┬┌┬┐
+//  ║ ╦├┬┘│ ││
+//  ╚═╝┴└─┴─┴┘
+
+  swap_blocks();
+
+  glUseProgram(grid_compute);
+  glUniform1i(glGetUniformLocation(grid_compute, "mask"), mask);
+  glUniform1i(glGetUniformLocation(grid_compute, "draw"), draw);
+  
+  glUniform3i(glGetUniformLocation(grid_compute, "spacing"), spacing.x, spacing.y, spacing.z);
+  glUniform3i(glGetUniformLocation(grid_compute, "width"), widths.x, widths.y, widths.z);
+
+  glUniform4fv(glGetUniformLocation(grid_compute, "color"), 1, glm::value_ptr(color));
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(grid_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(grid_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(grid_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(triangle_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 
 }
 
