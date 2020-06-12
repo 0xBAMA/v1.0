@@ -104,7 +104,7 @@ void voraldo::create_window()
 
   SDL_GL_MakeCurrent(window, GLcontext);
   SDL_GL_SetSwapInterval(1); // Enable vsync -- questionable utility
-  // SDL_GL_SetSwapInterval(0); // explicitly disable vsync
+  //SDL_GL_SetSwapInterval(0); // explicitly disable vsync
 
 
   if (glewInit() != GLEW_OK)
@@ -314,6 +314,8 @@ void voraldo::draw_menu_and_take_input()
         //utility submenus
       case LOAD_SAVE_CONFIG:
         goto load_save_config_label;
+      case SHIFT_CONFIG:
+        goto shift_config_label;
       case REINITIALIZATION_CONFIG:
         goto reinitialization_config_label;
       // case UNDO_LAST_ACTION_CONFIG:
@@ -560,6 +562,10 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Load/Save", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       current_menu_state = LOAD_SAVE_CONFIG;
+
+    ImGui::SetCursorPosX(70);
+    if (ImGui::Button("Shifting", ImVec2(120, 22)))
+      current_menu_state = SHIFT_CONFIG;
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("Reinitialize", ImVec2(120, 22)))
@@ -1523,12 +1529,78 @@ void voraldo::draw_menu_and_take_input()
     goto done;
   }
 
+  shift_config_label:
+  {
+
+    static int xmove;
+    static int ymove;
+    static int zmove;
+    static bool loop;
+    static int shift_mode = 1;
+    
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,300));
+    ImGui::Begin("Shift Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+    //config options for this operation
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+    ImGui::SliderInt(" x", &xmove, -100, 100);
+    ImGui::SetCursorPosX(16);
+    ImGui::SliderInt(" y", &ymove, -100, 100);
+    ImGui::SetCursorPosX(16);
+    ImGui::SliderInt(" z", &zmove, -100, 100);
+    ImGui::Text(" ");
+
+    ImGui::SetCursorPosX(16);
+    ImGui::SliderInt(" Mode", &shift_mode, 1, 3);
+    ImGui::Text(" ");
+
+    ImGui::SetCursorPosX(16);
+
+    switch(shift_mode)
+    {
+        case 1:
+            ImGui::Text("Mode 1: Ignore mask buffer, \nmove color data only");
+            break;
+        case 2:
+            ImGui::Text("Mode 2: Respect mask buffer, \ncells retain color if masked");
+            break;
+        case 3:
+            ImGui::Text("Mode 3: Carry mask buffer, \nmask and color move together");
+            break;
+        default:
+            ImGui::Text("Pick a valid mode");
+            break;
+    }
+    
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+    ImGui::Checkbox(" loop", &loop);
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(16);
+
+    if (ImGui::Button("Shift", ImVec2(90,22)))
+        GPU_Data.shift(glm::ivec3(xmove,ymove,zmove), loop, shift_mode);
+
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(140);
+
+    if (ImGui::Button("Back", ImVec2(90, 22)))
+      current_menu_state = UTIL_MENU;
+
+    goto done;
+  }
+
+
   reinitialization_config_label:
     //like clear all, but ignores mask values
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,85));
-    ImGui::Begin("Game of Life Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+    ImGui::Begin("Reinitialization Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     //config options for this operation
 
@@ -1638,6 +1710,7 @@ void voraldo::draw_menu_and_take_input()
 
           //utility submenus
         case LOAD_SAVE_CONFIG:
+        case SHIFT_CONFIG:
         case REINITIALIZATION_CONFIG:
           current_menu_state = UTIL_MENU;
           break;

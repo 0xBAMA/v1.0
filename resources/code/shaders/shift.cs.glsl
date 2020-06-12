@@ -9,51 +9,60 @@ uniform layout(r8) image3D previous_mask;  //now-current values of the mask
 uniform layout(rgba8) image3D current;        //values of the block after the update
 uniform layout(r8) image3D current_mask;   //values of the mask after the update
 
-uniform ivec3 movement;     //  
+uniform ivec3 movement;     //how much are you moving this current cell by? 
 uniform bool loop;          //does the data loop off the sides (toroid style)
-uniform bool carry_mask;    //does this also shift the mask
-
-uniform bool draw;      //should this shape be drawn?
-uniform bool mask;      //this this shape be masked?
-
-bool in_shape()
-{
-  float d = distance(gl_GlobalInvocationID.xyz, location);
-
-  if(d < radius)  //sphere defined as all points within 'radius' of the center point
-    return true;
-  else
-    return false;
-}
+uniform int mode;           //will you respect the current value of the mask? this could get ambiguous but we'll deal
 
 vec4 mask_true = vec4(1.0,0.0,0.0,0.0);
 vec4 mask_false = vec4(0.0,0.0,0.0,0.0);
 
 void main()
 {
-  bool pmask = (imageLoad(previous_mask, ivec3(gl_GlobalInvocationID.xyz)).r > 0.5);  //existing mask value (previous_mask = 0?)
-  vec4 pcol = imageLoad(previous, ivec3(gl_GlobalInvocationID.xyz));                 //existing color value (what is the previous color?)
+    ivec3 regular_pos = ivec3(gl_GlobalInvocationID.xyz);
+    ivec3 shifted_pos = regular_pos - movement;
 
-  if(pmask) //the cell was masked
-  {
-    imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //color takes on previous color
-    imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_true);  //mask is set true
-  }
-  else if(!in_shape())  //the cell was not masked, but is outside the shape
-  {
-    imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //color takes previous color
-    imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_false); //mask is set false
-  }
-  else  //the cell was not masked, and is inside the shape
-  {
-    if(mask)  //uniform value telling whether or not to mask
-      imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_true);
-    else
-      imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), mask_false);
+    ivec3 image_size = imageSize(current);
 
-    if(draw)  //uniform value telling whether or not to draw
-      imageStore(current, ivec3(gl_GlobalInvocationID.xyz), color); //uniform color
-    else
-      imageStore(current, ivec3(gl_GlobalInvocationID.xyz), pcol);  //previous color
-  }
+    if(loop)
+    {
+        shifted_pos.x = shifted_pos.x % image_size.x;
+        shifted_pos.y = shifted_pos.y % image_size.y;
+        shifted_pos.z = shifted_pos.z % image_size.z;
+    }
+
+  bool pmask = (imageLoad(previous_mask, regular_pos).r > 0.5);  //existing mask value (previous_mask = 0?)
+  bool psmask = (imageLoad(previous_mask, shifted_pos).r > 0.5);  //existing mask value (shifted)
+  vec4 pcol = imageLoad(previous, regular_pos);    //existing color value (what is the previous color?)
+  vec4 pscol = imageLoad(previous, shifted_pos);   //existing color value (shifted)
+
+    if(mode == 1)       //ignore mask buffer, move color data only (current_mask takes value of previous_mask)
+    {
+        //do the color shift
+        imageStore(current, regular_pos, pscol);
+        //write the same value of mask back to current_mask
+        imageStore(current_mask, regular_pos, pmask?mask_true:mask_false);
+    }
+    else if(mode == 2)  //respect mask buffer, if pmask is true, current takes value of previous, if false, do the shift
+    {
+        //is the cell masked?
+        if(pmask)
+        {
+            //if yes, write previous color and mask_true
+            imageStore(current, regular_pos, pcol);
+            imageStore(current_mask, regular_pos, mask_true);
+        }
+        else
+        {
+            //if no, write shifted color, and mask_false 
+            imageStore(current, regular_pos, pscol);
+            imageStore(current_mask, regular_pos, mask_false);
+        }
+    }
+    else if(mode == 3)  //carry mask buffer, mask comes along for the ride with the color values
+    {
+        //do the color shift
+        imageStore(current, regular_pos, pscol);
+        //do the mask shift
+        imageStore(current_mask, regular_pos, psmask?mask_true:mask_false);
+    }
 }

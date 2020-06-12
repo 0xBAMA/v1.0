@@ -86,6 +86,12 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling shift compute shader...............";
+  CShader csshift("resources/code/shaders/shift.cs.glsl");
+  shift_compute = csshift.Program;
+  cout << "done." << endl;
+
+
   cout << "  compiling heightmap compute shader...........";
   CShader csheightmap("resources/code/shaders/heightmap.cs.glsl");
   heightmap_compute = csheightmap.Program;
@@ -106,33 +112,33 @@ void OpenGL_container::init()
 
   //unimplemented
 
-  cout << "  compiling AO compute shader..................";
-  CShader csao("resources/code/shaders/ambient_occlusion.cs.glsl");
-  ambient_occlusion_compute = csao.Program;
-  cout << "done." << endl;
+//  cout << "  compiling AO compute shader..................";
+//  CShader csao("resources/code/shaders/ambient_occlusion.cs.glsl");
+//  ambient_occlusion_compute = csao.Program;
+//  cout << "done." << endl;
 
 
-  cout << "  compiling static lighting compute shader(s)..";
+//  cout << "  compiling static lighting compute shader(s)..";
   //there's two, one to clear the block, the same structure as all the others
-  CShader cslightingclear("resources/code/shaders/lighting_clear.cs.glsl");
-  lighting_clear_compute = cslightingclear.Program;
+//  CShader cslightingclear("resources/code/shaders/lighting_clear.cs.glsl");
+//  lighting_clear_compute = cslightingclear.Program;
 
   //and one to do the actual raycasting operation, in the same style as the rendering operation
-  CShader csstaticlighting("resources/code/shaders/static_lighting.cs.glsl");
-  static_lighting_compute = csstaticlighting.Program;
-  cout << "done." << endl;
+//  CShader csstaticlighting("resources/code/shaders/static_lighting.cs.glsl");
+//  static_lighting_compute = csstaticlighting.Program;
+//  cout << "done." << endl;
 
 
-  cout << "  compiling Game of Life compute shader........";
-  CShader csgameoflife("resources/code/shaders/gol.cs.glsl");
-  game_of_life_update_compute = csgameoflife.Program;
-  cout << "done." << endl;
+//  cout << "  compiling Game of Life compute shader........";
+//  CShader csgameoflife("resources/code/shaders/gol.cs.glsl");
+//  game_of_life_update_compute = csgameoflife.Program;
+//  cout << "done." << endl;
 
 
-  cout << "  compiling WireWorld3d compute shader.........";
-  CShader cswireworld("resources/code/shaders/wireworld.cs.glsl");
-  wireworld_update_compute = cswireworld.Program;
-  cout << "done." << endl;
+//  cout << "  compiling WireWorld3d compute shader.........";
+//  CShader cswireworld("resources/code/shaders/wireworld.cs.glsl");
+//  wireworld_update_compute = cswireworld.Program;
+//  cout << "done." << endl;
 
 
 
@@ -255,10 +261,17 @@ void OpenGL_container::load_textures()
   glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
   glBindImageTexture(0, block_textures[0], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
 
+
+
+
+
+
   glActiveTexture(GL_TEXTURE0+1); 
   glBindTexture(GL_TEXTURE_3D, block_textures[1]);
   glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &data2[0]);
   glBindImageTexture(1, block_textures[1], 0, GL_TRUE, 0, GL_READ_WRITE, GL_RGBA8);
+
+
 
 
 
@@ -1054,6 +1067,41 @@ void OpenGL_container::mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 c
 }
 
 
+void OpenGL_container::shift(glm::ivec3 movement, bool loop, int mode)
+{
+//  ╔═╗┬ ┬┬┌─┐┌┬┐
+//  ╚═╗├─┤│├┤  │ 
+//  ╚═╝┴ ┴┴└   ┴ 
+  swap_blocks();  
+
+  glUseProgram(shift_compute);
+
+  //send movement, loop, mode
+  glUniform1i(glGetUniformLocation(shift_compute, "loop"), loop);
+  glUniform1i(glGetUniformLocation(shift_compute, "mode"),  mode);
+  glUniform3i(glGetUniformLocation(shift_compute, "movement"), movement.x, movement.y, movement.z);
+
+  //send the preveious texture handles
+  glUniform1iv(glGetUniformLocation(shift_compute, "previous"), 1, &location_of_previous);
+  glUniform1iv(glGetUniformLocation(shift_compute, "previous_mask"), 1, &location_of_previous_mask);
+
+  //send the current texture handles
+  glUniform1iv(glGetUniformLocation(shift_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(shift_compute, "current_mask"), 1, &location_of_current_mask);
+
+  //dispatch the job
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+
+}
+
+
+
+
+
 void OpenGL_container::compute_static_lighting(float theta, float phi, float ground_intensity, float intial_ray_intensity)
 {
 //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┌┬┐┌─┐┌┬┐┬┌─┐  ╦  ┬┌─┐┬ ┬┌┬┐┬┌┐┌┌─┐
@@ -1137,8 +1185,6 @@ void OpenGL_container::load(std::string filename)
 {
     std::vector<unsigned char> image_loaded_bytes;
     unsigned width, height;
-
-    //filename = std::string("saves/") + filename; 
 
     unsigned error = lodepng::decode(image_loaded_bytes, width, height, filename.c_str());
 

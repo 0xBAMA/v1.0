@@ -50,6 +50,8 @@ class OpenGL_container
     void save(std::string filename);
 
 
+    void shift(glm::ivec3 movement, bool loop, int mode);
+
 
 
     float scale;  //these need to be public so I can access them from above, in the voraldo class member functions
@@ -82,11 +84,12 @@ class OpenGL_container
     GLuint heightmap_compute;                   //      |    x    |
     GLuint perlin_noise_compute;                //      |    x    |
     GLuint triangle_compute;                    //      |    x    |
-    GLuint grid_compute;                    //      |    x    |
+    GLuint grid_compute;                        //      |    x    |
     GLuint tube_compute;                        //      |    x    |
 
     GLuint blur_compute;                        //      |    x    |
     GLuint clear_all_compute;                   //      |    x    |
+    GLuint shift_compute;
     GLuint unmask_all_compute;                  //      |    x    |
     GLuint toggle_mask_compute;                 //      |    x    |
     GLuint mask_by_color_compute;               //      |    x    |
