@@ -1475,7 +1475,7 @@ void voraldo::draw_menu_and_take_input()
     const char* listbox_items[LISTBOX_SIZE];
 
     //count up the number of non-null c-strings
-    int i;
+    unsigned int i;
     for(i = 0; i < LISTBOX_SIZE && i < directory_strings.size(); ++i)
     {
         listbox_items[i] = directory_strings[i].c_str();

@@ -118,15 +118,15 @@ void OpenGL_container::init()
 //  cout << "done." << endl;
 
 
-//  cout << "  compiling static lighting compute shader(s)..";
+  cout << "  compiling static lighting compute shader(s)..";
   //there's two, one to clear the block, the same structure as all the others
-//  CShader cslightingclear("resources/code/shaders/lighting_clear.cs.glsl");
-//  lighting_clear_compute = cslightingclear.Program;
+  CShader cslightingclear("resources/code/shaders/light_clear.cs.glsl");
+  lighting_clear_compute = cslightingclear.Program;
 
   //and one to do the actual raycasting operation, in the same style as the rendering operation
-//  CShader csstaticlighting("resources/code/shaders/static_lighting.cs.glsl");
-//  static_lighting_compute = csstaticlighting.Program;
-//  cout << "done." << endl;
+  CShader csstaticlighting("resources/code/shaders/directional.cs.glsl");
+  static_lighting_compute = csstaticlighting.Program;
+  cout << "done." << endl;
 
 
 //  cout << "  compiling Game of Life compute shader........";
@@ -366,7 +366,7 @@ void OpenGL_container::swap_blocks()
 
 void OpenGL_container::generate_heightmap_diamond_square()
 {
-  auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+  long unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
 
   std::default_random_engine engine{seed};
   std::uniform_real_distribution<float> distribution{0, 1};
@@ -1099,7 +1099,18 @@ void OpenGL_container::shift(glm::ivec3 movement, bool loop, int mode)
 }
 
 
+void OpenGL_container::lighting_clear(float intensity)
+{
 
+  glUniform1f(glGetUniformLocation(lighting_clear_compute, "intensity"), intensity);
+
+  //dispatch the job
+  glDispatchCompute( LIGHT_DIM/8, LIGHT_DIM/8, 1 ); //workgroup is 8x8x1, so divide x and y by 8
+
+  //wait for things to synchronize
+  glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+}
 
 
 void OpenGL_container::compute_static_lighting(float theta, float phi, float ground_intensity, float intial_ray_intensity)
