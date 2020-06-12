@@ -32,7 +32,7 @@ class OpenGL_container
     void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                       //invokes the blurring operation
     void mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 color, float r_var, float g_var, float b_var, float a_var);             //mask based on value/variance per channel
     
-    void compute_static_lighting(float theta, float phi, float ground_intensity, float initial_ray_intensity);   //compute static lighting - structure tbd
+    void compute_static_lighting(float theta, float phi, float initial_ray_intensity);   //compute static lighting
     void lighting_clear(float intensity);
     void compute_ambient_occlusion(); //compute ambient occlusion - based on neighborhood
     void game_of_life_update();       //CA update, using GoL rules

@@ -339,6 +339,9 @@ void OpenGL_container::load_textures()
 
   cout << "done." << endl;
 
+
+  lighting_clear(0);
+  compute_static_lighting(0.3, 0.1, 1.0);
 }
 
 
@@ -1117,7 +1120,7 @@ void OpenGL_container::lighting_clear(float intensity)
 }
 
 
-void OpenGL_container::compute_static_lighting(float theta, float phi, float ground_intensity, float intial_ray_intensity)
+void OpenGL_container::compute_static_lighting(float theta, float phi, float initial_ray_intensity)
 {
 //╔═╗┌─┐┌┬┐┌─┐┬ ┬┌┬┐┌─┐  ╔═╗┌┬┐┌─┐┌┬┐┬┌─┐  ╦  ┬┌─┐┬ ┬┌┬┐┬┌┐┌┌─┐
 //║  │ ││││├─┘│ │ │ ├┤   ╚═╗ │ ├─┤ │ ││    ║  ││ ┬├─┤ │ │││││ ┬ 
@@ -1126,9 +1129,18 @@ void OpenGL_container::compute_static_lighting(float theta, float phi, float gro
     //this will only manipulate the light buffer - it doesn't need handles for the previous or current mask/color images
 
     glUseProgram(static_lighting_compute);
-    //draw the new lighting
+
+    glUniform1f(glGetUniformLocation(static_lighting_compute, "utheta"), theta);
+    glUniform1f(glGetUniformLocation(static_lighting_compute, "uphi"), phi);
+    glUniform1f(glGetUniformLocation(static_lighting_compute, "light_dim"), LIGHT_DIM);
+    glUniform1f(glGetUniformLocation(static_lighting_compute, "light_intensity"), initial_ray_intensity);
+
+    glUniform1iv(glGetUniformLocation(static_lighting_compute, "current"), 1, &location_of_current);
+    glUniform1iv(glGetUniformLocation(static_lighting_compute, "lighting"), 1, &location_of_light_buffer);
 
     glDispatchCompute( LIGHT_DIM/8, LIGHT_DIM/8, 1 ); //workgroup is 8x8x1, so divide x and y by 8
+
+    glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 }
 
 void OpenGL_container::compute_ambient_occlusion()

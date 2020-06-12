@@ -10,6 +10,9 @@ uniform layout(r8) image3D lighting;
 uniform float utheta;
 uniform float uphi;
 
+uniform float light_dim;
+uniform float light_light_intensity;
+
 //thanks to Neil Mendoza via http://www.neilmendoza.com/glsl-rotation-about-an-arbitrary-axis/
 mat3 rotationMatrix(vec3 axis, float angle)
 {
@@ -80,8 +83,29 @@ bool hit(vec3 org, vec3 dir)
 
 void main()
 {
-    //do the rotations
-    //if the ray hits the volume
+    float scale = 1.75;
+    float xoff = scale*((gl_GlobalInvocationID.x/light_dim) - 0.5f);
+    float yoff = scale*((gl_GlobalInvocationID.y/light_dim) - 0.5f);
+
+    //start with a vector pointing down the z axis (greater than half the corner to corner distance, i.e. > ~1.75)
+    vec3 org = vec3(xoff, yoff,  2); //add the offsets in x and y
+    vec3 dir = vec3(   0,    0, -2); //simply a vector pointing in the opposite direction, no xy offsets
+
+    //rotate both vectors 'up' by phi, e.g. about the x axis
+    mat3 rotphi = rotationMatrix(vec3(1,0,0), uphi);
+    org *= rotphi;
+    dir *= rotphi;
+
+    //rotate both about the y axis by theta
+    mat3 rottheta = rotationMatrix(vec3(0,1,0), utheta);
+    org *= rottheta;
+    dir *= rottheta;
+
+   //does a ray with that origin and that direction hit the cube?
+    if(hit(org,dir))
+    { 
         //trace the ray through the volume
+        imageStore(lighting, ivec3(gl_GlobalInvocationID.xyz), vec4(1.0));
+    }
 }
 
