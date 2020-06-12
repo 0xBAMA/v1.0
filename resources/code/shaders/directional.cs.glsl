@@ -81,11 +81,34 @@ bool hit(vec3 org, vec3 dir)
   return true;
 }
 
+
+void traceray(vec3 org, vec3 dir)
+{
+
+  float current_t = float(tmin);
+
+  float step = float((tmax-tmin))/NUM_STEPS;
+  if(step < 0.001f) step = 0.001f;
+   
+
+
+
+  for(int i = 0; i < NUM_STEPS; i++)
+  {
+    if(current_t <= tmax)
+    {
+        current_t += step;
+        imageStore(lighting, ivec3(256*(org+current_t*dir+vec3(1))), vec4(current_t));
+    }
+  }
+}
+
+
 void main()
 {
     float scale = 1.75;
-    float xoff = scale*((gl_GlobalInvocationID.x/light_dim) - 0.5f);
-    float yoff = scale*((gl_GlobalInvocationID.y/light_dim) - 0.5f);
+    float xoff = scale*((float(gl_GlobalInvocationID.x)/light_dim) - 0.5f);
+    float yoff = scale*((float(gl_GlobalInvocationID.y)/light_dim) - 0.5f);
 
     //start with a vector pointing down the z axis (greater than half the corner to corner distance, i.e. > ~1.75)
     vec3 org = vec3(xoff, yoff,  2); //add the offsets in x and y
@@ -105,7 +128,7 @@ void main()
     if(hit(org,dir))
     { 
         //trace the ray through the volume
-        imageStore(lighting, ivec3(gl_GlobalInvocationID.xyz), vec4(1.0));
+        traceray(org,dir);
     }
 }
 
