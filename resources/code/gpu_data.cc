@@ -338,6 +338,7 @@ void OpenGL_container::load_textures()
   location_of_heightmap = 6;
 
   cout << "done." << endl;
+
 }
 
 
@@ -1095,17 +1096,20 @@ void OpenGL_container::shift(glm::ivec3 movement, bool loop, int mode)
   //wait for things to synchronize
   glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 
-
 }
 
 
 void OpenGL_container::lighting_clear(float intensity)
 {
+  glUseProgram(lighting_clear_compute);
 
   glUniform1f(glGetUniformLocation(lighting_clear_compute, "intensity"), intensity);
 
+  glUniform1iv(glGetUniformLocation(lighting_clear_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(lighting_clear_compute, "lighting"), 1, &location_of_light_buffer);
+
   //dispatch the job
-  glDispatchCompute( LIGHT_DIM/8, LIGHT_DIM/8, 1 ); //workgroup is 8x8x1, so divide x and y by 8
+  glDispatchCompute( DIM/8, DIM/8, DIM/8 );
 
   //wait for things to synchronize
   glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
@@ -1121,11 +1125,10 @@ void OpenGL_container::compute_static_lighting(float theta, float phi, float gro
     
     //this will only manipulate the light buffer - it doesn't need handles for the previous or current mask/color images
 
-    glUseProgram(lighting_clear_compute);
-    //clear the thing
-
     glUseProgram(static_lighting_compute);
     //draw the new lighting
+
+    glDispatchCompute( LIGHT_DIM/8, LIGHT_DIM/8, 1 ); //workgroup is 8x8x1, so divide x and y by 8
 }
 
 void OpenGL_container::compute_ambient_occlusion()
