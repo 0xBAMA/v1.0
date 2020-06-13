@@ -191,8 +191,8 @@ void OpenGL_container::init()
 
   //rotation, scaling of view
   scale = 5.0f;
-  theta = 0.81f;
-  phi   = -0.81f;
+  theta = 0.0f;
+  phi   = 0.0f;
 }
 
 void OpenGL_container::load_textures()
