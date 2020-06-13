@@ -11,7 +11,7 @@ uniform float utheta;
 uniform float uphi;
 
 uniform float light_dim;
-uniform float light_light_intensity;
+uniform float light_intensity;
 
 //thanks to Neil Mendoza via http://www.neilmendoza.com/glsl-rotation-about-an-arbitrary-axis/
 mat3 rotationMatrix(vec3 axis, float angle)
@@ -28,7 +28,7 @@ mat3 rotationMatrix(vec3 axis, float angle)
 
 double tmin, tmax; //global scope, set in hit() to tell min and max parameters
 
-#define NUM_STEPS 500
+#define NUM_STEPS 300
 #define MIN_DISTANCE 0.0
 #define MAX_DISTANCE 10.0
 
@@ -86,19 +86,31 @@ void traceray(vec3 org, vec3 dir)
 {
 
   float current_t = float(tmin);
+  float intensity = light_intensity; //initialize ray intensity
 
   float step = float((tmax-tmin))/NUM_STEPS;
   if(step < 0.001f) step = 0.001f;
    
+  ivec3 sample_location = ivec3((vec3(imageSize(lighting))/2.0f)*(org+current_t*dir+vec3(1))); 
 
+  vec4 new_color_read = imageLoad(current, sample_location);
+  vec4 new_light_read = imageLoad(lighting, sample_location);
 
-
+  //three termination conditions - number of steps, distance along the ray, intensity < 0
   for(int i = 0; i < NUM_STEPS; i++)
   {
-    if(current_t <= tmax)
+    if(current_t <= tmax && intensity > 0)
     {
+        imageStore(lighting, sample_location, vec4(new_light_read.r+intensity));
+
+        //intensity -= new_color_read.a;
+        intensity *= 1-new_color_read.a;
+
         current_t += step;
-        imageStore(lighting, ivec3(256*(org+current_t*dir+vec3(1))), vec4(current_t));
+        sample_location = ivec3((vec3(imageSize(lighting))/2.0f)*(org+current_t*dir+vec3(1))); 
+
+        new_color_read = imageLoad(current, sample_location);
+        new_light_read = imageLoad(lighting, sample_location);
     }
   }
 }
@@ -106,7 +118,7 @@ void traceray(vec3 org, vec3 dir)
 
 void main()
 {
-    float scale = 1.75;
+    float scale = 4;
     float xoff = scale*((float(gl_GlobalInvocationID.x)/light_dim) - 0.5f);
     float yoff = scale*((float(gl_GlobalInvocationID.y)/light_dim) - 0.5f);
 
@@ -129,6 +141,7 @@ void main()
     { 
         //trace the ray through the volume
         traceray(org,dir);
+        //imageStore(lighting, ivec3(255*(org+tmax*dir+vec3(1))), vec4(light_intensity));
     }
 }
 

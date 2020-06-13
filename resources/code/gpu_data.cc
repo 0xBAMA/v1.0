@@ -191,8 +191,8 @@ void OpenGL_container::init()
 
   //rotation, scaling of view
   scale = 5.0f;
-  phi   = 0.0f;
-  theta = 0.0f;
+  theta = 0.81f;
+  phi   = -0.81f;
 }
 
 void OpenGL_container::load_textures()
@@ -248,7 +248,7 @@ void OpenGL_container::load_textures()
         // }
 
         data3.push_back(0);
-        data4.push_back(127); //127 maps to 0.5, in the shader, and the shader doubles it so that's the unit value
+        data4.push_back(32); //127 maps to 0.5, in the shader 
         //data4.push_back((x*y*z)%256); //interesting pattern
       }
     }
@@ -338,10 +338,6 @@ void OpenGL_container::load_textures()
   location_of_heightmap = 6;
 
   cout << "done." << endl;
-
-
-  lighting_clear(0);
-  compute_static_lighting(0.3, 0.1, 1.0);
 }
 
 

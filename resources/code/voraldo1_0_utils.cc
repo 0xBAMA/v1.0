@@ -242,8 +242,8 @@ void voraldo::draw_menu_and_take_input()
   fps_history.pop_front();
 
 
-  static bool show_demo_window = true;
-  if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
+//  static bool show_demo_window = true;
+//  if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
 
 
   //this switch is simplified with the use of gotos, the labels below are where all the labeling happens,
@@ -296,12 +296,6 @@ void voraldo::draw_menu_and_take_input()
         goto toggle_mask_config_label;
       case MASK_BY_COLOR_CONFIG:     //this is going to be a powerful tool
         goto mask_by_color_config_label;
-
-        //lighting config submenus
-      case COMPUTE_STATIC_LIGHTING_CONFIG:
-        goto compute_static_lighting_config_label;
-      case PER_FRAME_LIGHTING_CONFIG:
-        goto per_frame_lighting_config_label;
 
         //cellular automata submenus
       case GAME_OF_LIFE_CONFIG:
@@ -492,20 +486,42 @@ void voraldo::draw_menu_and_take_input()
 
   light_menu_label:
   {
+    static float clear_level;
+
+    static float directional_theta;
+    static float directional_phi;
+    static float directional_intensity;
+
+
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,200));
+    ImGui::SetNextWindowSize(ImVec2(256,300));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text(" ");
+    ImGui::Text("Clear Level");
+    ImGui::SliderFloat(" ", &clear_level, 0.0f, 1.0f, "%.3f");
 
+    ImGui::Text(" ");
     ImGui::SetCursorPosX(70);
+    if (ImGui::Button("Clear", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
+      GPU_Data.lighting_clear(clear_level); 
+
+    ImGui::Text(" ");
+    ImGui::SetCursorPosX(70);
+    ImGui::Text("Directional");
+    ImGui::SliderFloat(" theta", &directional_theta, -6.28f, 6.28f, "%.3f");
+    ImGui::SliderFloat(" phi", &directional_phi, -6.28f, 6.28f, "%.3f");
+    ImGui::Text(" ");
+    ImGui::SliderFloat(" value", &directional_intensity, 0.0f, 1.0f, "%.3f");
+
+    ImGui::Text(" ");
     if (ImGui::Button("Static", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
-      current_menu_state = COMPUTE_STATIC_LIGHTING_CONFIG;
+      GPU_Data.compute_static_lighting(directional_theta, directional_phi, directional_intensity); 
 
     ImGui::SetCursorPosX(70);
-    if (ImGui::Button("Per Frame", ImVec2(120, 22)))
-      current_menu_state = PER_FRAME_LIGHTING_CONFIG;
+    //if (ImGui::Button("Per Frame", ImVec2(120, 22)))
+      //current_menu_state = PER_FRAME_LIGHTING_CONFIG;
 
     ImGui::SetCursorPosX(70);
     if (ImGui::Button("AmbientOcclusion", ImVec2(120, 22)))
@@ -1338,57 +1354,6 @@ void voraldo::draw_menu_and_take_input()
   }
 
 
-
-  compute_static_lighting_config_label:
-    //single pass, static lighting
-  {
-    ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,85));
-    ImGui::Begin("Static Lighting Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
-
-    //would it be valuable to have a directional slider?
-
-    ImGui::Text(" ");
-    ImGui::SetCursorPosX(16);
-
-    if (ImGui::Button("Compute", ImVec2(100, 22)))
-    {
-        //do the lighting computation operation
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosX(140);
-    if (ImGui::Button("Back", ImVec2(100, 22)))
-      current_menu_state = LIGHT_MENU;
-
-    goto done;
-  }
-
-  per_frame_lighting_config_label:
-    //toggle a bool to make the lighting happen every frame
-  {
-    ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,85));
-    ImGui::Begin("Per Frame Lighting Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
-
-    //would it be valuable to have a directional slider? some kind of rotation to emphasize it's dynamic nature?
-
-    ImGui::Text(" ");
-    ImGui::SetCursorPosX(16);
-
-    if (ImGui::Button("Toggle", ImVec2(100, 22)))
-    {
-        //toggle the per-frame lighting as a boolean
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosX(140);
-    if (ImGui::Button("Back", ImVec2(100, 22)))
-      current_menu_state = LIGHT_MENU;
-
-    goto done;
-  }
-
-
-
   game_of_life_config_label:
     //single step or toggle bool to make it happen per frame
   {
@@ -1693,12 +1658,6 @@ void voraldo::draw_menu_and_take_input()
         case TOGGLE_MASK_CONFIG:
         case MASK_BY_COLOR_CONFIG:
           current_menu_state = MASK_MENU;
-          break;
-
-          //lighting config submenus
-        case COMPUTE_STATIC_LIGHTING_CONFIG:
-        case PER_FRAME_LIGHTING_CONFIG:
-          current_menu_state = LIGHT_MENU;
           break;
 
           //cellular automata submenus
