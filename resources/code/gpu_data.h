@@ -100,10 +100,6 @@ class OpenGL_container
     GLuint wireworld_update_compute;            //      |    -    |
 
 
-
-
-
-
   //╦┌┬┐┌─┐┌─┐┌─┐┌─┐
   //║│││├─┤│ ┬├┤ └─┐
   //╩┴ ┴┴ ┴└─┘└─┘└─┘
