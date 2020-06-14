@@ -35,8 +35,13 @@ class OpenGL_container
     void compute_static_lighting(float theta, float phi, float initial_ray_intensity);   //compute static lighting
     void lighting_clear(float intensity);
     void compute_ambient_occlusion(int radius); //compute ambient occlusion - based on neighborhood
-    void game_of_life_update();       //CA update, using GoL rules
-    void wireworld_update();          //CA update, using WireWorld rules
+
+    void mash();
+
+
+
+    void game_of_life_update();                 //CA update, using GoL rules
+    void wireworld_update();                    //CA update, using WireWorld rules
 
     //functions to generate new heightmaps
     void generate_heightmap_diamond_square();
@@ -90,6 +95,7 @@ class OpenGL_container
     GLuint blur_compute;                        //      |    x    |
     GLuint clear_all_compute;                   //      |    x    |
     GLuint shift_compute;
+    GLuint mash_compute;
     GLuint unmask_all_compute;                  //      |    x    |
     GLuint toggle_mask_compute;                 //      |    x    |
     GLuint mask_by_color_compute;               //      |    x    |

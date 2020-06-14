@@ -8,9 +8,6 @@ uniform layout(r8) image3D lighting;        //values held in the lighting buffer
 
 uniform int radius; //how big a neighborhood should be considered for neighborhood occupancy?
 
-vec4 mask_true = vec4(1.0,0.0,0.0,0.0);
-vec4 mask_false = vec4(0.0,0.0,0.0,0.0);
-
 void main()
 {
     vec4 prev = imageLoad(lighting, ivec3(gl_GlobalInvocationID.xyz));    //existing color value (what is the color?)
@@ -37,3 +34,4 @@ void main()
 
     imageStore(lighting, ivec3(gl_GlobalInvocationID.xyz), vec4(new));
 }
+

@@ -495,7 +495,7 @@ void voraldo::draw_menu_and_take_input()
     static int AO_radius;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,300));
+    ImGui::SetNextWindowSize(ImVec2(256,550));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text("Clear Level");
@@ -511,7 +511,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text(" ");
     ImGui::SliderFloat("value", &directional_intensity, 0.0f, 1.0f, "%.3f");
 
-    if (ImGui::Button("Static", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
+    if (ImGui::Button("Apply ", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       GPU_Data.compute_static_lighting(directional_theta, directional_phi, directional_intensity); 
 
     //if (ImGui::Button("Per Frame", ImVec2(120, 22)))
@@ -520,16 +520,25 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text(" ");
     ImGui::SliderInt("radius", &AO_radius, 0, 5);
 
-    if (ImGui::Button("AmbientOcclusion", ImVec2(120, 22)))
+    if (ImGui::Button("Apply", ImVec2(120, 22)))
     {
         GPU_Data.compute_ambient_occlusion(AO_radius);
     }
 
 
     ImGui::Text(" ");
+    ImGui::Text("Mash combines the lighting buffer"); 
+    ImGui::Text("and the color buffer. Once you do");
+    ImGui::Text("this, you can clear the lighting ");
+    ImGui::Text("buffer and save your block with");
+    ImGui::Text("lighting data applied.Do not try ");
+    ImGui::Text("to do this multiple times, ");
+    ImGui::Text("everything will pretty quickly go");
+    ImGui::Text("to black and white.");
+
     if (ImGui::Button("Mash", ImVec2(120, 22)))
     {
-        //GPU_Data.compute_ambient_occlusion(AO_radius);
+        GPU_Data.mash();
     }
 
 

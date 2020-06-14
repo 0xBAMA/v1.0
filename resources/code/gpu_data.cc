@@ -116,10 +116,17 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
+  cout << "  compiling mash compute shader................";
+  CShader csmash("resources/code/shaders/mash.cs.glsl");
+  mash_compute = csmash.Program;
+  cout << "done." << endl;
+
+
   cout << "  compiling static lighting compute shader(s)..";
   //there's two, one to clear the block, the same structure as all the others
   CShader cslightingclear("resources/code/shaders/light_clear.cs.glsl");
   lighting_clear_compute = cslightingclear.Program;
+
 
   //and one to do the actual raycasting operation, in the same style as the rendering operation
   CShader csstaticlighting("resources/code/shaders/directional.cs.glsl");
@@ -1154,6 +1161,24 @@ void OpenGL_container::compute_ambient_occlusion(int radius)
 
     glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 }
+
+
+void OpenGL_container::mash()
+{
+    glUseProgram(mash_compute);
+    //this one just directly manipulates the color data
+
+    glUniform1iv(glGetUniformLocation(mash_compute, "current"), 1, &location_of_current);
+    glUniform1iv(glGetUniformLocation(mash_compute, "lighting"), 1, &location_of_light_buffer);
+
+    glDispatchCompute(DIM/8, DIM/8, DIM/8);
+
+    glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+
+    //lighting_clear(0.2);    //reset lighting buffer so appearance does not change
+}
+
+
 
 void OpenGL_container::game_of_life_update()
 {
