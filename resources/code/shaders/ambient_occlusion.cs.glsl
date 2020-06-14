@@ -13,41 +13,25 @@ vec4 mask_false = vec4(0.0,0.0,0.0,0.0);
 
 void main()
 {
-  vec4 col = imageLoad(current, ivec3(gl_GlobalInvocationID.xyz));    //existing color value (what is the color?)
-
-  //int num = 0;
-  //vec4 csum = vec4(0,0,0,0);
-  //float msum = 0.0;
-  //for(int x = (-1 * radius); x <= radius; x++)
-  //{
-  //for(int y = (-1 * radius); y <= radius; y++)
-  //{
-  //for(int z = (-1 * radius); z <= radius; z++)
-  //{
-  //csum += imageLoad(previous, ivec3(gl_GlobalInvocationID.xyz) + ivec3(x,y,z));
-  //msum += (imageLoad(previous_mask, ivec3(gl_GlobalInvocationID.xyz) + ivec3(x,y,z)).r > 0.5) ? 1.0 : 0.0;
-  //num++;
-  //}
-  //}
-  //}
+    vec4 prev = imageLoad(lighting, ivec3(gl_GlobalInvocationID.xyz));    //existing color value (what is the color?)
 
     float alpha_sum = 0.0f;
+    int num_cells = 0;
 
-    for(int x = -1; x <= 1; x++)
-        for(int y = -1; y <= 1; y++)
-            for(int z = -1; z <= 1; z++)
+    for(int x = -radius; x <= radius; x++)
+        for(int y = -radius; y <= radius; y++)
+            for(int z = -radius; z <= radius; z++)
             {
-                alpha_sum += imageLoad(previous, ivec3(gl_GlobalInvocationID.xyz)+ivec3(x,y,z)).a;
+                num_cells++;
+                alpha_sum += imageLoad(current, ivec3(gl_GlobalInvocationID.xyz)+ivec3(x,y,z)).a;
             }
 
-    //sum up alpha values across the 27 cells being considered
+    //sum up alpha values across the cells being considered
     //compute a ratio of that alpha sum over the number of cells considered
     //scale the rgb components of pcol by this ratio
 
+    //a high ratio of occuppancy means this cell should be darkened
+    //therefore, we are multiplying the existing lighting value by 1/()
 
-
-
-
-  imageStore(current_mask, ivec3(gl_GlobalInvocationID.xyz), pmask);
-  imageStore(current, ivec3(gl_GlobalInvocationID.xyz), vec4(alpha_sum/27);
+    imageStore(lighting, ivec3(gl_GlobalInvocationID.xyz), vec4(alpha_sum/27));
 }

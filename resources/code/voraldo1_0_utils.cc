@@ -492,42 +492,45 @@ void voraldo::draw_menu_and_take_input()
     static float directional_phi;
     static float directional_intensity;
 
-
+    static int AO_radius;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,300));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::Text(" ");
     ImGui::Text("Clear Level");
-    ImGui::SliderFloat(" ", &clear_level, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("level", &clear_level, 0.0f, 1.0f, "%.3f");
 
-    ImGui::Text(" ");
-    ImGui::SetCursorPosX(70);
     if (ImGui::Button("Clear", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       GPU_Data.lighting_clear(clear_level); 
 
     ImGui::Text(" ");
-    ImGui::SetCursorPosX(70);
     ImGui::Text("Directional");
-    ImGui::SliderFloat(" theta", &directional_theta, -6.28f, 6.28f, "%.3f");
-    ImGui::SliderFloat(" phi", &directional_phi, -6.28f, 6.28f, "%.3f");
+    ImGui::SliderFloat("theta", &directional_theta, -3.14f, 3.14f, "%.3f");
+    ImGui::SliderFloat("phi", &directional_phi, -3.14f, 3.14f, "%.3f");
     ImGui::Text(" ");
-    ImGui::SliderFloat(" value", &directional_intensity, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("value", &directional_intensity, 0.0f, 1.0f, "%.3f");
 
-    ImGui::Text(" ");
     if (ImGui::Button("Static", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       GPU_Data.compute_static_lighting(directional_theta, directional_phi, directional_intensity); 
 
-    ImGui::SetCursorPosX(70);
     //if (ImGui::Button("Per Frame", ImVec2(120, 22)))
       //current_menu_state = PER_FRAME_LIGHTING_CONFIG;
 
-    ImGui::SetCursorPosX(70);
     if (ImGui::Button("AmbientOcclusion", ImVec2(120, 22)))
     {
-      //to be determined
+        GPU_Data.compute_ambient_occlusion(AO_radius);
     }
+
+
+    if (ImGui::Button("Mash", ImVec2(120, 22)))
+    {
+        //GPU_Data.compute_ambient_occlusion(AO_radius);
+    }
+
+
+
+
 
     ImGui::Text(" ");
     ImGui::SetCursorPosX(70);
@@ -664,9 +667,9 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Begin("Perlin Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text(" ");
-    ImGui::SliderFloat("  xscale", &perlin_scale_x, 0.0f, 1.0f, "%.3f");
-    ImGui::SliderFloat("  yscale", &perlin_scale_y, 0.0f, 1.0f, "%.3f");
-    ImGui::SliderFloat("  zscale", &perlin_scale_z, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("  xscale", &perlin_scale_x, 0.01f, 0.5f, "%.3f");
+    ImGui::SliderFloat("  yscale", &perlin_scale_y, 0.01f, 0.5f, "%.3f");
+    ImGui::SliderFloat("  zscale", &perlin_scale_z, 0.01f, 0.5f, "%.3f");
     ImGui::Text(" ");
 
     if(ImGui::Button("generate"))

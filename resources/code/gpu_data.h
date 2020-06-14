@@ -34,7 +34,7 @@ class OpenGL_container
     
     void compute_static_lighting(float theta, float phi, float initial_ray_intensity);   //compute static lighting
     void lighting_clear(float intensity);
-    void compute_ambient_occlusion(); //compute ambient occlusion - based on neighborhood
+    void compute_ambient_occlusion(int radius); //compute ambient occlusion - based on neighborhood
     void game_of_life_update();       //CA update, using GoL rules
     void wireworld_update();          //CA update, using WireWorld rules
 

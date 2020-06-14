@@ -110,12 +110,10 @@ void OpenGL_container::init()
   cout << "done." << endl;
 
 
-  //unimplemented
-
-//  cout << "  compiling AO compute shader..................";
-//  CShader csao("resources/code/shaders/ambient_occlusion.cs.glsl");
-//  ambient_occlusion_compute = csao.Program;
-//  cout << "done." << endl;
+  cout << "  compiling AO compute shader..................";
+  CShader csao("resources/code/shaders/ambient_occlusion.cs.glsl");
+  ambient_occlusion_compute = csao.Program;
+  cout << "done." << endl;
 
 
   cout << "  compiling static lighting compute shader(s)..";
@@ -1139,7 +1137,7 @@ void OpenGL_container::compute_static_lighting(float theta, float phi, float ini
     glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 }
 
-void OpenGL_container::compute_ambient_occlusion()
+void OpenGL_container::compute_ambient_occlusion(int radius)
 {
 //╔═╗┌┬┐┌┐ ┬┌─┐┌┐┌┌┬┐  ╔═╗┌─┐┌─┐┬  ┬ ┬┌─┐┬┌─┐┌┐┌
 //╠═╣│││├┴┐│├┤ │││ │   ║ ║│  │  │  │ │└─┐││ ││││
@@ -1149,13 +1147,10 @@ void OpenGL_container::compute_ambient_occlusion()
     glUseProgram(ambient_occlusion_compute);
     //this one just directly manipulates the color data
 
-    //send the preveious texture handles
-    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous"), 1, &location_of_previous);
-    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "previous_mask"), 1, &location_of_previous_mask);
-
-    //send the current texture handles
-    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current"), 1, &location_of_current);
-    glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current_mask"), 1, &location_of_current_mask);
+    glUniform1i(glGetUniformLocation(ambient_occlusion_compute, "radius"), radius);
+    
+    glUniform1iv(glGetUniformLocation(ambient_occlusion_compute, "current"), 1, &location_of_current);
+    glUniform1iv(glGetUniformLocation(ambient_occlusion_compute, "lighting"), 1, &location_of_light_buffer);
 
     glDispatchCompute(DIM/8, DIM/8, DIM/8);
 
