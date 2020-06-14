@@ -31,7 +31,9 @@ void main()
     //scale the rgb components of pcol by this ratio
 
     //a high ratio of occuppancy means this cell should be darkened
-    //therefore, we are multiplying the existing lighting value by 1/()
+    //therefore, we are multiplying the existing lighting value by one minus this ratio
 
-    imageStore(lighting, ivec3(gl_GlobalInvocationID.xyz), vec4(alpha_sum/27));
+    float new = prev.r * (1 - alpha_sum/num_cells); 
+
+    imageStore(lighting, ivec3(gl_GlobalInvocationID.xyz), vec4(new));
 }

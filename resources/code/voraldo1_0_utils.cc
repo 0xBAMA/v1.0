@@ -517,12 +517,16 @@ void voraldo::draw_menu_and_take_input()
     //if (ImGui::Button("Per Frame", ImVec2(120, 22)))
       //current_menu_state = PER_FRAME_LIGHTING_CONFIG;
 
+    ImGui::Text(" ");
+    ImGui::SliderInt("radius", &AO_radius, 0, 5);
+
     if (ImGui::Button("AmbientOcclusion", ImVec2(120, 22)))
     {
         GPU_Data.compute_ambient_occlusion(AO_radius);
     }
 
 
+    ImGui::Text(" ");
     if (ImGui::Button("Mash", ImVec2(120, 22)))
     {
         //GPU_Data.compute_ambient_occlusion(AO_radius);

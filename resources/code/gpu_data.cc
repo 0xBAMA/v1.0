@@ -1142,8 +1142,6 @@ void OpenGL_container::compute_ambient_occlusion(int radius)
 //╔═╗┌┬┐┌┐ ┬┌─┐┌┐┌┌┬┐  ╔═╗┌─┐┌─┐┬  ┬ ┬┌─┐┬┌─┐┌┐┌
 //╠═╣│││├┴┐│├┤ │││ │   ║ ║│  │  │  │ │└─┐││ ││││
 //╩ ╩┴ ┴└─┘┴└─┘┘└┘ ┴   ╚═╝└─┘└─┘┴─┘└─┘└─┘┴└─┘┘└┘
-    swap_blocks();
-
     glUseProgram(ambient_occlusion_compute);
     //this one just directly manipulates the color data
 
