@@ -531,8 +531,8 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text("and the color buffer. Once you do");
     ImGui::Text("this, you can clear the lighting ");
     ImGui::Text("buffer and save your block with");
-    ImGui::Text("lighting data applied.Do not try ");
-    ImGui::Text("to do this multiple times, ");
+    ImGui::Text("lighting data applied. Take care");
+    ImGui::Text("when doing this multiple times, ");
     ImGui::Text("everything will pretty quickly go");
     ImGui::Text("to black and white.");
 
