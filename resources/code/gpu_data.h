@@ -80,30 +80,31 @@ class OpenGL_container
     //display vertex/fragment shader pair
     GLuint main_display_shader;
 
-    //compute shaders to manipulate the image objects   | WORKING |
-    GLuint sphere_compute;                      //      |    x    |
-    GLuint aabb_compute;                        //      |    x    |
-    GLuint cylinder_compute;                    //      |    x    |
-    GLuint cuboid_compute;                      //      |    x    |
-    GLuint ellipsoid_compute;                   //      |    x    |
-    GLuint heightmap_compute;                   //      |    x    |
-    GLuint perlin_noise_compute;                //      |    x    |
-    GLuint triangle_compute;                    //      |    x    |
-    GLuint grid_compute;                        //      |    x    |
-    GLuint tube_compute;                        //      |    x    |
+    //compute shaders to manipulate the image objects 
+    GLuint sphere_compute;                    
+    GLuint aabb_compute;                     
+    GLuint cylinder_compute;                
+    GLuint cuboid_compute;                 
+    GLuint ellipsoid_compute;             
+    GLuint heightmap_compute;            
+    GLuint perlin_noise_compute;        
+    GLuint triangle_compute;           
+    GLuint grid_compute;              
+    GLuint tube_compute;             
 
-    GLuint blur_compute;                        //      |    x    |
-    GLuint clear_all_compute;                   //      |    x    |
+    GLuint blur_compute;            
+    GLuint clear_all_compute;      
     GLuint shift_compute;
     GLuint mash_compute;
-    GLuint unmask_all_compute;                  //      |    x    |
-    GLuint toggle_mask_compute;                 //      |    x    |
-    GLuint mask_by_color_compute;               //      |    x    |
-    GLuint lighting_clear_compute;              //      |    -    |
-    GLuint static_lighting_compute;             //      |    -    |
-    GLuint ambient_occlusion_compute;           //      |    -    |
-    GLuint game_of_life_update_compute;         //      |    -    |
-    GLuint wireworld_update_compute;            //      |    -    |
+    GLuint unmask_all_compute;               
+    GLuint toggle_mask_compute;             
+    GLuint mask_by_color_compute;          
+    GLuint lighting_clear_compute;        
+    GLuint static_lighting_compute;      
+    GLuint point_lighting_compute;      
+    GLuint ambient_occlusion_compute;       
+    GLuint game_of_life_update_compute;    
+    GLuint wireworld_update_compute;      
 
 
   //╦┌┬┐┌─┐┌─┐┌─┐┌─┐
