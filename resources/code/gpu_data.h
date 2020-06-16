@@ -21,7 +21,7 @@ class OpenGL_container
     void draw_tube(glm::vec3 bvec, glm::vec3 tvec, float inner_radius, float outer_radius, glm::vec4 color, bool draw, bool mask);                                    //invokes the tube compute shader
     void draw_cuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 e, glm::vec3 f, glm::vec3 g, glm::vec3 h, glm::vec4 color, bool draw, bool mask);  //invokes the cuboid compute shader
     void draw_triangle(glm::vec3 point1, glm::vec3 point2, glm::vec3 point3, float thickness, glm::vec4 color, bool draw, bool mask);                                 //invokes the triangle compute shader
-    void draw_grid(glm::ivec3 spacing, glm::ivec3 widths, glm::vec4 color, bool draw, bool mask);                                                                     //invokes the triangle compute shader
+    void draw_grid(glm::ivec3 spacing, glm::ivec3 widths, glm::ivec3 offsets, glm::vec4 color, bool draw, bool mask);                                                                     //invokes the triangle compute shader
     void draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask);                                                //invokes the ellipsoid compute shader
     void draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw);
     void draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask);                                                               //drawing perlin noise - smooth or solid color? another bool

@@ -593,7 +593,7 @@ void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, gl
 
 }
 
-void OpenGL_container::draw_grid(glm::ivec3 spacing, glm::ivec3 widths, glm::vec4 color, bool draw, bool mask)
+void OpenGL_container::draw_grid(glm::ivec3 spacing, glm::ivec3 widths, glm::ivec3 offsets, glm::vec4 color, bool draw, bool mask)
 {
 //  ╔═╗┬─┐┬┌┬┐
 //  ║ ╦├┬┘│ ││
@@ -606,6 +606,7 @@ void OpenGL_container::draw_grid(glm::ivec3 spacing, glm::ivec3 widths, glm::vec
   glUniform1i(glGetUniformLocation(grid_compute, "draw"), draw);
   
   glUniform3i(glGetUniformLocation(grid_compute, "spacing"), spacing.x, spacing.y, spacing.z);
+  glUniform3i(glGetUniformLocation(grid_compute, "offsets"), offsets.x, offsets.y, offsets.z);
   glUniform3i(glGetUniformLocation(grid_compute, "width"), widths.x, widths.y, widths.z);
 
   glUniform4fv(glGetUniformLocation(grid_compute, "color"), 1, glm::value_ptr(color));

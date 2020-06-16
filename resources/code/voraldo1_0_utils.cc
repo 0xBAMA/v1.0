@@ -49,6 +49,8 @@ void update_listbox_items()
     std::filesystem::directory_iterator end;
 
     std::transform(start, end, std::back_inserter(directory_strings), path_leaf_string());
+
+    std::sort(directory_strings.begin(), directory_strings.end());
 }
 
 
@@ -310,10 +312,6 @@ void voraldo::draw_menu_and_take_input()
         goto load_save_config_label;
       case SHIFT_CONFIG:
         goto shift_config_label;
-      case REINITIALIZATION_CONFIG:
-        goto reinitialization_config_label;
-      // case UNDO_LAST_ACTION_CONFIG:
-      //   goto undo_last_action_config_label;
 
       default:                      //shouldn't ever see this
         goto done;
@@ -599,14 +597,6 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Shifting", ImVec2(120, 22)))
       current_menu_state = SHIFT_CONFIG;
 
-    ImGui::SetCursorPosX(70);
-    if (ImGui::Button("Reinitialize", ImVec2(120, 22)))
-      current_menu_state = REINITIALIZATION_CONFIG;
-
-    // ImGui::SetCursorPosX(70);
-    // if (ImGui::Button("Undo", ImVec2(120, 22)))
-    //   current_menu_state = UNDO_LAST_ACTION_CONFIG;
-
 
     ImGui::SetCursorPosX(70);
     ImGui::SetCursorPosY(145);
@@ -724,25 +714,31 @@ void voraldo::draw_menu_and_take_input()
   grid_config_label:
   {
     static int xoff, yoff, zoff;
+    static int xspacing, yspacing, zspacing;
     static int xwid, ywid, zwid;
     static ImVec4 grid_draw_color;
     static bool grid_draw = true;
     static bool grid_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,370));
+    ImGui::SetNextWindowSize(ImVec2(256,390));
 
     ImGui::Begin("Grid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text("spacing");
-    ImGui::SliderInt(" xs", &xoff, 0, 15);
-    ImGui::SliderInt(" ys", &yoff, 0, 15);
-    ImGui::SliderInt(" zs", &zoff, 0, 15);
+    ImGui::SliderInt(" xs", &xspacing, 0, 15);
+    ImGui::SliderInt(" ys", &yspacing, 0, 15);
+    ImGui::SliderInt(" zs", &zspacing, 0, 15);
 
     ImGui::Text("width");
     ImGui::SliderInt(" xw", &xwid, 0, 15);
     ImGui::SliderInt(" yw", &ywid, 0, 15);
     ImGui::SliderInt(" zw", &zwid, 0, 15);
+
+    ImGui::Text("offset");
+    ImGui::SliderInt(" xo", &xoff, 0, 15);
+    ImGui::SliderInt(" yo", &yoff, 0, 15);
+    ImGui::SliderInt(" zo", &zoff, 0, 15);
 
     ImGui::Checkbox("  Draw ", &grid_draw);
     ImGui::SameLine();
@@ -758,7 +754,7 @@ void voraldo::draw_menu_and_take_input()
     {
         //draw with the selected values
     
-        GPU_Data.draw_grid(glm::ivec3(xoff, yoff, zoff), glm::ivec3(xwid, ywid, zwid), glm::vec4(grid_draw_color.x, grid_draw_color.y, grid_draw_color.z, grid_draw_color.w), grid_draw, grid_mask);
+        GPU_Data.draw_grid(glm::ivec3(xspacing, yspacing, zspacing), glm::ivec3(xwid, ywid, zwid), glm::ivec3(xoff, yoff, zoff), glm::vec4(grid_draw_color.x, grid_draw_color.y, grid_draw_color.z, grid_draw_color.w), grid_draw, grid_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
@@ -1527,11 +1523,11 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
-    ImGui::SliderInt(" x", &xmove, -100, 100);
+    ImGui::SliderInt(" x", &xmove, -DIM, DIM);
     ImGui::SetCursorPosX(16);
-    ImGui::SliderInt(" y", &ymove, -100, 100);
+    ImGui::SliderInt(" y", &ymove, -DIM, DIM);
     ImGui::SetCursorPosX(16);
-    ImGui::SliderInt(" z", &zmove, -100, 100);
+    ImGui::SliderInt(" z", &zmove, -DIM, DIM);
     ImGui::Text(" ");
 
     ImGui::SetCursorPosX(16);
@@ -1575,34 +1571,6 @@ void voraldo::draw_menu_and_take_input()
     goto done;
   }
 
-
-  reinitialization_config_label:
-    //like clear all, but ignores mask values
-  {
-    ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,85));
-    ImGui::Begin("Reinitialization Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
-
-    //config options for this operation
-
-    ImGui::Text(" ");
-    ImGui::SetCursorPosX(16);
-
-    if (ImGui::Button("Reinitialize", ImVec2(100, 22)))
-    {
-        //reset all cells to a zero, unmasked state - ignore the current state of mask
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosX(140);
-    if (ImGui::Button("Back", ImVec2(100, 22)))
-      current_menu_state = UTIL_MENU;
-
-    goto done;
-  }
-
-  // undo_last_action_config_label:
-  //   //use multiple textures to support an undo operation
-  //   goto done;
 
   done:
     //finished the label for the current window, so do the end() thing and render it

@@ -10,6 +10,7 @@ uniform layout(rgba8) image3D current;        //values of the block after the up
 uniform layout(r8) image3D current_mask;   //values of the mask after the update
 
 uniform ivec3 spacing;  //distance between gridlines, xyz
+uniform ivec3 offsets;  //distance between gridlines, xyz
 uniform ivec3 width;    //width of grid lines, xyz
 uniform vec4 color;     //what color should it be drawn with?
 
@@ -18,9 +19,9 @@ uniform bool mask;      //this this shape be masked?
 
 bool in_shape()
 {
-  bool x = (gl_GlobalInvocationID.x % spacing.x) <= width.x; 
-  bool y = (gl_GlobalInvocationID.y % spacing.y) <= width.y; 
-  bool z = (gl_GlobalInvocationID.z % spacing.z) <= width.z; 
+  bool x = ((gl_GlobalInvocationID.x + offsets.x) % spacing.x) <= width.x; 
+  bool y = ((gl_GlobalInvocationID.y + offsets.y) % spacing.y) <= width.y; 
+  bool z = ((gl_GlobalInvocationID.z + offsets.z) % spacing.z) <= width.z; 
 
   return ((x && y) || (x && z) || (y && z));
 }
