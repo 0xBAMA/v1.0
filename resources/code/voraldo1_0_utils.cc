@@ -50,6 +50,7 @@ void update_listbox_items()
 
     std::transform(start, end, std::back_inserter(directory_strings), path_leaf_string());
 
+    //sort these alphabetically
     std::sort(directory_strings.begin(), directory_strings.end());
 }
 
@@ -82,8 +83,8 @@ void voraldo::create_window()
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-  // SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //gl_SamplePosition has to be used in my shader in order for this to
-  // SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);   //have any effect on the way my shader works (i.e. add to gl_FragCoord)
+  //SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1);  //gl_SamplePosition has to be used in my shader in order for this to
+  //SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 8);   //have any effect on the way my shader works (i.e. add to gl_FragCoord)
 
   // GL 4.5 + GLSL 450
   const char* glsl_version = "#version 430";
@@ -312,6 +313,8 @@ void voraldo::draw_menu_and_take_input()
         goto load_save_config_label;
       case SHIFT_CONFIG:
         goto shift_config_label;
+      case LIMITER_CONFIG:
+        goto limiter_config_label;
 
       default:                      //shouldn't ever see this
         goto done;
@@ -1571,6 +1574,62 @@ void voraldo::draw_menu_and_take_input()
     goto done;
   }
 
+  limiter_config_label:
+    //establishes range for r/g/b/a as well as lighting 
+  {
+    static bool use_r;
+    static bool use_g;
+    static bool use_b;
+    static bool use_a;
+
+    static ImVec4 select_color;
+
+    static float r_variance=0.1;
+    static float g_variance=0.2;
+    static float b_variance=0.3;
+    static float a_variance=0.4;
+   
+
+    ImGui::SetNextWindowPos(ImVec2(10,10));
+    ImGui::SetNextWindowSize(ImVec2(256,465));
+    ImGui::Begin("Limiter Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
+
+
+
+    ImGui::ColorEdit4("  Color", (float*)&select_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+
+    //sliders
+
+    ImGui::Checkbox("use r", &use_r);
+    ImGui::SameLine();
+    ImGui::SliderFloat("r variance", &r_variance, 0.0f, 1.0f, "%.3f");
+
+    ImGui::Checkbox("use g", &use_g);
+    ImGui::SameLine();
+    ImGui::SliderFloat("g variance", &g_variance, 0.0f, 1.0f, "%.3f");
+    
+    ImGui::Checkbox("use b", &use_b);
+    ImGui::SameLine();
+    ImGui::SliderFloat("b variance", &b_variance, 0.0f, 1.0f, "%.3f");
+    
+    ImGui::Checkbox("use a", &use_a);
+    ImGui::SameLine();
+    ImGui::SliderFloat("a variance", &a_variance, 0.0f, 1.0f, "%.3f");
+
+    
+    if (ImGui::Button("Mask", ImVec2(100, 22)))
+    {
+        GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), r_variance, g_variance, b_variance, a_variance);
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Back", ImVec2(100, 22)))
+      current_menu_state = MASK_MENU;
+
+
+    goto done;
+  }
 
   done:
     //finished the label for the current window, so do the end() thing and render it
@@ -1654,7 +1713,7 @@ void voraldo::draw_menu_and_take_input()
           //utility submenus
         case LOAD_SAVE_CONFIG:
         case SHIFT_CONFIG:
-        case REINITIALIZATION_CONFIG:
+        case LIMITER_CONFIG:
           current_menu_state = UTIL_MENU;
           break;
 
@@ -1702,6 +1761,7 @@ void voraldo::gl_data_setup()
   SDL_Delay(100);
 
   SDL_ShowWindow(window);
+  //SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED_DISPLAY(DISPLAY), SDL_WINDOWPOS_CENTERED_DISPLAY(DISPLAY));
 }
 
 void voraldo::quit()

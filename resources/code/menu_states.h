@@ -47,6 +47,6 @@ typedef enum menu_state_t
   LOAD_SAVE_CONFIG,
   REINITIALIZATION_CONFIG,
   SHIFT_CONFIG,
-  // UNDO_LAST_ACTION_CONFIG
+  LIMITER_CONFIG
 
 } menu_state;
