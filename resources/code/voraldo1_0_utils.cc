@@ -505,7 +505,7 @@ void voraldo::draw_menu_and_take_input()
     static int AO_radius;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,550));
+    ImGui::SetNextWindowSize(ImVec2(256,700));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
 
@@ -514,27 +514,22 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text("buffer which scales the color ");
     ImGui::Text("values held in the regular block.");
     ImGui::Text(" ");
-    ImGui::Text("For neutral coloring, clear the ");
-    ImGui::Text("lighting buffer with a value of ");
-    ImGui::Text("about 0.25. ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
+    ImGui::Text("Directional lighting is applied");
+    ImGui::Text("in a manner sort of similar to the ");
+    ImGui::Text("shadow map approach that is used ");
+    ImGui::Text("elsewhere. ");
     ImGui::Text(" ");
 
 
 
-    ImGui::Text("Clear Level");
+    ImGui::Text("Clear Level - 0.25 is neutral");
     ImGui::SliderFloat("level", &clear_level, 0.0f, 1.0f, "%.3f");
 
     if (ImGui::Button("Clear", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       GPU_Data.lighting_clear(clear_level); 
 
-    ImGui::Text(" ");
+    ImGui::Separator();
+
     ImGui::Text("Directional");
     ImGui::SliderFloat("theta", &directional_theta, -3.14f, 3.14f, "%.3f");
     ImGui::SliderFloat("phi", &directional_phi, -3.14f, 3.14f, "%.3f");
@@ -547,6 +542,12 @@ void voraldo::draw_menu_and_take_input()
     //if (ImGui::Button("Per Frame", ImVec2(120, 22)))
       //current_menu_state = PER_FRAME_LIGHTING_CONFIG;
 
+    ImGui::Separator();
+
+    ImGui::Text("Ambient occlusion is based on a ");
+    ImGui::Text("weighted average of the alpha  ");
+    ImGui::Text("values in the specified size ");
+    ImGui::Text("neighborhood. ");
     ImGui::Text(" ");
     ImGui::SliderInt("radius", &AO_radius, 0, 5);
 
@@ -556,21 +557,18 @@ void voraldo::draw_menu_and_take_input()
     }
 
 
-    ImGui::Text(" ");
+    ImGui::Separator();
     ImGui::Text("Mash combines the lighting buffer"); 
-    ImGui::Text("and the color buffer. Once you do");
-    ImGui::Text("this, you can clear the lighting ");
-    ImGui::Text("buffer and save your block with");
-    ImGui::Text("lighting data applied. Take care");
-    ImGui::Text("when doing this multiple times, ");
-    ImGui::Text("everything will pretty quickly go");
-    ImGui::Text("to black and white.");
+    ImGui::Text("and the color buffer, so that the");
+    ImGui::Text("block can be saved with the ");
+    ImGui::Text("lighting applied.");
 
     if (ImGui::Button("Mash", ImVec2(120, 22)))
     {
         GPU_Data.mash();
     }
 
+    ImGui::Separator();
 
 
 
