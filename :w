@@ -392,13 +392,9 @@ void voraldo::draw_menu_and_take_input()
   draw_menu_label:
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,485));
+    ImGui::SetNextWindowSize(ImVec2(256,425));
     ImGui::Begin("Draw Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 
-    ImGui::Text("These are the shapes you can use ");
-    ImGui::Text("to draw. Use draw and mask check ");
-    ImGui::Text("boxes to set the behavior of each ");
-    ImGui::Text("drawing operation. ");
     ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
@@ -455,6 +451,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
 
+    ImGui::Text(" ");
 
     goto done;
   }
@@ -462,14 +459,9 @@ void voraldo::draw_menu_and_take_input()
   mask_menu_label:
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,265));
+    ImGui::SetNextWindowSize(ImVec2(256,195));
     ImGui::Begin("Mask Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::Text("Masking is an operation that will ");
-    ImGui::Text("prevent subsequent draws from  ");
-    ImGui::Text("touching the masked voxel. These ");
-    ImGui::Text("are some tools to manipulate the ");
-    ImGui::Text("state of this mask buffer. ");
     ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
@@ -484,9 +476,9 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Mask by Color", ImVec2(120, 22)))
       current_menu_state = MASK_BY_COLOR_CONFIG;
 
-    ImGui::Text(" ");
 
     ImGui::SetCursorPosX(70);
+    ImGui::SetCursorPosY(145);
     if (ImGui::Button("Main Menu", ImVec2(120, 22)))
       current_menu_state = MAIN_MENU;
 
@@ -989,7 +981,7 @@ void voraldo::draw_menu_and_take_input()
     static float tube_inner_radius, tube_outer_radius;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,420));
+    ImGui::SetNextWindowSize(ImVec2(256,400));
     ImGui::Begin("Tube Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text("Tube is a cylinder with a cylinder");
@@ -1056,10 +1048,10 @@ void voraldo::draw_menu_and_take_input()
     static ImVec4 cuboid_draw_color;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,875));
+    ImGui::SetNextWindowSize(ImVec2(256,850));
     ImGui::Begin("Cuboid Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::Text("This is hard to use.");
+
     ImGui::Text("     e-------g    +y     ");
     ImGui::Text("    /|      /|     |     ");
     ImGui::Text("   / |     / |     |___+x");
@@ -1149,15 +1141,8 @@ void voraldo::draw_menu_and_take_input()
     static bool aabb_draw = true, aabb_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,365));
+    ImGui::SetNextWindowSize(ImVec2(256,275));
     ImGui::Begin("AABB Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
-
-
-    ImGui::Text("This is an axis-aligned bounding");
-    ImGui::Text("box. You set a min and max on");
-    ImGui::Text("each axis, and it will fill in");
-    ImGui::Text("the rectangular prism inside.");
-    ImGui::Text(" ");
 
     ImGui::SliderFloat(" x max", &max.x, 0.0f, float(DIM), "%.3f");
     ImGui::SliderFloat(" x min", &min.x, 0.0f, float(DIM), "%.3f");
@@ -1205,17 +1190,8 @@ void voraldo::draw_menu_and_take_input()
     static ImVec4 heightmap_draw_color;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,575));
+    ImGui::SetNextWindowSize(ImVec2(256,465));
     ImGui::Begin("Heightmap Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
-
-    ImGui::Text("This is a tool to draw heightmaps.");
-    ImGui::Text("Use the options to generate new");
-    ImGui::Text("ones, and use the vertical scale");
-    ImGui::Text("to set the height scaling. ");
-    ImGui::Text(" ");
-    ImGui::Text("There are three types of maps you");
-    ImGui::Text("can generate. ");
-    ImGui::Text(" ");
 
     //show off the currently held texture
     ImGui::Image((void*)(intptr_t) 7   /*not a good way to do this, but it works right now*/ , ImVec2(240,256));
@@ -1277,15 +1253,8 @@ void voraldo::draw_menu_and_take_input()
     static bool respect_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,260));
+    ImGui::SetNextWindowSize(ImVec2(256,130));
     ImGui::Begin("Blur Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
-
-    ImGui::Text("This is a simple box blur. It will ");
-    ImGui::Text("consider the size neighborhood you ");
-    ImGui::Text("select, and average the colors to ");
-    ImGui::Text("give smoother transitions beteen ");
-    ImGui::Text("neighboring cells. ");
-    ImGui::Text(" ");
 
     ImGui::SliderInt(" Radius", &blur_radius, 0, 5);
 
@@ -1318,14 +1287,8 @@ void voraldo::draw_menu_and_take_input()
     static bool respect_mask = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,185));
+    ImGui::SetNextWindowSize(ImVec2(256,105));
     ImGui::Begin("Clear All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
-
-    ImGui::Text("This will clear the block, with an");
-    ImGui::Text("option to respect the mask. If you ");
-    ImGui::Text("check that, masked cells won't be ");
-    ImGui::Text("cleared. ");
-    ImGui::Text(" ");
 
     ImGui::Checkbox("  Respect mask ", &respect_mask);
 
@@ -1356,13 +1319,6 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Begin("Unmask All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-
     ImGui::SetCursorPosX(16);
 
     if (ImGui::Button("Unmask All", ImVec2(100, 22)))
