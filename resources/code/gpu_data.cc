@@ -1032,7 +1032,7 @@ void OpenGL_container::toggle_mask()  //done
   //postcondition - "current" values have the most up-to-date data
 }
 
-void OpenGL_container::mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 color, float r_var, float g_var, float b_var, float a_var)
+void OpenGL_container::mask_by_color(bool r, bool g, bool b, bool a, bool l, glm::vec4 color, float l_val, float r_var, float g_var, float b_var, float a_var, float l_var)
 {
 //╔╦╗┌─┐┌─┐┬┌─  ┌┐ ┬ ┬  ╔═╗┌─┐┬  ┌─┐┬─┐
 //║║║├─┤└─┐├┴┐  ├┴┐└┬┘  ║  │ ││  │ │├┬┘
@@ -1051,17 +1051,28 @@ void OpenGL_container::mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 c
   glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current"), 1, &location_of_current);
   glUniform1iv(glGetUniformLocation(mask_by_color_compute, "current_mask"), 1, &location_of_current_mask);
 
+  //send the lighting texture handle
+  glUniform1iv(glGetUniformLocation(mask_by_color_compute, "lighting"), 1, &location_of_light_buffer);
+  
   glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_r"), r);
   glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_g"), g);
   glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_b"), b);
   glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_a"), a);
 
+  glUniform1i(glGetUniformLocation(mask_by_color_compute, "use_l"), l);
+
+
   glUniform4fv(glGetUniformLocation(mask_by_color_compute, "color"), 1, glm::value_ptr(color));
+  glUniform1f(glGetUniformLocation(mask_by_color_compute, "l_val"), l_val);
+
 
   glUniform1f(glGetUniformLocation(mask_by_color_compute, "r_var"), r_var);
   glUniform1f(glGetUniformLocation(mask_by_color_compute, "g_var"), g_var);
   glUniform1f(glGetUniformLocation(mask_by_color_compute, "b_var"), b_var);
   glUniform1f(glGetUniformLocation(mask_by_color_compute, "a_var"), a_var);
+
+  glUniform1f(glGetUniformLocation(mask_by_color_compute, "l_var"), l_var);
+
 
   //dispatch the job
   glDispatchCompute( DIM/8, DIM/8, DIM/8 ); //workgroup is 8x8x8, so divide each dimension by 8

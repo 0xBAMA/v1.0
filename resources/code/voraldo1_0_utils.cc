@@ -1352,15 +1352,12 @@ void voraldo::draw_menu_and_take_input()
     //sets mask value for all cells to zero
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::SetNextWindowSize(ImVec2(256,135));
     ImGui::Begin("Unmask All Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
-    ImGui::Text(" ");
+    ImGui::Text("This will clear the mask value for");
+    ImGui::Text("all cells. Equivalently, set mask ");
+    ImGui::Text("to false for all voxels. ");
     ImGui::Text(" ");
 
     ImGui::SetCursorPosX(16);
@@ -1382,10 +1379,15 @@ void voraldo::draw_menu_and_take_input()
     //toggles the value of mask for all cells
   {
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::SetNextWindowSize(ImVec2(256,150));
     ImGui::Begin("Toggle Mask Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
+    ImGui::Text("This will toggle the value of mask ");
+    ImGui::Text("for all voxels. Masked cells will ");
+    ImGui::Text("become unmasked, and unmasked will ");
+    ImGui::Text("become masked. ");
     ImGui::Text(" ");
+
     ImGui::SetCursorPosX(16);
 
     if (ImGui::Button("Toggle", ImVec2(100, 22)))
@@ -1408,19 +1410,43 @@ void voraldo::draw_menu_and_take_input()
     static bool use_g;
     static bool use_b;
     static bool use_a;
+    static bool use_l;
 
     static ImVec4 select_color;
+    static float light_val=0.0001;
 
-    static float r_variance=0.1;
-    static float g_variance=0.2;
-    static float b_variance=0.3;
-    static float a_variance=0.4;
+    static float r_variance=0.0;
+    static float g_variance=0.0;
+    static float b_variance=0.0;
+    static float a_variance=0.0;
+    static float l_variance=0.0;
    
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,465));
+    ImGui::SetNextWindowSize(ImVec2(256,600));
     ImGui::Begin("Mask by Color Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
+    ImGui::Text("Use the HSV picker or the RGB fields");
+    ImGui::Text("to enter a color. Once you do that, ");
+    ImGui::Text("use the check boxes and sliders to ");
+    ImGui::Text("express how you want to use each");
+    ImGui::Text("channel. ");
+    ImGui::Text(" ");
+    ImGui::Text("For example, if I pick 255 in the");
+    ImGui::Text("red channel, check the red check ");
+    ImGui::Text("box, and set the slider to a non ");
+    ImGui::Text("zero value, you will be masking ");
+    ImGui::Text("the parts of the image that have ");
+    ImGui::Text("a high value in the red channel. ");
+    ImGui::Text(" ");
+    ImGui::Text("The slider sets how broadly this ");
+    ImGui::Text("operation will be applied. ");
+    ImGui::Text(" ");
+    ImGui::Text("This can be applied to the RGBA ");
+    ImGui::Text("color channels as well as the ");
+    ImGui::Text("value in the lighting buffer, to ");
+    ImGui::Text("mask only light or dark areas. ");
+    ImGui::Text(" ");
 
 
     ImGui::ColorEdit4("  Color", (float*)&select_color, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
@@ -1443,10 +1469,16 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SameLine();
     ImGui::SliderFloat("a variance", &a_variance, 0.0f, 1.0f, "%.3f");
 
+    ImGui::Separator();
+
+    ImGui::Checkbox("use l", &use_l);
+    ImGui::SameLine();
+    ImGui::SliderFloat("l value", &light_val, 0.0f, 1.0f, "%.3f");
+    ImGui::SliderFloat("l variance", &l_variance, 0.0f, 1.0f, "%.3f");
     
     if (ImGui::Button("Mask", ImVec2(100, 22)))
     {
-        GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), r_variance, g_variance, b_variance, a_variance);
+        GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, use_l, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), light_val, r_variance, g_variance, b_variance, a_variance, l_variance);
     }
 
     ImGui::SameLine();
@@ -1681,7 +1713,7 @@ void voraldo::draw_menu_and_take_input()
    
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,465));
+    ImGui::SetNextWindowSize(ImVec2(256,500));
     ImGui::Begin("Limiter Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
 
@@ -1709,7 +1741,7 @@ void voraldo::draw_menu_and_take_input()
     
     if (ImGui::Button("Mask", ImVec2(100, 22)))
     {
-        GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), r_variance, g_variance, b_variance, a_variance);
+        //GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), r_variance, g_variance, b_variance, a_variance);
     }
 
     ImGui::SameLine();

@@ -30,7 +30,7 @@ class OpenGL_container
     void unmask_all();                                                                                                                                                //invokes the unmask_all compute shader
     void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
     void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                       //invokes the blurring operation
-    void mask_by_color(bool r, bool g, bool b, bool a, glm::vec4 color, float r_var, float g_var, float b_var, float a_var);             //mask based on value/variance per channel
+    void mask_by_color(bool r, bool g, bool b, bool a, bool l, glm::vec4 color, float l_val, float r_var, float g_var, float b_var, float a_var, float l_var);        //mask based on value/variance per channel
     
     void compute_static_lighting(float theta, float phi, float initial_ray_intensity);   //compute static lighting
     void lighting_clear(float intensity);
