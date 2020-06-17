@@ -1,4 +1,4 @@
-#version 450
+#version 430
 
 //note that this only effects what the parameters to glDispatchCompute are - by using gl_GlobalInvocationID, you don't need to worry what any of those numbers are
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;    //specifies the workgroup size

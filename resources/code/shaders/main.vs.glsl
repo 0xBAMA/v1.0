@@ -1,4 +1,4 @@
-#version 450
+#version 430
 layout (location = 0) in vec3 vPosition;
 
 // out vec4 gl_Position;

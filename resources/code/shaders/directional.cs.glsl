@@ -1,4 +1,4 @@
-#version 450
+#version 430
 
 //this is heavily influenced by the display funciton (see main.fs.glsl)
 
