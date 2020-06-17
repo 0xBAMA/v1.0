@@ -508,6 +508,26 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SetNextWindowSize(ImVec2(256,550));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
+
+    ImGui::Text("This is the lighting system of ");
+    ImGui::Text("Voraldo - it is held as another ");
+    ImGui::Text("buffer which scales the color ");
+    ImGui::Text("values held in the regular block.");
+    ImGui::Text(" ");
+    ImGui::Text("For neutral coloring, clear the ");
+    ImGui::Text("lighting buffer with a value of ");
+    ImGui::Text("about 0.25. ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+    ImGui::Text(" ");
+
+
+
     ImGui::Text("Clear Level");
     ImGui::SliderFloat("level", &clear_level, 0.0f, 1.0f, "%.3f");
 
@@ -1571,7 +1591,7 @@ void voraldo::draw_menu_and_take_input()
     static char str0[256] = "";
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,350));
+    ImGui::SetNextWindowSize(ImVec2(256,385));
     ImGui::Begin("Load/Save Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     const char* listbox_items[LISTBOX_SIZE];
@@ -1584,15 +1604,19 @@ void voraldo::draw_menu_and_take_input()
     }
 
 
+    ImGui::Text("This function lets you load or");
+    ImGui::Text("save of blocks using the PNG ");
+    ImGui::Text("image format. ");
+    ImGui::Text(" ");
+
+
     ImGui::Text("Files in saves folder:");
     static int listbox_select_index = 1;
     ImGui::ListBox(" ", &listbox_select_index, listbox_items, i, 10);
 
 
 
-
-
-    ImGui::Text("Enter filename:");
+    ImGui::Text("Enter filename to save:");
     ImGui::InputTextWithHint(".png", "", str0, IM_ARRAYSIZE(str0));
     ImGui::SameLine();
     HelpMarker("USER:\nHold SHIFT or use mouse to select text.\n" "CTRL+Left/Right to word jump.\n" "CTRL+A or double-click to select all.\n" "CTRL+X,CTRL+C,CTRL+V clipboard.\n" "CTRL+Z,CTRL+Y undo/redo.\n" "ESCAPE to revert.");
@@ -1641,10 +1665,18 @@ void voraldo::draw_menu_and_take_input()
     static int shift_mode = 1;
     
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,300));
+    ImGui::SetNextWindowSize(ImVec2(256,445));
     ImGui::Begin("Shift Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
-    //config options for this operation
+    ImGui::Text("This allows you to shift the voxel");
+    ImGui::Text("data, by some amount along the x, ");
+    ImGui::Text("y and z axes. Modes are described ");
+    ImGui::Text("below. ");
+    ImGui::Text(" ");
+    ImGui::Text("If you turn on looping, data that ");
+    ImGui::Text("goes off one side will appear on ");
+    ImGui::Text("the opposite edge, torus-style.");
+    
 
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);

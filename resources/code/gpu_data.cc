@@ -253,7 +253,7 @@ void OpenGL_container::load_textures()
         // }
 
         data3.push_back(0);
-        data4.push_back(32); //127 maps to 0.5, in the shader 
+        data4.push_back(64); //127 maps to 0.5, in the shader 
         //data4.push_back((x*y*z)%256); //interesting pattern
       }
     }
