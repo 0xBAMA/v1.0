@@ -102,7 +102,8 @@ void voraldo::create_window()
   int total_screen_width = dm.w;
   int total_screen_height = dm.h;
 
-  window = SDL_CreateWindow( "OpenGL Window", 0, 0, total_screen_width, total_screen_height, SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_BORDERLESS );
+  //window = SDL_CreateWindow( "OpenGL Window", 0, 0, total_screen_width, total_screen_height, SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_BORDERLESS );
+  window = SDL_CreateWindow( "OpenGL Window", 0, 0, total_screen_width, total_screen_height, SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE );
   GLcontext = SDL_GL_CreateContext( window );
 
   SDL_GL_MakeCurrent(window, GLcontext);
@@ -1756,9 +1757,7 @@ void voraldo::gl_data_setup()
   cout << "starting init..." << endl;
   GPU_Data.init();
   GPU_Data.load_textures();
-  SDL_Delay(30);
   cout << "finished init." << endl;
-  SDL_Delay(100);
 
   SDL_ShowWindow(window);
   //SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED_DISPLAY(DISPLAY), SDL_WINDOWPOS_CENTERED_DISPLAY(DISPLAY));
