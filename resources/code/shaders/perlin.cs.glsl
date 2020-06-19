@@ -12,8 +12,11 @@ uniform layout(r8) image3D current_mask;   //values of the mask after the update
 uniform sampler3D tex;        //noise texture
 uniform float low_thresh;  //lowest value in perlin texture to accept
 uniform float high_thresh; //highest value in perlin texture to accept
+uniform bool usmooth;   //color scaling by perlin value 
 
-uniform vec4 color;           //what color should it be drawn with?
+uniform vec4 ucolor;           //what color should it be drawn with?
+vec4 color;
+
 
 uniform bool draw;      //should this shape be drawn?
 uniform bool mask;      //this this shape be masked?
@@ -23,7 +26,14 @@ bool in_shape()
 {
   //code to see if gl_GlobalInvocationID.xyz is inside the shape
   vec4 texread = texture(tex, gl_GlobalInvocationID.xyz/256.0);   
-    
+  if(usmooth)
+      color = ucolor * texread.r;
+  else
+      color = ucolor;
+
+
+
+
   if(texread.r < high_thresh && texread.r > low_thresh)
     return true;
   else
@@ -37,6 +47,10 @@ void main()
 {
   bool pmask = (imageLoad(previous_mask, ivec3(gl_GlobalInvocationID.xyz)).r > 0.5);  //existing mask value (previous_mask = 0?)
   vec4 pcol = imageLoad(previous, ivec3(gl_GlobalInvocationID.xyz));                 //existing color value (what is the previous color?)
+
+
+
+
 
   if(pmask) //the cell was masked
   {

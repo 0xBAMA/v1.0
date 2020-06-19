@@ -104,6 +104,7 @@ void traceray(vec3 org, vec3 dir)
         imageStore(lighting, sample_location, vec4(new_light_read.r+intensity));
 
         //intensity -= new_color_read.a;
+        //intensity *= 1-pow(new_color_read.a, 2);
         intensity *= 1-new_color_read.a;
 
         current_t += step;

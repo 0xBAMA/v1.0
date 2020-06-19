@@ -699,6 +699,7 @@ void voraldo::draw_menu_and_take_input()
     static ImVec4 perlin_draw_color;
     static bool perlin_draw = true;
     static bool perlin_mask = false;
+    static bool perlin_smooth = false;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,430));
@@ -728,6 +729,8 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::SliderFloat(" hithresh", &perlin_threshold_hi, 0.0f, 1.0f, "%.3f");
     ImGui::SliderFloat(" lothresh", &perlin_threshold_lo, 0.0f, 1.0f, "%.3f");
+
+    ImGui::Checkbox(" Smooth Color ", &perlin_smooth);
     
     ImGui::Separator();
 
@@ -744,7 +747,7 @@ void voraldo::draw_menu_and_take_input()
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw with the selected values
-        GPU_Data.draw_perlin_noise(perlin_threshold_lo, perlin_threshold_hi, glm::vec4(perlin_draw_color.x, perlin_draw_color.y, perlin_draw_color.z, perlin_draw_color.w), perlin_draw, perlin_mask);
+        GPU_Data.draw_perlin_noise(perlin_threshold_lo, perlin_threshold_hi, perlin_smooth, glm::vec4(perlin_draw_color.x, perlin_draw_color.y, perlin_draw_color.z, perlin_draw_color.w), perlin_draw, perlin_mask);
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);

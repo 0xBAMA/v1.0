@@ -555,7 +555,7 @@ void OpenGL_container::draw_sphere(glm::vec3 location, float radius, glm::vec4 c
 
 }
 
-void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask)   //done
+void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, bool smooth, glm::vec4 color, bool draw, bool mask)   //done
 {
 //╔═╗┌─┐┬─┐┬  ┬┌┐┌  ╔╗╔┌─┐┬┌─┐┌─┐
 //╠═╝├┤ ├┬┘│  ││││  ║║║│ ││└─┐├┤
@@ -567,12 +567,13 @@ void OpenGL_container::draw_perlin_noise(float low_thresh, float high_thresh, gl
   //testing compute shader
   glUseProgram(perlin_noise_compute);
 
+  glUniform1i(glGetUniformLocation(perlin_noise_compute, "usmooth"), smooth);
   glUniform1i(glGetUniformLocation(perlin_noise_compute, "mask"), mask);
   glUniform1i(glGetUniformLocation(perlin_noise_compute, "draw"), draw);
   glUniform1i(glGetUniformLocation(perlin_noise_compute, "tex"), location_of_perlin_noise);
   glUniform1f(glGetUniformLocation(perlin_noise_compute, "low_thresh"), low_thresh);
   glUniform1f(glGetUniformLocation(perlin_noise_compute, "high_thresh"), high_thresh);
-  glUniform4fv(glGetUniformLocation(perlin_noise_compute, "color"), 1, glm::value_ptr(color));
+  glUniform4fv(glGetUniformLocation(perlin_noise_compute, "ucolor"), 1, glm::value_ptr(color));
 
 
   //send the preveious texture handles

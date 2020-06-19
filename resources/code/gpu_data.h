@@ -24,7 +24,7 @@ class OpenGL_container
     void draw_grid(glm::ivec3 spacing, glm::ivec3 widths, glm::ivec3 offsets, glm::vec4 color, bool draw, bool mask);                                                                     //invokes the triangle compute shader
     void draw_ellipsoid(glm::vec3 center, glm::vec3 radii, glm::vec3 rotation, glm::vec4 color, bool draw, bool mask);                                                //invokes the ellipsoid compute shader
     void draw_heightmap(float height_scale, bool height_color, glm::vec4 color, bool mask, bool draw);
-    void draw_perlin_noise(float low_thresh, float high_thresh, glm::vec4 color, bool draw, bool mask);                                                               //drawing perlin noise - smooth or solid color? another bool
+    void draw_perlin_noise(float low_thresh, float high_thresh, bool smooth, glm::vec4 color, bool draw, bool mask);                                                  //drawing perlin noise - smooth or solid color? another bool
 
     void clear_all(bool respect_mask);                                                                                                                                //invokes the clear_all compute shader
     void unmask_all();                                                                                                                                                //invokes the unmask_all compute shader
