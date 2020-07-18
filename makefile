@@ -1,4 +1,4 @@
-VORALDO_FLAGS =  -Wall -O3 -std=c++17 -lGLEW -lGL -lstdc++fs $(shell pkg-config sdl2 --cflags --libs)
+VORALDO_FLAGS =  -Wall -O3 -std=c++17 -lGLEW -lGL -lstdc++fs $(shell pkg-config sdl2 --cflags --libs) -Wno-deprecated
 IMGUI_FLAGS   =  -Wall -lGLEW -DIMGUI_IMPL_OPENGL_LOADER_GLEW `sdl2-config --cflags`
 
 all: msg main clean run
@@ -9,8 +9,8 @@ msg:
 		@date
 		@echo
 
-main: imgui lodepng.o perlin.o utils.o gpu_data.o voraldo1_0.o
-		g++ -o main resources/code/main.cc *.o                           ${VORALDO_FLAGS}
+main: imgui lodepng.o perlin.o utils.o gpu_data.o voraldo1_0.o bigint
+		g++ -o main resources/code/main.cc *.o resources/BigInt/*.o     ${VORALDO_FLAGS} 
 
 imgui: resources/imgui/*
 		g++ -c -o imgui_impl_sdl.o resources/imgui/imgui_impl_sdl.cc         ${IMGUI_FLAGS}
@@ -39,6 +39,14 @@ perlin.o: resources/code/voraldo1_0.h resources/code/perlin.cc
 
 lodepng.o: resources/code/lodepng.h resources/code/lodepng.cc
 		g++ -c -o lodepng.o resources/code/lodepng.cc                    ${VORALDO_FLAGS}
+		
+bigint:
+		g++ -c -o resources/BigInt/BigUnsigned.o -O2 -Wno-deprecated resources/BigInt/BigUnsigned.cc
+		g++ -c -o resources/BigInt/BigInteger.o -O2 -Wno-deprecated resources/BigInt/BigInteger.cc
+		g++ -c -o resources/BigInt/BigIntegerAlgorithms.o -O2 -Wno-deprecated resources/BigInt/BigIntegerAlgorithms.cc
+		g++ -c -o resources/BigInt/BigUnsignedInABase.o -O2 -Wno-deprecated resources/BigInt/BigUnsignedInABase.cc
+		g++ -c -o resources/BigInt/BigIntegerUtils.o -O2 -Wno-deprecated resources/BigInt/BigIntegerUtils.cc
+
 
 
 clean:
