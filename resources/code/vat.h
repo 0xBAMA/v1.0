@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <string>
 
 // `BigIntegerLibrary.hh' includes all of the library headers.
 #include "../BigInt/BigIntegerLibrary.hh"
@@ -8,10 +9,13 @@
 // adapted from the original processing source code found at:
 //   https://bitbucket.org/BWerness/voxel-automata-terrain/src/master/
 
+using std::cout;
+using std::endl;
+
 class voxel_automata_terrain
 {
 	public:
-		voxel_automata_terrain(int levels_deep, float flip_p)
+		voxel_automata_terrain(int levels_deep, float flip_p, std::string rule)
 			:L(levels_deep),
 			 K((1 << levels_deep) + 1),
 			 flipP(flip_p)
@@ -25,7 +29,7 @@ class voxel_automata_terrain
 				for(auto & y : x)
 					y = 0;
 
-		
+
 			// resize the faceRule
 			faceRule.resize(7);
 			for(auto & x : faceRule)
@@ -60,15 +64,21 @@ class voxel_automata_terrain
 					for(auto & z : y)
 						z = 0;
 
-			// ...
+			// this will change
 			randomRule();
 			initState();
 			evalState();
-			dumpState();
+
+			// dumpState();
+			// dumprules();
+			// std::string temp = makeShortRule();
+			// readShortRule(temp);
+			// dumprules();
+
 		}
 
-		// function to get a vector out, so you can send it to the GPU as a texture
-		//  need to decide exactly how this is going to go
+		// I need to be able to access this externally, to create the OpenGL texture
+		std::vector<std::vector<std::vector<int>>> state;
 
 	private:
 		int L; // levels of depth, from the original code, used to compute the edge length
@@ -78,7 +88,6 @@ class voxel_automata_terrain
 		std::vector<std::vector<int>> cubeRule;
 		std::vector<std::vector<int>> faceRule;
 		std::vector<std::vector<int>> edgeRule;
-		std::vector<std::vector<std::vector<int>>> state;
 
 		void dumpState()
 		{
@@ -305,7 +314,7 @@ class voxel_automata_terrain
 			}
 			// println(makeShortRule());
 		}
-	
+
 		// create a rule based on a sample from the ising model where each one is selected with a certain weight depending on similarity to neighbors
 		void randomIsingRule() // beta and mag are parameters
 		{
@@ -352,6 +361,44 @@ class voxel_automata_terrain
 				}
 			}
 			// println(makeShortRule());
+		}
+
+
+		void dumprules()
+		{
+			for (int i = 0; i < 9; i++)
+			{
+				for (int j = 0; j < 9; j++)
+				{
+					cout << cubeRule[i][j];
+					cout << " ";
+				}
+				cout << endl;
+			}
+
+			cout << endl;
+
+			for (int i = 0; i < 7; i++)
+			{
+				for (int j = 0; j < 7; j++)
+				{
+					cout << edgeRule[i][j];
+					cout << " ";
+				}
+				cout << endl;
+			}
+
+			cout << endl;
+
+			for (int i = 0; i < 7; i++)
+			{
+				for (int j = 0; j < 7; j++)
+				{
+					cout << faceRule[i][j];
+					cout << " ";
+				}
+				cout << endl;
+			}
 		}
 
 
@@ -416,15 +463,90 @@ class voxel_automata_terrain
 		}
 
 
-		// std::string make_short_rule()
-		// {
+		// return the string version of the rule
+		std::string makeShortRule() {
+			// first make a big number
+			BigInteger temp = 0;
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9-i; j++) {
+					// temp = temp.multiply(BigInteger.valueOf(3));
+					// temp = temp.add(BigInteger.valueOf(cubeRule[i][j]));
+					
+					temp = temp * 3;
+					temp = temp + cubeRule[i][j];
+				}
+			}
+			for (int i = 0; i < 7; i++) {
+				for (int j = 0; j < 7-i; j++) {
+					// temp = temp.multiply(BigInteger.valueOf(3));
+					// temp = temp.add(BigInteger.valueOf(faceRule[i][j]));
+					
+					temp = temp * 3;
+					temp = temp + faceRule[i][j];	
+				}
+			}
+			for (int i = 0; i < 7; i++) {
+				for (int j = 0; j < 7-i; j++) {
+					// temp = temp.multiply(BigInteger.valueOf(3));
+					// temp = temp.add(BigInteger.valueOf(edgeRule[i][j]));
+					
+					temp = temp * 3;
+					temp = temp + edgeRule[i][j];	
+				}
+			}
+			// then expand in base 62 = 2*26+10
 
-		// }
+			std::string out = "";
+			while (temp != 0) {
+				// out += base62(temp.mod(BigInteger.valueOf(62)).intValue());
+				// temp = temp.divide(BigInteger.valueOf(62));
 
-		void read_short_rule()
-		{
-			BigInteger a;
+				out += base62(BigInteger(temp % 62).toInt());
+				temp = temp / 62;
+			}
+			return out;
 		}
+
+
+		// load the rule from a string
+		void readShortRule(std::string in) {
+			// first make a big number
+			BigInteger temp = 0;
+			for (int i = in.length()-1; i >= 0; i--) {
+				temp = temp * 62;
+				temp = temp + (base62(in.at(i)));
+			}
+
+			// then re-expand into base 3 and use it
+			for (int i = 6; i >= 0; i--) {
+				for (int j = 6-i; j >= 0; j--) {
+					// edgeRule[i][j] = temp.mod(BigInteger.valueOf(3)).intValue();
+					// temp = temp.divide(BigInteger.valueOf(3));
+
+					edgeRule[i][j] = modexp(temp, 1, 3).toInt();
+					temp = temp / 3;
+				}
+			}
+			for (int i = 6; i >= 0; i--) {
+				for (int j = 6-i; j >= 0; j--) {
+					// faceRule[i][j] = temp.mod(BigInteger.valueOf(3)).intValue();
+					// temp = temp.divide(BigInteger.valueOf(3));
+
+					faceRule[i][j] = modexp(temp, 1, 3).toInt();
+					temp = temp / 3;
+				}
+			}
+			for (int i = 8; i >= 0; i--) {
+				for (int j = 8-i; j >= 0; j--) {
+					// cubeRule[i][j] = temp.mod(BigInteger.valueOf(3)).intValue();
+					// temp = temp.divide(BigInteger.valueOf(3));
+
+					cubeRule[i][j] = modexp(temp, 1, 3).toInt();
+					temp = temp / 3;
+				}
+			}
+		}
+
 
 		// turn an int into base 62 version
 		char base62(int in)

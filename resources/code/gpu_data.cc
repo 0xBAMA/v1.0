@@ -1234,6 +1234,37 @@ void OpenGL_container::wireworld_update()
 }
 
 
+
+void OpenGL_container::vat(float flip, std::string rule)
+{
+  int dimension;
+
+  // this is the first way I thought to handle the dimension, note that the data will be
+  // of a dimension corresponding to 2^dimension+1, so you will be throwing away some of
+  // the data, since the texture is going to be one less, just the power of two
+
+
+  if(DIM == 32)
+    dimension = 5;
+  else if(DIM == 64)
+    dimension = 6;
+  else if(DIM == 128)
+    dimension = 7;
+  else if(DIM == 256)
+    dimension = 8;
+  else if(DIM == 512)
+    dimension = 9;
+
+  // need to add rule to the constructor - check for 'r' or 'i' to do random or isingRandom
+  voxel_automata_terrain v(dimension, flip, rule);
+
+  // pull out the texture data
+  std::vector<unsigned char> loaded_bytes; // used the same way as load(), below
+
+  // send it
+
+}
+
 void OpenGL_container::load(std::string filename)
 {
     std::vector<unsigned char> image_loaded_bytes;
