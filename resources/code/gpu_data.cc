@@ -1235,14 +1235,13 @@ void OpenGL_container::wireworld_update()
 
 
 
-void OpenGL_container::vat(float flip, std::string rule)
+std::string OpenGL_container::vat(float flip, std::string rule, int initmode, glm::vec4 color0, glm::vec4 color1, glm::vec4 color2)
 {
   int dimension;
 
   // this is the first way I thought to handle the dimension, note that the data will be
   // of a dimension corresponding to 2^dimension+1, so you will be throwing away some of
   // the data, since the texture is going to be one less, just the power of two
-
 
   if(DIM == 32)
     dimension = 5;
@@ -1254,15 +1253,44 @@ void OpenGL_container::vat(float flip, std::string rule)
     dimension = 8;
   else if(DIM == 512)
     dimension = 9;
-
-  // need to add rule to the constructor - check for 'r' or 'i' to do random or isingRandom
-  voxel_automata_terrain v(dimension, flip, rule);
+ 
+  // need to add rule to the constructor - check for equality with 'r' or 'i' to do random or isingRandom, else interpret as a shortrule
+  voxel_automata_terrain v(dimension, flip, rule, initmode);
 
   // pull out the texture data
   std::vector<unsigned char> loaded_bytes; // used the same way as load(), below
 
-  // send it
+  // triple for-loop to pull the data out
+  for (int x = 0; x < DIM; x++)
+  {
+    for (int y = 0; y < DIM; y++)
+    {
+      for (int z = 0; z < DIM; z++)
+      {
+        // append data with the colors specified as input
+        glm::vec4 color;
+        switch (v.state[x][y][z])
+        {
+          case 0: color = color0; break; // use color0
+          case 1: color = color1; break; // use color1
+          case 2: color = color2; break; // use color2
+        }
 
+        // put it in the vector as bytes
+        loaded_bytes.push_back(static_cast<unsigned char>(color.x * 255));
+        loaded_bytes.push_back(static_cast<unsigned char>(color.y * 255));
+        loaded_bytes.push_back(static_cast<unsigned char>(color.z * 255));
+        loaded_bytes.push_back(static_cast<unsigned char>(color.w * 255));
+      }
+    }
+  }
+
+  // send it
+  glBindTexture(GL_TEXTURE_3D, block_textures[location_of_current]); // use the specified ID
+  glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, DIM, DIM, DIM, 0,  GL_RGBA, GL_UNSIGNED_BYTE, &loaded_bytes[0]);
+
+  // get the rule out of v
+  return v.getShortRule();
 }
 
 void OpenGL_container::load(std::string filename)

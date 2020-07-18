@@ -6,13 +6,13 @@
 
 
 //used in load/save operation to check extension
-bool hasEnding(std::string fullString, std::string ending) 
+bool hasEnding(std::string fullString, std::string ending)
 {
     if (fullString.length() >= ending.length())
     {
         return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
-    } 
-    else 
+    }
+    else
     {
         return false;
     }
@@ -39,7 +39,7 @@ struct path_leaf_string
         return entry.path().string();
     }
 };
- 
+
 void update_listbox_items()
 {
     directory_strings.clear();
@@ -526,7 +526,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SliderFloat("level", &clear_level, 0.0f, 1.0f, "%.3f");
 
     if (ImGui::Button("Clear", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
-      GPU_Data.lighting_clear(clear_level); 
+      GPU_Data.lighting_clear(clear_level);
 
     ImGui::Separator();
 
@@ -537,7 +537,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SliderFloat("value", &directional_intensity, 0.0f, 1.0f, "%.3f");
 
     if (ImGui::Button("Apply ", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
-      GPU_Data.compute_static_lighting(directional_theta, directional_phi, directional_intensity); 
+      GPU_Data.compute_static_lighting(directional_theta, directional_phi, directional_intensity);
 
     //if (ImGui::Button("Per Frame", ImVec2(120, 22)))
       //current_menu_state = PER_FRAME_LIGHTING_CONFIG;
@@ -558,7 +558,7 @@ void voraldo::draw_menu_and_take_input()
 
 
     ImGui::Separator();
-    ImGui::Text("Mash combines the lighting buffer"); 
+    ImGui::Text("Mash combines the lighting buffer");
     ImGui::Text("and the color buffer, so that the");
     ImGui::Text("block can be saved with the ");
     ImGui::Text("lighting applied.");
@@ -650,7 +650,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Begin("Sphere Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     ImGui::Text("Use the sliders to set the radius");
-    ImGui::Text("and the x, y, z components of the"); 
+    ImGui::Text("and the x, y, z components of the");
     ImGui::Text("center's position.");
     ImGui::Text(" ");
 
@@ -725,13 +725,13 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text("Use hithresh and lowthresh to tell");
     ImGui::Text("how much of this perlin texture to");
     ImGui::Text("color in.");
-    
+
 
     ImGui::SliderFloat(" hithresh", &perlin_threshold_hi, 0.0f, 1.0f, "%.3f");
     ImGui::SliderFloat(" lothresh", &perlin_threshold_lo, 0.0f, 1.0f, "%.3f");
 
     ImGui::Checkbox(" Smooth Color ", &perlin_smooth);
-    
+
     ImGui::Separator();
 
 
@@ -800,12 +800,12 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Text(" ");
 
-    
+
     ImGui::SetCursorPosX(16);
     if (ImGui::Button("Draw", ImVec2(100, 22)))
     {
         //draw with the selected values
-    
+
         GPU_Data.draw_grid(glm::ivec3(xspacing, yspacing, zspacing), glm::ivec3(xwid, ywid, zwid), glm::ivec3(xoff, yoff, zoff), glm::vec4(grid_draw_color.x, grid_draw_color.y, grid_draw_color.z, grid_draw_color.w), grid_draw, grid_mask);
     }
     ImGui::SameLine();
@@ -1241,7 +1241,7 @@ void voraldo::draw_menu_and_take_input()
     //show off the currently held texture
     ImGui::Image((void*)(intptr_t) 7   /*not a good way to do this, but it works right now*/ , ImVec2(240,256));
 
-    
+
 
 
     if (ImGui::Button("perlin"))
@@ -1257,7 +1257,7 @@ void voraldo::draw_menu_and_take_input()
     }
 
     ImGui::SameLine();
-    
+
     if (ImGui::Button("XOR"))
     {
         GPU_Data.generate_heightmap_XOR();
@@ -1368,7 +1368,6 @@ void voraldo::draw_menu_and_take_input()
   }
 
 
-
   unmask_all_config_label:
     //sets mask value for all cells to zero
   {
@@ -1441,7 +1440,7 @@ void voraldo::draw_menu_and_take_input()
     static float b_variance=0.0;
     static float a_variance=0.0;
     static float l_variance=0.0;
-   
+
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,600));
@@ -1481,11 +1480,11 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Checkbox("use g", &use_g);
     ImGui::SameLine();
     ImGui::SliderFloat("g variance", &g_variance, 0.0f, 1.0f, "%.3f");
-    
+
     ImGui::Checkbox("use b", &use_b);
     ImGui::SameLine();
     ImGui::SliderFloat("b variance", &b_variance, 0.0f, 1.0f, "%.3f");
-    
+
     ImGui::Checkbox("use a", &use_a);
     ImGui::SameLine();
     ImGui::SliderFloat("a variance", &a_variance, 0.0f, 1.0f, "%.3f");
@@ -1496,7 +1495,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::SameLine();
     ImGui::SliderFloat("l value", &light_val, 0.0f, 1.0f, "%.3f");
     ImGui::SliderFloat("l variance", &l_variance, 0.0f, 1.0f, "%.3f");
-    
+
     if (ImGui::Button("Mask", ImVec2(100, 22)))
     {
         GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, use_l, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), light_val, r_variance, g_variance, b_variance, a_variance, l_variance);
@@ -1563,19 +1562,64 @@ void voraldo::draw_menu_and_take_input()
     // https://softologyblog.wordpress.com/2017/05/27/voxel-automata-terrain/
     // https://bitbucket.org/BWerness/voxel-automata-terrain/src/master/
   {
+	static ImVec4 color0;
+	static ImVec4 color1;
+	static ImVec4 color2;
+
+	static int initmode;
+	static float flip;
+
+	static char str0[256] = "";
+
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,85));
+    ImGui::SetNextWindowSize(ImVec2(256,450));
     ImGui::Begin("Game of Life Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     //config options for this operation
+	ImGui::Text("This is an interesting way to");
+	ImGui::Text("generate shapes, developed by");
+	ImGui::Text("Brent Werness - enter a rule, r");
+	ImGui::Text("for Random or i for IsingRandom");	// may want to parameterize this further, with beta, lambda, mag - just want to get it working first
+	ImGui::Text(" ");
+
+	// string entry, letting the user input a rule
+	ImGui::Text("Enter base62 encoded rule, r or i");
+	ImGui::InputTextWithHint("", "", str0, IM_ARRAYSIZE(str0));
+
+	// flip slider (float)
+	ImGui::Text("Make nonzero for stochastic result");
+    ImGui::SliderFloat(" flip", &flip, 0.0f, 1.0f, "%.3f");
+	ImGui::Text(" ");
+
+	// mode slider (int)
+	ImGui::Text("0 - fill side with 0");
+	ImGui::Text("1 - fill side with 1");
+	ImGui::Text("2 - fill side with 2");
+	ImGui::Text("3 - fill side with random values");
+    ImGui::SliderInt(" mode", &initmode, 0, 3);
+	ImGui::Text(" ");
+
+	// three colors
+    ImGui::ColorEdit4(" State 0", (float*)&color0, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+	ImGui::ColorEdit4(" State 1", (float*)&color1, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
+    ImGui::ColorEdit4(" State 2", (float*)&color2, ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreviewHalf);
 
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
 
     if (ImGui::Button("Compute", ImVec2(100, 22)))
     {
-        //compute one update
+        // invoke the constructor, etc - return a string from the OpenGL_container::vat(...), and put it in str0
+		glm::vec4 col0, col1, col2;
+		col0 = glm::vec4(color0.x, color0.y, color0.z, color0.w);
+		col1 = glm::vec4(color1.x, color1.y, color1.z, color1.w);
+		col2 = glm::vec4(color2.x, color2.y, color2.z, color2.w);
+
+		std::string temp = GPU_Data.vat(flip, std::string(str0), initmode, col0, col1, col2); 	//assign with the function call
+
+		strcpy(str0, temp.c_str());	// you get to see how the random rule you generated, or retain the rule you entered
     }
+
     ImGui::SameLine();
     ImGui::SetCursorPosX(140);
     if (ImGui::Button("Back", ImVec2(100, 22)))
@@ -1664,7 +1708,7 @@ void voraldo::draw_menu_and_take_input()
     static int zmove;
     static bool loop;
     static int shift_mode = 1;
-    
+
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,445));
     ImGui::Begin("Shift Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
@@ -1677,7 +1721,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text("If you turn on looping, data that ");
     ImGui::Text("goes off one side will appear on ");
     ImGui::Text("the opposite edge, torus-style.");
-    
+
 
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
@@ -1709,7 +1753,7 @@ void voraldo::draw_menu_and_take_input()
             ImGui::Text("Pick a valid mode");
             break;
     }
-    
+
     ImGui::Text(" ");
     ImGui::SetCursorPosX(16);
     ImGui::Checkbox(" loop", &loop);
@@ -1730,7 +1774,7 @@ void voraldo::draw_menu_and_take_input()
   }
 
   limiter_config_label:
-    //establishes range for r/g/b/a as well as lighting 
+    //establishes range for r/g/b/a as well as lighting
   {
     static bool use_r;
     static bool use_g;
@@ -1743,7 +1787,7 @@ void voraldo::draw_menu_and_take_input()
     static float g_variance=0.2;
     static float b_variance=0.3;
     static float a_variance=0.4;
-   
+
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(256,500));
@@ -1762,16 +1806,16 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Checkbox("use g", &use_g);
     ImGui::SameLine();
     ImGui::SliderFloat("g variance", &g_variance, 0.0f, 1.0f, "%.3f");
-    
+
     ImGui::Checkbox("use b", &use_b);
     ImGui::SameLine();
     ImGui::SliderFloat("b variance", &b_variance, 0.0f, 1.0f, "%.3f");
-    
+
     ImGui::Checkbox("use a", &use_a);
     ImGui::SameLine();
     ImGui::SliderFloat("a variance", &a_variance, 0.0f, 1.0f, "%.3f");
 
-    
+
     if (ImGui::Button("Mask", ImVec2(100, 22)))
     {
         //GPU_Data.mask_by_color(use_r, use_g, use_b, use_a, glm::vec4(select_color.x, select_color.y, select_color.z, select_color.w), r_variance, g_variance, b_variance, a_variance);

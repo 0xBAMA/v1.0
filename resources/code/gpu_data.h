@@ -31,7 +31,7 @@ class OpenGL_container
         void toggle_mask();                                                                                                                                               //invokes the toggle_mask compute shader
         void blur(int radius, bool touch_alpha, bool respect_mask);                                                                                                       //invokes the blurring operation
         void mask_by_color(bool r, bool g, bool b, bool a, bool l, glm::vec4 color, float l_val, float r_var, float g_var, float b_var, float a_var, float l_var);        //mask based on value/variance per channel
-    
+
         void compute_static_lighting(float theta, float phi, float initial_ray_intensity);   //compute static lighting
         void lighting_clear(float intensity);
         void compute_ambient_occlusion(int radius); //compute ambient occlusion - based on neighborhood
@@ -49,7 +49,7 @@ class OpenGL_container
         void generate_perlin_noise(float xscale, float yscale, float zscale);
 
 
-        void vat(float flip, std::string rule);  // Brent Werness's Voxel Automata Terrain
+        std::string vat(float flip, std::string rule, int initmode, glm::vec4 color0, glm::vec4 color1, glm::vec4 color2);  // Brent Werness's Voxel Automata Terrain
 
         void load(std::string filename);
         void save(std::string filename);
@@ -132,7 +132,7 @@ class OpenGL_container
         GLuint block_textures[2];
         GLuint mask_textures[2];
         GLuint light_texture;
-    
+
         GLuint perlin_texture;
         GLuint heightmap_texture;
 

@@ -15,7 +15,7 @@ using std::endl;
 class voxel_automata_terrain
 {
 	public:
-		voxel_automata_terrain(int levels_deep, float flip_p, std::string rule)
+		voxel_automata_terrain(int levels_deep, float flip_p, std::string rule, int initmode)
 			:L(levels_deep),
 			 K((1 << levels_deep) + 1),
 			 flipP(flip_p)
@@ -64,10 +64,24 @@ class voxel_automata_terrain
 					for(auto & z : y)
 						z = 0;
 
-			// this will change
-			randomRule();
-			initState();
+			// interpreting rule input
+			if(rule == std::string("r"))
+			{
+				randomRule();
+			}
+			else if(rule == std::string("i"))
+			{
+				randomIsingRule();
+			}
+			else
+			{
+				// interpret as shortrule
+				readShortRule(rule);
+			}
+
+			initState(initmode);
 			evalState();
+
 
 			// dumpState();
 			// dumprules();
@@ -75,6 +89,11 @@ class voxel_automata_terrain
 			// readShortRule(temp);
 			// dumprules();
 
+		}
+
+		std::string getShortRule()
+		{
+			return makeShortRule();
 		}
 
 		// I need to be able to access this externally, to create the OpenGL texture
@@ -403,7 +422,7 @@ class voxel_automata_terrain
 
 
 		// fill the bottom with random bits (the other sides are all empty)
-		void initState()
+		void initState(int initmode)
 		{
 		// fill just the bottom so we can see
 			// print("Randomizing IC...");
@@ -411,7 +430,13 @@ class voxel_automata_terrain
 			{
 				for (int j = 0; j < K; j++)
 				{
-					state[i][j][K-1] = int(random(2))+1;
+					switch (initmode) {
+						case 0: state[j][0][i] = 0;                break; // fill with zeroes
+						case 1: state[j][0][i] = 1;                break; // fill with ones
+						case 2: state[j][0][i] = 2;                break; // fill with twos
+						case 3: state[j][0][i] = int(random(2))+1; break; // fill with random numbers [0-2 inclusive]
+					}
+
 				}
 			}
 		}
@@ -471,7 +496,7 @@ class voxel_automata_terrain
 				for (int j = 0; j < 9-i; j++) {
 					// temp = temp.multiply(BigInteger.valueOf(3));
 					// temp = temp.add(BigInteger.valueOf(cubeRule[i][j]));
-					
+
 					temp = temp * 3;
 					temp = temp + cubeRule[i][j];
 				}
@@ -480,18 +505,18 @@ class voxel_automata_terrain
 				for (int j = 0; j < 7-i; j++) {
 					// temp = temp.multiply(BigInteger.valueOf(3));
 					// temp = temp.add(BigInteger.valueOf(faceRule[i][j]));
-					
+
 					temp = temp * 3;
-					temp = temp + faceRule[i][j];	
+					temp = temp + faceRule[i][j];
 				}
 			}
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7-i; j++) {
 					// temp = temp.multiply(BigInteger.valueOf(3));
 					// temp = temp.add(BigInteger.valueOf(edgeRule[i][j]));
-					
+
 					temp = temp * 3;
-					temp = temp + edgeRule[i][j];	
+					temp = temp + edgeRule[i][j];
 				}
 			}
 			// then expand in base 62 = 2*26+10
