@@ -15,10 +15,13 @@ using std::endl;
 class voxel_automata_terrain
 {
 	public:
-		voxel_automata_terrain(int levels_deep, float flip_p, std::string rule, int initmode)
+		voxel_automata_terrain(int levels_deep, float flip_p, std::string rule, int initmode, float lamb, float bet, float mg)
 			:L(levels_deep),
 			 K((1 << levels_deep) + 1),
-			 flipP(flip_p)
+			 flipP(flip_p),
+			 lambda(lamb),
+			 beta(bet),
+			 mag(mg)
 		{
 			// resize the cubeRule
 			cubeRule.resize(9);
@@ -93,6 +96,7 @@ class voxel_automata_terrain
 
 		std::string getShortRule()
 		{
+			std::cout << makeShortRule() << std::endl;
 			return makeShortRule();
 		}
 
@@ -300,9 +304,9 @@ class voxel_automata_terrain
 
 
 		// parameters for the random rules
-		float lambda = 0.35;
-		float beta = 0.5;
-		float mag = 0.0;
+		float lambda; //  = 0.35;
+		float beta; //  = 0.5;
+		float mag; // = 0.0;
 
 		// create a random rule with density lambda of filled states
 		void randomRule() // parameterized by lambda

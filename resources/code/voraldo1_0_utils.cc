@@ -1566,13 +1566,17 @@ void voraldo::draw_menu_and_take_input()
 	static ImVec4 color1;
 	static ImVec4 color2;
 
+	static float lambda = 0.35;
+	static float beta = 0.5;
+	static float mag = 0.0;
+
 	static int initmode;
 	static float flip;
 
 	static char str0[256] = "";
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,450));
+    ImGui::SetNextWindowSize(ImVec2(256,625));
     ImGui::Begin("Game of Life Config", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
     //config options for this operation
@@ -1590,6 +1594,17 @@ void voraldo::draw_menu_and_take_input()
 	ImGui::Text("Make nonzero for stochastic result");
     ImGui::SliderFloat(" flip", &flip, 0.0f, 1.0f, "%.3f");
 	ImGui::Text(" ");
+
+	ImGui::Text("Lambda is a parameter for Random");
+	ImGui::SliderFloat(" lambda", &lambda, 0.0f, 1.0f, "%.3f");
+	ImGui::Text(" ");
+
+	ImGui::Text("Beta and Mag are parameters");
+	ImGui::Text("for IsingRandom");
+	ImGui::SliderFloat(" beta", &beta, 0.0f, 1.0f, "%.3f");
+	ImGui::SliderFloat(" mag", &mag, 0.0f, 1.0f, "%.3f");
+	ImGui::Text(" ");
+
 
 	// mode slider (int)
 	ImGui::Text("0 - fill side with 0");
@@ -1615,7 +1630,7 @@ void voraldo::draw_menu_and_take_input()
 		col1 = glm::vec4(color1.x, color1.y, color1.z, color1.w);
 		col2 = glm::vec4(color2.x, color2.y, color2.z, color2.w);
 
-		std::string temp = GPU_Data.vat(flip, std::string(str0), initmode, col0, col1, col2); 	//assign with the function call
+		std::string temp = GPU_Data.vat(flip, std::string(str0), initmode, col0, col1, col2, lambda, beta, mag); 	//assign with the function call
 
 		strcpy(str0, temp.c_str());	// you get to see how the random rule you generated, or retain the rule you entered
     }

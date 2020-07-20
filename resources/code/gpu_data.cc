@@ -1235,7 +1235,7 @@ void OpenGL_container::wireworld_update()
 
 
 
-std::string OpenGL_container::vat(float flip, std::string rule, int initmode, glm::vec4 color0, glm::vec4 color1, glm::vec4 color2)
+std::string OpenGL_container::vat(float flip, std::string rule, int initmode, glm::vec4 color0, glm::vec4 color1, glm::vec4 color2, float lambda, float beta, float mag)
 {
   int dimension;
 
@@ -1255,7 +1255,7 @@ std::string OpenGL_container::vat(float flip, std::string rule, int initmode, gl
     dimension = 9;
  
   // need to add rule to the constructor - check for equality with 'r' or 'i' to do random or isingRandom, else interpret as a shortrule
-  voxel_automata_terrain v(dimension, flip, rule, initmode);
+  voxel_automata_terrain v(dimension, flip, rule, initmode, lambda, beta, mag);
 
   // pull out the texture data
   std::vector<unsigned char> loaded_bytes; // used the same way as load(), below
