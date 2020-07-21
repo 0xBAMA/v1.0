@@ -21,17 +21,48 @@ uniform float sky_intensity; // if the ray escapes, how much light should it get
 void main()
 {
     ivec3 my_loc = ivec3(gl_GlobalInvocationID.x, y_index, gl_GlobalInvocationID.z);
+    ivec3 check_loc;
 
-    vec4 prev = imageLoad(lighting, my_loc);    //existing color value (what is the color?)
+    float new_light_val;
 
-    // for the 9 grid cells above the cell being considered
-    // consider a vector between the current cell and the above grid cell
-    // trace it out, through the current color buffer
-    //   if you find a cell with alpha > alpha_thresh, you have hit something - take some portion of its light,
-    //     specified by scale_factor
+    vec4 prev_light_val = imageLoad(lighting, my_loc);    //existing light value (how much light, stored in r)
+    vec4 prev_color_val = imageLoad(current, my_loc);    //existing color value (what is the color?)
 
-    //otherwise, if you trace it out to beyond the extent of the image dimensions, you have 'escaped', and take light from the sky
+    ivec3 imsize = imageSize(lighting);
 
-    imageStore(lighting, ivec3(gl_GlobalInvocationID.xyz), vec4(new));
+
+    if(prev_color_val.a >= alpha_thresh) // this cell is opaque enough to participate
+    {
+        for(int dx = -1; dx <= 1; dx++)
+        {
+            for(int dz = -1; dz <= 1; dz++)
+            {
+                check_loc = ivec3(my_loc.x + dx, my_loc + 1, my_loc.z + dz);
+                bool hit = false;
+
+                while(check_loc.x >= 0 && check_loc.x < imsize.x && check_loc.z >= 0 && check_loc.z < imsize.z && check_loc.y < imsize.y)
+                {
+                    if(imageLoad(current, check_loc).a >= alpha_thresh)
+                    {
+                        // take some portion of the light from that location
+                        // that portion is defined by scale_factor
+
+                        hit = true;
+                        break;
+                    }
+                    check_loc.x += dx;
+                    check_loc.y += 1;
+                    check_loc.z += dz;
+                }
+
+                if(!hit)  // ray escaped the volume, use sky_intensity instead
+                {
+                    // take the light from the sky
+                }
+            }
+        }
+    }
+
+    imageStore(lighting, my_loc, vec4(new_light_val));
 }
 
