@@ -133,6 +133,11 @@ void OpenGL_container::init()
   static_lighting_compute = csstaticlighting.Program;
   cout << "done." << endl;
 
+ 
+  cout << "  compiling fake global illumination shader....";
+  CShader csfakeGI("resources/code/shaders/fakeGI.cs.glsl");
+  fakeGI_compute = csfakeGI.Program;
+  cout << "done." << endl;
 
 //  cout << "  compiling Game of Life compute shader........";
 //  CShader csgameoflife("resources/code/shaders/gol.cs.glsl");
@@ -1175,9 +1180,41 @@ void OpenGL_container::compute_ambient_occlusion(int radius)
     glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
 }
 
+void OpenGL_container::compute_fake_GI(float factor, float sky_intensity, float thresh)
+{
+  glUseProgram(fakeGI_compute);
+
+  glUniform1iv(glGetUniformLocation(fakeGI_compute, "current"), 1, &location_of_current);
+  glUniform1iv(glGetUniformLocation(fakeGI_compute, "lighting"), 1, &location_of_light_buffer);
+
+  glUniform1f(glGetUniformLocation(fakeGI_compute, "scale_factor"), factor);
+  glUniform1f(glGetUniformLocation(fakeGI_compute, "alpha_thresh"), thresh);
+  glUniform1f(glGetUniformLocation(fakeGI_compute, "sky_intensity"), sky_intensity);
+
+  // This has a sequential dependence - from the same guy who did the Voxel Automata Terrain, Brent Werness:
+  //   "Totally faked the GI!  It just casts out 9 rays in upwards facing the lattice directions.
+  //    If it escapes it gets light from the sky, otherwise it gets some fraction of the light
+  //    from whatever cell it hits.  Run from top to bottom and you are set!"
+
+  // For that reason, I'm going to have to do 2d workgroups, starting from the top, going to the bottom.
+  //   It might not be super quick at runtime, with all the calls to glMemoryBarrier, but the concept is relatively simple.
+
+  for (int y = DIM-1; y >= 0; y--) //iterating through y, from top to bottom
+  {
+    // update y index
+    glUniform1i(glGetUniformLocation(fakeGI_compute, "y_index"), y);
+
+    // send the job, for one xz plane
+    glDispatchCompute(DIM/8, 1, DIM/8);
+
+    // wait for all those shader invocations to finish
+    glMemoryBarrier( GL_SHADER_IMAGE_ACCESS_BARRIER_BIT );
+  }
+}
 
 void OpenGL_container::mash()
 {
+  // 'mash' combines color data and lighting data, stores it back in the color data, so that you can save a block with lighting applied
     glUseProgram(mash_compute);
     //this one just directly manipulates the color data
 
@@ -1274,6 +1311,8 @@ std::string OpenGL_container::vat(float flip, std::string rule, int initmode, gl
           case 0: color = color0; break; // use color0
           case 1: color = color1; break; // use color1
           case 2: color = color2; break; // use color2
+
+          default: color = color0; break; // this shouldn't come up, but the compiler was mad
         }
 
         // put it in the vector as bytes

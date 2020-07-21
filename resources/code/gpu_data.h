@@ -35,6 +35,7 @@ class OpenGL_container
         void compute_static_lighting(float theta, float phi, float initial_ray_intensity);   //compute static lighting
         void lighting_clear(float intensity);
         void compute_ambient_occlusion(int radius); //compute ambient occlusion - based on neighborhood
+        void compute_fake_GI(float factor, float sky_intensity, float thresh);
 
         void mash();
 
@@ -104,6 +105,7 @@ class OpenGL_container
         GLuint static_lighting_compute;
         GLuint point_lighting_compute;
         GLuint ambient_occlusion_compute;
+        GLuint fakeGI_compute;
         GLuint game_of_life_update_compute;
         GLuint wireworld_update_compute;
 
