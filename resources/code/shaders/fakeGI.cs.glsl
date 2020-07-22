@@ -23,10 +23,10 @@ void main()
     ivec3 my_loc = ivec3(gl_GlobalInvocationID.x, y_index, gl_GlobalInvocationID.z);
     ivec3 check_loc = ivec3(0);
 
-    float new_light_val = 0.0f;
-
     vec4 prev_light_val = imageLoad(lighting, my_loc);    //existing light value (how much light, stored in r)
     vec4 prev_color_val = imageLoad(current, my_loc);    //existing color value (what is the color?)
+
+    float new_light_val = prev_light_val.r;
 
     ivec3 imsize = imageSize(lighting);
 
@@ -44,7 +44,7 @@ void main()
                     if(imageLoad(current, check_loc).a >= alpha_thresh)
                     {
                         // take some portion (determined by scale_factor) of the light from that location
-                        new_light_val = prev_light_val.r + imageLoad(lighting, check_loc).r * scale_factor;
+                        new_light_val = new_light_val + imageLoad(lighting, check_loc).r * scale_factor;
 
                         hit = true;
                         break;
