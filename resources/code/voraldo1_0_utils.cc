@@ -504,8 +504,12 @@ void voraldo::draw_menu_and_take_input()
 
     static int AO_radius;
 
+    static float GI_scale_factor = 1.0f / 9.0f;
+    static float GI_alpha_thresh = 1.0f / 100.0f;
+    static float GI_sky_intensity = 1.2f / 9.0f;
+
     ImGui::SetNextWindowPos(ImVec2(10,10));
-    ImGui::SetNextWindowSize(ImVec2(256,700));
+    ImGui::SetNextWindowSize(ImVec2(300,850));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
 
@@ -536,7 +540,7 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text(" ");
     ImGui::SliderFloat("value", &directional_intensity, 0.0f, 1.0f, "%.3f");
 
-    if (ImGui::Button("Apply ", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
+    if (ImGui::Button("Apply Directional", ImVec2(120, 22))) // Buttons return true when clicked (most widgets return true when edited/activated)
       GPU_Data.compute_static_lighting(directional_theta, directional_phi, directional_intensity);
 
     //if (ImGui::Button("Per Frame", ImVec2(120, 22)))
@@ -551,11 +555,29 @@ void voraldo::draw_menu_and_take_input()
     ImGui::Text(" ");
     ImGui::SliderInt("radius", &AO_radius, 0, 5);
 
-    if (ImGui::Button("Apply", ImVec2(120, 22)))
+    if (ImGui::Button("Apply AO", ImVec2(120, 22)))
     {
         GPU_Data.compute_ambient_occlusion(AO_radius);
     }
 
+
+    ImGui::Separator();
+
+    ImGui::Text("Fake GI is computed by tracing rays");
+    ImGui::Text("upwards from each cell. If they ");
+    ImGui::Text("escape the volume, they get the");
+    ImGui::Text("sky_intensity added. Otherwise they");
+    ImGui::Text("take a portion of the light of the");
+    ImGui::Text("cell they hit, set by sfactor.");
+
+    ImGui::SliderFloat("sfactor", &GI_scale_factor, 0.0f, 1.0f);
+    ImGui::SliderFloat("alpha threshold", &GI_alpha_thresh, 0.0f, 1.0f);
+    ImGui::SliderFloat("sky intensity", &GI_sky_intensity, 0.0f, 1.0f);
+
+    if(ImGui::Button("Apply GI", ImVec2(120, 22)))
+    {
+      GPU_Data.compute_fake_GI(GI_scale_factor, GI_sky_intensity, GI_alpha_thresh);
+    }
 
     ImGui::Separator();
     ImGui::Text("Mash combines the lighting buffer");
@@ -1948,6 +1970,20 @@ void voraldo::draw_menu_and_take_input()
       GPU_Data.scale += 0.1f;     //make scale smaller (offsets are larger)
     if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_EQUALS) //SDLK_PLUS requires that you hit the shift
       GPU_Data.scale -= 0.1f;     //make scale larger  (offsets are smaller)
+
+
+    constexpr double pi = 3.14159265358979323846;
+
+    // specific directions
+    if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_F1)
+      GPU_Data.theta = 0.0;
+    if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_F2)
+      GPU_Data.theta = pi/2.0;
+    if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_F3)
+      GPU_Data.theta = 3.0*(pi/2.0);
+    if(event.type == SDL_KEYDOWN  && event.key.keysym.sym == SDLK_F4)
+      GPU_Data.theta = pi;
+
 
     if(event.type == SDL_MOUSEWHEEL)  //allow scroll to do the same thing as +/-
     {

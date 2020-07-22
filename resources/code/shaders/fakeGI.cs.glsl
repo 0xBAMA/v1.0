@@ -21,15 +21,14 @@ uniform float sky_intensity; // if the ray escapes, how much light should it get
 void main()
 {
     ivec3 my_loc = ivec3(gl_GlobalInvocationID.x, y_index, gl_GlobalInvocationID.z);
-    ivec3 check_loc;
+    ivec3 check_loc = ivec3(0);
 
-    float new_light_val;
+    float new_light_val = 0.0f;
 
     vec4 prev_light_val = imageLoad(lighting, my_loc);    //existing light value (how much light, stored in r)
     vec4 prev_color_val = imageLoad(current, my_loc);    //existing color value (what is the color?)
 
     ivec3 imsize = imageSize(lighting);
-
 
     if(prev_color_val.a >= alpha_thresh) // this cell is opaque enough to participate
     {
@@ -37,15 +36,15 @@ void main()
         {
             for(int dz = -1; dz <= 1; dz++)
             {
-                check_loc = ivec3(my_loc.x + dx, my_loc + 1, my_loc.z + dz);
+                check_loc = ivec3(my_loc.x + dx, my_loc.y + 1, my_loc.z + dz);
                 bool hit = false;
 
                 while(check_loc.x >= 0 && check_loc.x < imsize.x && check_loc.z >= 0 && check_loc.z < imsize.z && check_loc.y < imsize.y)
                 {
                     if(imageLoad(current, check_loc).a >= alpha_thresh)
                     {
-                        // take some portion of the light from that location
-                        // that portion is defined by scale_factor
+                        // take some portion (determined by scale_factor) of the light from that location
+                        new_light_val = prev_light_val.r + imageLoad(lighting, check_loc).r * scale_factor;
 
                         hit = true;
                         break;
@@ -58,11 +57,11 @@ void main()
                 if(!hit)  // ray escaped the volume, use sky_intensity instead
                 {
                     // take the light from the sky
+                    new_light_val = prev_light_val.r + sky_intensity; // should this take scale_factor as well?
                 }
             }
         }
+
+        imageStore(lighting, my_loc, vec4(new_light_val));
     }
-
-    imageStore(lighting, my_loc, vec4(new_light_val));
 }
-
