@@ -1583,8 +1583,8 @@ void voraldo::draw_menu_and_take_input()
     // https://bitbucket.org/BWerness/voxel-automata-terrain/src/master/
   {
 	static ImVec4 color0 = ImVec4(0,0,0,0);
-	static ImVec4 color1 = ImVec4(210.0/255.0, 180.0/255.0, 140.0/255.0, 45.0/255.0);
-	static ImVec4 color2 = ImVec4(143.0/255.0, 151.0/255.0, 121.0/255.0, 95.0/255.0);
+	static ImVec4 color1 = ImVec4(210.0/255.0, 180.0/255.0, 140.0/255.0, 45.0/255.0);  // Wikipedia Tan
+	static ImVec4 color2 = ImVec4(143.0/255.0, 151.0/255.0, 121.0/255.0, 95.0/255.0); // Wikipedia Artichoke Green
 
 	static float lambda = 0.35;
 	static float beta = 0.5;
