@@ -504,24 +504,23 @@ void voraldo::draw_menu_and_take_input()
 
     static int AO_radius;
 
-    static float GI_scale_factor = 1.0f / 9.0f;
-    static float GI_alpha_thresh = 1.0f / 100.0f;
-    static float GI_sky_intensity = 1.2f / 9.0f;
+    static float GI_scale_factor = 0.028;
+    static float GI_alpha_thresh = 0.010;
+    static float GI_sky_intensity = 0.16;
 
     ImGui::SetNextWindowPos(ImVec2(10,10));
     ImGui::SetNextWindowSize(ImVec2(300,850));
     ImGui::Begin("Light Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked, or NULL to have no close button)
 
 
-    ImGui::Text("This is the lighting system of ");
-    ImGui::Text("Voraldo - it is held as another ");
-    ImGui::Text("buffer which scales the color ");
-    ImGui::Text("values held in the regular block.");
+    ImGui::Text("This is the lighting system of Voraldo -");
+    ImGui::Text("it is held as another buffer which scales");
+    ImGui::Text("the color values held in the regular");
+    ImGui::Text("block.");
     ImGui::Text(" ");
-    ImGui::Text("Directional lighting is applied");
-    ImGui::Text("in a manner sort of similar to the ");
-    ImGui::Text("shadow map approach that is used ");
-    ImGui::Text("elsewhere. ");
+    ImGui::Text("Directional lighting is applied in a");
+    ImGui::Text("manner sort of similar to the shadow map");
+    ImGui::Text("approach that is used elsewhere.");
     ImGui::Text(" ");
 
 
@@ -548,10 +547,9 @@ void voraldo::draw_menu_and_take_input()
 
     ImGui::Separator();
 
-    ImGui::Text("Ambient occlusion is based on a ");
-    ImGui::Text("weighted average of the alpha  ");
-    ImGui::Text("values in the specified size ");
-    ImGui::Text("neighborhood. ");
+    ImGui::Text("Ambient occlusion is based on a weighted");
+    ImGui::Text("average of the alpha values in the");
+    ImGui::Text("specified size neighborhood.");
     ImGui::Text(" ");
     ImGui::SliderInt("radius", &AO_radius, 0, 5);
 
@@ -1584,9 +1582,9 @@ void voraldo::draw_menu_and_take_input()
     // https://softologyblog.wordpress.com/2017/05/27/voxel-automata-terrain/
     // https://bitbucket.org/BWerness/voxel-automata-terrain/src/master/
   {
-	static ImVec4 color0;
-	static ImVec4 color1;
-	static ImVec4 color2;
+	static ImVec4 color0 = ImVec4(0,0,0,0);
+	static ImVec4 color1 = ImVec4(210.0/255.0, 180.0/255.0, 140.0/255.0, 45.0/255.0);
+	static ImVec4 color2 = ImVec4(143.0/255.0, 151.0/255.0, 121.0/255.0, 95.0/255.0);
 
 	static float lambda = 0.35;
 	static float beta = 0.5;
