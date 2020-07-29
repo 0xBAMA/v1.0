@@ -34,7 +34,8 @@ double tmin, tmax; //global scope, set in hit() to tell min and max parameters
 // #define NUM_STEPS 2000
 //#define NUM_STEPS 165
 
-#define NUM_STEPS 500
+// #define NUM_STEPS 500
+#define NUM_STEPS 780
 #define MIN_DISTANCE 0.0
 #define MAX_DISTANCE 10.0
 
@@ -102,17 +103,21 @@ vec4 get_color_for_pixel(vec3 org, vec3 dir)
   vec4 new_read = imageLoad(current,samp);
   vec4 new_light_read = imageLoad(lighting,samp);
 
+  float alpha_squared;
+
   for(int i = 0; i < NUM_STEPS; i++)
   {
     if(current_t>=tmin)
     {
       //apply the lighting scaling    
       new_read.rgb *= (4*new_light_read.r);
-      new_read.a *= new_read.a; // square your alpha
-          
+      alpha_squared = new_read.a * new_read.a;
+
       // it's a over b, where a is the new sample and b is the current color, t_color
-      t_color.rgb = new_read.rgb * new_read.a + t_color.rgb * t_color.a * ( 1 - new_read.a );
-      t_color.a = new_read.a + t_color.a * ( 1 - new_read.a );
+      // t_color.rgb = new_read.rgb * new_read.a + t_color.rgb * t_color.a * ( 1 - new_read.a );
+      t_color.rgb = new_read.rgb * alpha_squared + t_color.rgb * t_color.a * ( 1 - alpha_squared );
+      // t_color.a = new_read.a + t_color.a * ( 1 - new_read.a );
+      t_color.a = alpha_squared + t_color.a * ( 1 - alpha_squared );
 
       current_t -= step;
       samp = ivec3((vec3(imageSize(current))/2.0f)*(org+current_t*dir+vec3(1)));
