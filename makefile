@@ -39,7 +39,7 @@ perlin.o: resources/code/voraldo1_0.h resources/code/perlin.cc
 
 lodepng.o: resources/code/lodepng.h resources/code/lodepng.cc
 		g++ -c -o lodepng.o resources/code/lodepng.cc                    ${VORALDO_FLAGS}
-		
+
 bigint:
 		g++ -c -o resources/BigInt/BigUnsigned.o -O2 -Wno-deprecated resources/BigInt/BigUnsigned.cc
 		g++ -c -o resources/BigInt/BigInteger.o -O2 -Wno-deprecated resources/BigInt/BigInteger.cc

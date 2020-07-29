@@ -50,7 +50,7 @@ class OpenGL_container
         void generate_perlin_noise(float xscale, float yscale, float zscale);
 
 
-		// Brent Werness's Voxel Automata Terrain
+        // Brent Werness's Voxel Automata Terrain
         std::string vat(float flip, std::string rule, int initmode, glm::vec4 color0, glm::vec4 color1, glm::vec4 color2, float lambda, float beta, float mag);
 
         void load(std::string filename);
