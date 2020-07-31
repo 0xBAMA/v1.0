@@ -77,7 +77,7 @@ using std::endl;
 #define DIM 256
 
 //this is effectively the shadowmap dimension
-#define LIGHT_DIM 1024
+#define LIGHT_DIM 512
 
 //#define DISPLAY 1
 
