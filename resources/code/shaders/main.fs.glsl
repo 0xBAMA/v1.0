@@ -111,13 +111,10 @@ vec4 get_color_for_pixel(vec3 org, vec3 dir)
     {
       //apply the lighting scaling    
       new_read.rgb *= (4*new_light_read.r);
-      alpha_squared = new_read.a * new_read.a;
 
       // it's a over b, where a is the new sample and b is the current color, t_color
-      // t_color.rgb = new_read.rgb * new_read.a + t_color.rgb * t_color.a * ( 1 - new_read.a );
-      t_color.rgb = new_read.rgb * alpha_squared + t_color.rgb * t_color.a * ( 1 - alpha_squared );
-      // t_color.a = new_read.a + t_color.a * ( 1 - new_read.a );
-      t_color.a = alpha_squared + t_color.a * ( 1 - alpha_squared );
+      t_color.rgb = new_read.rgb * new_read.a + t_color.rgb * t_color.a * ( 1 - new_read.a );
+      t_color.a = new_read.a + t_color.a * ( 1 - new_read.a );
 
       current_t -= step;
       samp = ivec3((vec3(imageSize(current))/2.0f)*(org+current_t*dir+vec3(1)));

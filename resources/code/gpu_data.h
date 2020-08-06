@@ -102,10 +102,10 @@ class OpenGL_container
         GLuint toggle_mask_compute;
         GLuint mask_by_color_compute;
         GLuint lighting_clear_compute;
+        GLuint fakeGI_compute;
         GLuint static_lighting_compute;
         GLuint point_lighting_compute;
         GLuint ambient_occlusion_compute;
-        GLuint fakeGI_compute;
         GLuint game_of_life_update_compute;
         GLuint wireworld_update_compute;
 

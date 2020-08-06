@@ -1994,7 +1994,6 @@ void voraldo::draw_menu_and_take_input()
         GPU_Data.scale += 0.1f;
       }
     }
-
   }
 }
 
